@@ -10,7 +10,7 @@ import static ua.org.dector.moon_lander.AppConfig.*;
 public class DesktopLauncher {
     public static void main(String[] args) {
         new LwjglApplication(
-                new AppListener(),
+                new LanderGame(),
                 TITLE,
                 SCREEN_WIDTH,
                 SCREEN_HEIGHT,
