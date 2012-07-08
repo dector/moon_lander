@@ -37,7 +37,16 @@ public class GameScreen implements Screen, InputProcessor {
                 rocket.getX(),
                 rocket.getY(),
                 ROCKET_WIDTH,
-                ROCKET_HEIGHT
+                ROCKET_HEIGHT,
+                rocket.getDirectionAngle()
+        );
+        Graphics.draw(
+                10, SCREEN_HEIGHT - 10, 15,
+                String.format("X: %d", (int)rocket.getX()),
+                String.format("Y: %d", (int)rocket.getY()),
+                String.format("Vx: %.2f", rocket.getVx()),
+                String.format("Vy: %.2f", rocket.getVy()),
+                String.format("Angle: %.1f", rocket.getDirectionAngle())
         );
         Graphics.end();
     }
