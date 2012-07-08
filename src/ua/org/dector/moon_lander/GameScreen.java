@@ -252,7 +252,11 @@ public class GameScreen implements Screen, InputProcessor {
             String text;
 
             if (landed) {
-                text = "Landed! =)";
+                if (levelIndex != levels.length - 1) {
+                    text = "Landed! =)";
+                } else {
+                    text = "You Won!";
+                }
             } else {
                 text = "Crashed! =(";
             }
@@ -326,8 +330,8 @@ public class GameScreen implements Screen, InputProcessor {
         }
         
         if (collided) {
-            landed = level.getLandingLeftX() <= rocketLeftX
-                    && rocketLeftX <= level.getLandingRightX()
+            landed = Math.max(level.getLandingLeftX() - rocketLeftX,
+                    rocketRightX - level.getLandingRightX()) < ROCKET_WIDTH / 5
                     && rocket.getVx() <= LANDING_VX_BOUND
                     && rocket.getVy() <= LANDING_VY_BOUND
                     && Math.abs(rocket.getDirectionAngle() - 90) <= LANDING_DIFF_ANGLE;
@@ -410,7 +414,13 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
-        return false;
+        if (debug) {
+            rocket.setX(x);
+            rocket.setY(SCREEN_HEIGHT - y);
+
+            return true;
+        } else
+            return false;
     }
 
     public boolean touchUp(int x, int y, int pointer, int button) {

@@ -109,4 +109,12 @@ public class Rocket {
     public boolean isMoveUp() {
         return moveUp;
     }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
 }
