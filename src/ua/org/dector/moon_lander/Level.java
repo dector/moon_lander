@@ -14,8 +14,9 @@ public class Level {
     private int height;
 
     private int[] map;
-
     private int[] land;
+    private int[] rocket;
+    private int[] flag;
 
     public int getWidth() {
         return width;
@@ -56,5 +57,25 @@ public class Level {
 
     public int getLandingTopY() {
         return land[3];
+    }
+
+    public int getRocketX() {
+        return rocket[0];
+    }
+
+    public int getRocketY() {
+        return rocket[1];
+    }
+
+    public float getRocketAngle() {
+        return rocket[2];
+    }
+
+    public int getFlagX() {
+        return flag[0];
+    }
+
+    public int getFlagY() {
+        return flag[1];
     }
 }

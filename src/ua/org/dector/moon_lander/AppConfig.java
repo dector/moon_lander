@@ -26,6 +26,10 @@ public interface AppConfig {
     public static final int POINTER_TEXTURE_WIDTH   = 8;
     public static final int POINTER_TEXTURE_HEIGHT  = 8;
 
+    public static final int FLAG_TEXTURE_WIDTH      = 8;
+    public static final int FLAG_TEXTURE_HEIGHT     = 8;
+
+
     public static final int ROCKET_WIDTH    = 32;
     public static final int ROCKET_HEIGHT   = 32;
 
@@ -35,6 +39,10 @@ public interface AppConfig {
 
     public static final int POINTER_WIDTH   = 8;
     public static final int POINTER_HEIGHT  = 16;
+
+    public static final int FLAG_WIDTH      = 32;
+    public static final int FLAG_HEIGHT     = 32;
+
 
     public static final int LANDING_PLATFORM_BORDER = 3;
     public static final int LANDING_PLATFORM_HEIGHT = 6;

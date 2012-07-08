@@ -24,7 +24,8 @@ public class GameScreen implements Screen, InputProcessor {
     private TextureRegion rocketTexture;
     private TextureRegion fireTexture;
     private TextureRegion pointerTexture;
-    
+    private TextureRegion flagTexture;
+
     private TextureRegion levelTexture;
 
     private boolean collided;
@@ -33,6 +34,8 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(Rocket rocket, Level level) {
         this.rocket = rocket;
         this.level = level;
+
+        rocket.reset(level.getRocketX(), level.getRocketY(), level.getRocketAngle());
 
         Texture graphicsTexture = ResourceLoader.loadTexture(GRAPHICS_FILE);
         rocketTexture = new TextureRegion(
@@ -54,8 +57,15 @@ public class GameScreen implements Screen, InputProcessor {
                 POINTER_TEXTURE_WIDTH,
                 POINTER_TEXTURE_HEIGHT
         );
+        flagTexture = new TextureRegion(
+                graphicsTexture,
+                ROCKET_TEXTURE_WIDTH + FIRE_TEXTURE_WIDTH
+                        + POINTER_WIDTH,    // x
+                0,                          // y
+                FLAG_TEXTURE_WIDTH,
+                FLAG_TEXTURE_HEIGHT
+        );
         
-
         buildLevelTexture();
     }
 
@@ -131,6 +141,13 @@ public class GameScreen implements Screen, InputProcessor {
 
         Graphics.begin();
         Graphics.draw(levelTexture, 0, 0);
+        Graphics.draw(
+                flagTexture,
+                level.getFlagX(),
+                level.getFlagY(),
+                FLAG_WIDTH,
+                FLAG_HEIGHT
+        );
         Graphics.draw(
                 rocketTexture,
                 rocket.getX(),

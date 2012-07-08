@@ -32,6 +32,11 @@ public class Graphics {
     }
 
     public static void draw(TextureRegion tex, float x, float y,
+                            int width, int height) {
+        sb.draw(tex, x, y, width, height);
+    }
+
+    public static void draw(TextureRegion tex, float x, float y,
                             int width, int height, float rotation) {
         draw(tex, x, y, width / 2, height / 2, width, height, rotation);
     }
