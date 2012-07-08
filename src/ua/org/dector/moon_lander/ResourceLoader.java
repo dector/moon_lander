@@ -1,6 +1,9 @@
 package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.backends.openal.Wav;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,6 +22,16 @@ public class ResourceLoader {
     public static Texture loadTexture(String image) {
         FileHandle file = Gdx.files.internal(DATA_DIR + IMG_DIR + image);
         return new Texture(file);
+    }
+
+    public static Sound loadSound(String sound) {
+        FileHandle file = Gdx.files.internal(DATA_DIR + SOUND_DIR + sound);
+        return Gdx.audio.newSound(file);
+    }
+
+    public static Music loadMusic(String music) {
+        FileHandle file = Gdx.files.internal(DATA_DIR + SOUND_DIR + music);
+        return Gdx.audio.newMusic(file);
     }
 
     public static Level loadLevel(String level) {

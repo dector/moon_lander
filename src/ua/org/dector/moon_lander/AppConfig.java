@@ -12,14 +12,23 @@ public interface AppConfig {
 
     public static final String DATA_DIR     = "data/";
     public static final String IMG_DIR      = "img/";
+    public static final String SOUND_DIR    = "sound/";
     public static final String LEVELS_DIR   = "levels/";
     public static final String FONTS_DIR    = "fonts/";
+
+    public static final String BURN_FILE        = "burn.wav";
+    public static final String CRASH_FILE       = "crash.wav";
+    public static final String LANDING_FILE     = "landing.wav";
+    public static final String MUSIC_FILE       = "Subterrestrial_-_Neighborhood_Arcade.ogg";
 
     public static final String SMALL_FONT_FILE  = "Sans-Light24.fnt";
     public static final String SMALL_FONT_IMG   = "Sans-Light24.png";
     public static final String BIG_FONT_FILE    = "Sans-Light48.fnt";
     public static final String BIG_FONT_IMG     = "Sans-Light48.png";
     public static final String GRAPHICS_FILE    = "graphics.png";
+
+    public static final float MUSIC_VOLUME      = 1;
+    public static final float SFX_VOLUME        = .5f;
 
     // Graphics
 
@@ -35,6 +44,9 @@ public interface AppConfig {
     public static final int FLAG_TEXTURE_WIDTH      = 8;
     public static final int FLAG_TEXTURE_HEIGHT     = 8;
 
+    public static final int SOUND_TEXTURE_WIDTH     = 8;
+    public static final int SOUND_TEXTURE_HEIGHT    = 8;
+
 
     public static final int ROCKET_WIDTH    = 32;
     public static final int ROCKET_HEIGHT   = 32;
@@ -49,6 +61,12 @@ public interface AppConfig {
     public static final int FLAG_WIDTH      = 32;
     public static final int FLAG_HEIGHT     = 32;
 
+    public static final int SOUND_ICO_WIDTH = 24;
+    public static final int SOUND_ICO_HEIGHT = 24;
+
+    public static final int SOUND_ICO_X     = 760;
+    public static final int SOUND_ICO_Y     = 560;
+
 
     public static final int LANDING_PLATFORM_BORDER = 3;
     public static final int LANDING_PLATFORM_HEIGHT = 6;
@@ -60,7 +78,7 @@ public interface AppConfig {
     public static final int GRAVITY         = 1;
     public static final float FRICTION      = .7f;
 
-    public static final float LANDING_VX_BOUND  = .5f;
-    public static final float LANDING_VY_BOUND  = .5f;
+    public static final float LANDING_VX_BOUND  = .15f;
+    public static final float LANDING_VY_BOUND  = .2f;
     public static final int LANDING_DIFF_ANGLE  = 5;
 }

@@ -3,6 +3,8 @@ package ua.org.dector.moon_lander;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -29,12 +31,20 @@ public class GameScreen implements Screen, InputProcessor {
     private TextureRegion pointerTexture;
     private TextureRegion flagTexture;
 
+    private TextureRegion[] soundTextures;
+
     private TextureRegion levelTexture;
     private TextureRegion backgroundTexture;
+
+    private Sound burnSound;
+    private Sound crashSound;
+    private Sound landingSound;
+    private Music music;
 
     private boolean collided;
     private boolean landed;
 
+    private boolean soundMuted = false;
     private boolean debug = true;
 
     public GameScreen(Rocket rocket, Level[] levels) {
@@ -49,6 +59,16 @@ public class GameScreen implements Screen, InputProcessor {
         if (backgroundImg != null) {
             backgroundTexture = ResourceLoader.loadLevelTexture(backgroundImg);
         }
+
+        burnSound = ResourceLoader.loadSound(BURN_FILE);
+        crashSound = ResourceLoader.loadSound(CRASH_FILE);
+        landingSound = ResourceLoader.loadSound(LANDING_FILE);
+        music = ResourceLoader.loadMusic(MUSIC_FILE);
+
+        music.setLooping(true);
+        music.setVolume(MUSIC_VOLUME);
+
+        music.play();
 
         Texture graphicsTexture = ResourceLoader.loadTexture(GRAPHICS_FILE);
         rocketTexture = new TextureRegion(
@@ -77,6 +97,22 @@ public class GameScreen implements Screen, InputProcessor {
                 0,                          // y
                 FLAG_TEXTURE_WIDTH,
                 FLAG_TEXTURE_HEIGHT
+        );
+
+        soundTextures = new TextureRegion[2];
+        soundTextures[0] = new TextureRegion(
+                graphicsTexture,
+                0,                          // x
+                ROCKET_TEXTURE_HEIGHT,      // y
+                SOUND_TEXTURE_WIDTH,
+                SOUND_TEXTURE_HEIGHT
+        );
+        soundTextures[1] = new TextureRegion(
+                graphicsTexture,
+                ROCKET_TEXTURE_WIDTH,       // x
+                FIRE_TEXTURE_HEIGHT,        // y
+                SOUND_TEXTURE_WIDTH,
+                SOUND_TEXTURE_HEIGHT
         );
     }
 
@@ -246,6 +282,23 @@ public class GameScreen implements Screen, InputProcessor {
             );
         }
 
+        // Draw sound ico
+
+        int soundTextureIndex;
+        if (soundMuted) {
+            soundTextureIndex = 1;
+        } else {
+            soundTextureIndex = 0;
+        }
+
+        Graphics.draw(
+                soundTextures[soundTextureIndex],
+                SOUND_ICO_X,
+                SOUND_ICO_Y,
+                SOUND_ICO_WIDTH,
+                SOUND_ICO_HEIGHT
+        );
+
         // Draw centered text
 
         if (collided) {
@@ -335,6 +388,12 @@ public class GameScreen implements Screen, InputProcessor {
                     && rocket.getVx() <= LANDING_VX_BOUND
                     && rocket.getVy() <= LANDING_VY_BOUND
                     && Math.abs(rocket.getDirectionAngle() - 90) <= LANDING_DIFF_ANGLE;
+
+            if (landed && ! soundMuted) {
+                    landingSound.play(SFX_VOLUME);
+                } else {
+                    crashSound.play(SFX_VOLUME);
+            }
         }
     }
 
@@ -360,6 +419,8 @@ public class GameScreen implements Screen, InputProcessor {
         switch (keycode) {
             case Keys.UP:
                 rocket.moveUp(true);
+                if (! soundMuted)
+                    burnSound.loop(SFX_VOLUME);
                 break;
             case Keys.LEFT:
                 rocket.rotateLeft(true);
@@ -388,6 +449,15 @@ public class GameScreen implements Screen, InputProcessor {
                     reset();
                 }
                 break;
+            case Keys.M:
+                soundMuted = ! soundMuted;
+
+                if (soundMuted) {
+                    music.pause();
+                } else {
+                    music.play();
+                }
+                break;
         }
 
         return true;
@@ -397,6 +467,7 @@ public class GameScreen implements Screen, InputProcessor {
         switch (keycode) {
             case Keys.UP:
                 rocket.moveUp(false);
+                burnSound.stop();
                 break;
             case Keys.LEFT:
                 rocket.rotateLeft(false);
