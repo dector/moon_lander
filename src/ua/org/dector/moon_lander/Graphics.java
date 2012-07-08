@@ -27,6 +27,10 @@ public class Graphics {
         sb.end();
     }
 
+    public static void draw(TextureRegion tex, float x, float y) {
+        sb.draw(tex, x, y);
+    }
+
     public static void draw(TextureRegion tex, float x, float y,
                             int width, int height, float rotation) {
         sb.draw(tex, x, y, width / 2, height / 2, width, height, 1, 1, rotation - 90);

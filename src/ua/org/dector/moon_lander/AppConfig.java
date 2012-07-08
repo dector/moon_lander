@@ -10,6 +10,7 @@ public interface AppConfig {
 
     public static final String DATA_DIR     = "data/";
     public static final String IMG_DIR      = "img/";
+    public static final String LEVELS_DIR   = "levels/";
     public static final String GRAPHICS_FILE= "graphics.png";
 
     public static final int ROCKET_TEXTURE_WIDTH    = 8;

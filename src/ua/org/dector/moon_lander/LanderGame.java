@@ -2,20 +2,21 @@ package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-
-import static ua.org.dector.moon_lander.AppConfig.*;
 
 /**
  * @author dector (dector9@gmail.com)
  */
 public class LanderGame extends Game {
     private GameScreen gameScreen;
+
     private Rocket rocket;
+    private Level level;
 
     public void create() {
         rocket = new Rocket();
-        gameScreen = new GameScreen(rocket);
+        level = Level.fromFile("level0.json");
+
+        gameScreen = new GameScreen(rocket, level);
         Graphics.init();
 
         setScreen(gameScreen);

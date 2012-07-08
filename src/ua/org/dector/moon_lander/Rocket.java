@@ -61,6 +61,12 @@ public class Rocket {
             directionAngle -= ROCKET_ROTATING * delta;
         }
 
+        if (directionAngle >= 360) {
+            directionAngle -= 360;
+        } else if (directionAngle < 0) {
+            directionAngle += 360;
+        }
+
         if (moveUp) {
             ay = (float)(Math.sin(Math.toRadians(directionAngle)) * ROCKET_AY);
             ax = (float)(Math.cos(Math.toRadians(directionAngle)) * ROCKET_AY);

@@ -3,6 +3,8 @@ package ua.org.dector.moon_lander;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -14,14 +16,68 @@ import static ua.org.dector.moon_lander.AppConfig.*;
  */
 public class GameScreen implements Screen, InputProcessor {
     private Rocket rocket;
-    private TextureRegion rocketTexture;
+    private Level level;
 
-    public GameScreen(Rocket rocket) {
+    private TextureRegion rocketTexture;
+    private TextureRegion levelTexture;
+
+    public GameScreen(Rocket rocket, Level level) {
         this.rocket = rocket;
+        this.level = level;
 
         Texture graphicsTexture = ResourceLoader.loadTexture(GRAPHICS_FILE);
         rocketTexture = new TextureRegion(graphicsTexture,
                 ROCKET_TEXTURE_WIDTH, ROCKET_TEXTURE_HEIGHT);
+
+        buildLevelTexture();
+    }
+
+    private void buildLevelTexture() {
+        int levelWidth = level.getWidth();
+        int levelHeight = level.getHeight();
+
+        Pixmap pixmap = new Pixmap(levelWidth, levelHeight, Pixmap.Format.RGBA8888);
+
+        pixmap.setColor(Color.BLACK);
+        pixmap.fill();
+        pixmap.setColor(Color.WHITE);
+
+        int i = 0;
+        int[] prevPoint = new int[2];
+        int[] currPoint = new int[2];
+        int mapLength = level.getMapLength();
+
+        prevPoint[0] = level.get(i++);
+        prevPoint[1] = level.get(i++);
+
+        while (i < mapLength) {
+            currPoint[0] = level.get(i++);
+            currPoint[1] = level.get(i++);
+
+            pixmap.drawLine(
+                    prevPoint[0],
+                    levelHeight - prevPoint[1],
+                    currPoint[0],
+                    levelHeight - currPoint[1]
+            );
+
+            prevPoint[0] = currPoint[0];
+            prevPoint[1] = currPoint[1];
+        }
+
+        Pixmap texturePixmap = new Pixmap(
+                Utils.toPowerOfTwo(pixmap.getWidth()),
+                Utils.toPowerOfTwo(pixmap.getHeight()),
+                Pixmap.Format.RGBA8888
+        );
+
+        texturePixmap.drawPixmap(pixmap, 0, 0);
+
+        levelTexture = new TextureRegion(
+                new Texture(texturePixmap),
+                pixmap.getWidth(),
+                pixmap.getHeight()
+        );
     }
 
     public void render(float delta) {
@@ -32,6 +88,7 @@ public class GameScreen implements Screen, InputProcessor {
         Graphics.clear();
 
         Graphics.begin();
+        Graphics.draw(levelTexture, 0, 0);
         Graphics.draw(
                 rocketTexture,
                 rocket.getX(),
