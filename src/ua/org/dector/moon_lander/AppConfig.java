@@ -28,7 +28,7 @@ public interface AppConfig {
 
     public static final int FIRE_PADDING  = 8;
     public static final int FIRE_WIDTH    = 16;
-    public static final int FIRE_HEIGHT   = 16;
+    public static final int FIRE_HEIGHT   = 24;
 
     public static final int LANDING_PLATFORM_BORDER = 3;
     public static final int LANDING_PLATFORM_HEIGHT = 6;
