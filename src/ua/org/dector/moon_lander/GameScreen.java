@@ -13,6 +13,7 @@ import com.badlogic.gdx.Input.Keys;
 import java.awt.*;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
+import static ua.org.dector.moon_lander.Graphics.FontSize;
 
 /**
  * @author dector (dector9@gmail.com)
@@ -231,6 +232,20 @@ public class GameScreen implements Screen, InputProcessor {
             );
         }
 
+        // Draw centered text
+
+        if (collided) {
+            String text;
+
+            if (landed) {
+                text = "Landed! =)";
+            } else {
+                text = "Crashed! =(";
+            }
+
+            Graphics.drawCentered(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, FontSize.BIG);
+        }
+
         Graphics.draw(
                 10, SCREEN_HEIGHT - 10, 15,
                 String.format("X: %d", (int)rocket.getX()),
@@ -302,14 +317,6 @@ public class GameScreen implements Screen, InputProcessor {
                     && rocket.getVx() <= LANDING_VX_BOUND
                     && rocket.getVy() <= LANDING_VY_BOUND
                     && Math.abs(rocket.getDirectionAngle() - 90) <= LANDING_DIFF_ANGLE;
-        }
-
-        if (collided) {
-            if (landed) {
-                System.out.println("Landed!");
-            } else {
-                System.out.println("Crashed!");
-            }
         }
     }
 

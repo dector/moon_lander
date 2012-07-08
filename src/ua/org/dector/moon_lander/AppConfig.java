@@ -13,7 +13,13 @@ public interface AppConfig {
     public static final String DATA_DIR     = "data/";
     public static final String IMG_DIR      = "img/";
     public static final String LEVELS_DIR   = "levels/";
-    public static final String GRAPHICS_FILE= "graphics.png";
+    public static final String FONTS_DIR    = "fonts/";
+
+    public static final String SMALL_FONT_FILE  = "Sans-Light24.fnt";
+    public static final String SMALL_FONT_IMG   = "Sans-Light24.png";
+    public static final String BIG_FONT_FILE    = "Sans-Light48.fnt";
+    public static final String BIG_FONT_IMG     = "Sans-Light48.png";
+    public static final String GRAPHICS_FILE    = "graphics.png";
 
     // Graphics
 

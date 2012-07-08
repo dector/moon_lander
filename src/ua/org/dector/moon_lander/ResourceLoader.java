@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
@@ -37,5 +38,12 @@ public class ResourceLoader {
                 pixmap.getWidth(),
                 pixmap.getHeight()
         );
+    }
+
+
+    public static BitmapFont loadFont(String font, String fontImg) {
+        FileHandle fontFile = Gdx.files.internal(DATA_DIR + FONTS_DIR + font);
+        FileHandle imageFile = Gdx.files.internal(DATA_DIR + FONTS_DIR + fontImg);
+        return new BitmapFont(fontFile, imageFile, false);
     }
 }

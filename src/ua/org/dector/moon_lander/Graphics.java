@@ -7,12 +7,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import static ua.org.dector.moon_lander.AppConfig.*;
+
 /**
  * @author dector (dector9@gmail.com)
  */
 public class Graphics {
     private static SpriteBatch sb = new SpriteBatch();
-    private static BitmapFont font = new BitmapFont();
+    private static BitmapFont defaultFont = new BitmapFont();
+    private static BitmapFont smallFont =
+            ResourceLoader.loadFont(SMALL_FONT_FILE, SMALL_FONT_IMG);
+    private static BitmapFont bigFont =
+            ResourceLoader.loadFont(BIG_FONT_FILE, BIG_FONT_IMG);
 
     private static GL10 gl10 = Gdx.graphics.getGL10();
 
@@ -52,7 +58,40 @@ public class Graphics {
     }
 
     public static void draw(String string, int x, int y) {
-        font.draw(sb, string, x, y);
+        draw(string, x, y, FontSize.DEFAULT);
+    }
+
+    public static void drawCentered(String string, int x, int y, FontSize size) {
+        BitmapFont font = getFont(size);
+        BitmapFont.TextBounds bounds = font.getBounds(string);
+
+        x -= bounds.width / 2;
+        y += bounds.height / 2;
+
+        draw(string, x, y, size);
+    }
+
+    private static BitmapFont getFont(FontSize size) {
+        BitmapFont font;
+
+        switch (size) {
+            case SMALL:
+                font = smallFont;
+                break;
+            case BIG:
+                font = bigFont;
+                break;
+            case DEFAULT:
+            default:
+                font = defaultFont;
+                break;
+        }
+
+        return font;
+    }
+
+    public static void draw(String string, int x, int y, FontSize size) {
+        getFont(size).draw(sb, string, x, y);
     }
 
     public static void draw(int x, int y, int stepY, String... strings) {
@@ -64,5 +103,9 @@ public class Graphics {
 
     public static void clear() {
         gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
+    }
+
+    public static enum FontSize {
+        DEFAULT, SMALL, BIG
     }
 }
