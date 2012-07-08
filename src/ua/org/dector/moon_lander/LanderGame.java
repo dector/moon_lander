@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
  */
 public class LanderGame extends Game {
     private GameScreen gameScreen;
+    private SplashScreen splashScreen;
 
     private Rocket rocket;
     private Level[] levels;
@@ -15,6 +16,15 @@ public class LanderGame extends Game {
     public void create() {
         rocket = new Rocket();
         levels = ResourceLoader.loadLevelSet("levelset.json");
+
+        splashScreen = new SplashScreen(this);
+        setScreen(splashScreen);
+        Gdx.input.setInputProcessor(splashScreen);
+    }
+
+    public void play() {
+        splashScreen.dispose();
+        splashScreen = null;
 
         gameScreen = new GameScreen(rocket, levels);
 

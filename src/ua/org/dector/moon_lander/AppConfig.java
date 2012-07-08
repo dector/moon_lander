@@ -23,14 +23,22 @@ public interface AppConfig {
 
     public static final String SMALL_FONT_FILE  = "Sans-Light14.fnt";
     public static final String SMALL_FONT_IMG   = "Sans-Light14.png";
-    public static final String BIG_FONT_FILE    = "Sans-Light48.fnt";
-    public static final String BIG_FONT_IMG     = "Sans-Light48.png";
+    public static final String BIG_FONT_FILE    = "Sans-Light24.fnt";
+    public static final String BIG_FONT_IMG     = "Sans-Light24.png";
     public static final String GRAPHICS_FILE    = "graphics.png";
+    public static final String SPLASH_FILE      = "splash.png";
 
     public static final float MUSIC_VOLUME      = 1;
     public static final float SFX_VOLUME        = .5f;
 
     // Graphics
+
+    public static final int GAMINATOR_LOGO_WIDTH    = 95;
+    public static final int GAMINATOR_LOGO_HEIGHT   = 199;
+
+    public static final int DEDICATION_WIDTH    = 148;
+    public static final int DEDICATION_HEIGHT   = 256;
+
 
     public static final int ROCKET_TEXTURE_WIDTH    = 8;
     public static final int ROCKET_TEXTURE_HEIGHT   = 8;
