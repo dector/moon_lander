@@ -1,6 +1,7 @@
 package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +18,10 @@ public class Graphics {
 
     public static void init() {
         gl10.glClearColor(0, 0, 0, 1);
+    }
+
+    public static void clearColor(Color c) {
+        gl10.glClearColor(c.r, c.g, c.b, c.a);
     }
 
     public static void begin() {

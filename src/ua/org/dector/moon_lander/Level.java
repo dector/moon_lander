@@ -2,6 +2,7 @@ package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Json;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
@@ -17,6 +18,7 @@ public class Level {
     private int[] land;
     private int[] rocket;
     private int[] flag;
+    private Background background;
 
     public int getWidth() {
         return width;
@@ -35,7 +37,7 @@ public class Level {
     }
 
     public static Level fromFile(String fileName) {
-        FileHandle file = Gdx.files.internal(DATA_DIR + LEVELS_DIR + fileName);
+        FileHandle file = Gdx.files.internal(fileName);
         return new Json().fromJson(Level.class, file);
     }
 
@@ -77,5 +79,23 @@ public class Level {
 
     public int getFlagY() {
         return flag[1];
+    }
+
+    public Color getBackgroundColor() {
+        return new Color(
+                background.color[0],
+                background.color[1],
+                background.color[2],
+                background.color[3]
+        );
+    }
+
+    public String getBackgroundImage() {
+        return background.image;
+    }
+
+    public static class Background {
+        float[] color;
+        String image;
     }
 }

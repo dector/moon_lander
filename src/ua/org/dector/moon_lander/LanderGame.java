@@ -14,10 +14,9 @@ public class LanderGame extends Game {
 
     public void create() {
         rocket = new Rocket();
-        level = Level.fromFile("level0.json");
+        level = ResourceLoader.loadLevel("level0.json");
 
         gameScreen = new GameScreen(rocket, level);
-        Graphics.init();
 
         setScreen(gameScreen);
         Gdx.input.setInputProcessor(gameScreen);
