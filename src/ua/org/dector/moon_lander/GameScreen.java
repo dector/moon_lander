@@ -35,6 +35,8 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean collided;
     private boolean landed;
 
+    private boolean debug = true;
+
     public GameScreen(Rocket rocket, Level[] levels) {
         this.rocket = rocket;
         this.levels = levels;
@@ -371,9 +373,14 @@ public class GameScreen implements Screen, InputProcessor {
                 if (collided) {
                     if (landed) {
                         playLevel(++levelIndex);
-
                     }
 
+                    reset();
+                }
+                break;
+            case Keys.N:
+                if (debug) {
+                    playLevel(++levelIndex);
                     reset();
                 }
                 break;
