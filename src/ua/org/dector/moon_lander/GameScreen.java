@@ -164,7 +164,9 @@ public class GameScreen implements Screen, InputProcessor {
 
                 if (level.getHeight() < rocket.getY()) {
                     pointerY = SCREEN_HEIGHT - POINTER_HEIGHT;
-                    pointerAngle = 135;
+                    pointerAngle = (float)Math.toDegrees(Math.atan(
+                            (rocket.getY() - level.getHeight()) / rocket.getX()
+                    )) - 180;
                 } else {
                     pointerY = (int)rocket.getY();
                     pointerAngle = 180;
@@ -174,7 +176,9 @@ public class GameScreen implements Screen, InputProcessor {
 
                 if (level.getHeight() < rocket.getY()) {
                     pointerY = SCREEN_HEIGHT - POINTER_HEIGHT;
-                    pointerAngle = 45;
+                    pointerAngle = (float)Math.toDegrees(Math.atan(
+                            (rocket.getY() - level.getHeight()) / rocket.getX()
+                    ));
                 } else {
                     pointerY = (int)rocket.getY();
                     pointerAngle = 0;
