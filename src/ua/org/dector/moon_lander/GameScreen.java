@@ -318,7 +318,7 @@ public class GameScreen implements Screen, InputProcessor {
         }
 
         Graphics.draw(
-                10, SCREEN_HEIGHT - 10, 15,
+                10, SCREEN_HEIGHT - 10, 20,
                 String.format("X: %d", (int)rocket.getX()),
                 String.format("Y: %d", (int)rocket.getY()),
                 String.format("Vx: %.2f", rocket.getVx()),

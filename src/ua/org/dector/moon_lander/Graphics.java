@@ -96,7 +96,7 @@ public class Graphics {
 
     public static void draw(int x, int y, int stepY, String... strings) {
         for (String s : strings) {
-            draw(s, x, y);
+            draw(s, x, y, FontSize.SMALL);
             y -= stepY;
         }
     }
