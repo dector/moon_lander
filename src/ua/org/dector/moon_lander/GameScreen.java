@@ -70,6 +70,18 @@ public class GameScreen implements Screen, InputProcessor {
             prevPoint[1] = currPoint[1];
         }
 
+        // Draw landing platform
+        pixmap.fillRectangle(
+                level.getLandingLeftX() + LANDING_PLATFORM_BORDER,
+                levelHeight -
+                        (level.getLandingBottomY() + LANDING_PLATFORM_HEIGHT / 2),
+                level.getLandingRightX() - level.getLandingLeftX()
+                        - 2 * LANDING_PLATFORM_BORDER,
+                LANDING_PLATFORM_HEIGHT
+        );
+
+        // Prepare texture
+
         Pixmap texturePixmap = new Pixmap(
                 Utils.toPowerOfTwo(pixmap.getWidth()),
                 Utils.toPowerOfTwo(pixmap.getHeight()),
@@ -159,21 +171,11 @@ public class GameScreen implements Screen, InputProcessor {
                     rightPoint[0],
                     rightPoint[1]
             );
-
-//            int dx = rightPoint[0] - leftPoint[0];
-//            int dy = rightPoint[1] - leftPoint[1];
-//
-//            int d1 = dy * (rocketLeftX - leftPoint[0]);
-//            int d2 = dy * (rocketRightX - leftPoint[0]);
-//            int d3 = dx * (rocketTopY - leftPoint[1]);
-//            int d4 = dx * (rocketBottomY - leftPoint[1]);
-//
-//            collided = ((d3 >= d1) ^ (d4 > d2)) || ((d4 >= d1) ^ (d3 > d2));
         }
 
         if (collided) {
-            landed = level.getLendingLeftX() <= rocketLeftX
-                    && rocketLeftX <= level.getLendingRightX()
+            landed = level.getLandingLeftX() <= rocketLeftX
+                    && rocketLeftX <= level.getLandingRightX()
                     && rocket.getVx() <= LANDING_VX_BOUND
                     && rocket.getVy() <= LANDING_VY_BOUND
                     && Math.abs(rocket.getDirectionAngle() - 90) <= LANDING_DIFF_ANGLE;

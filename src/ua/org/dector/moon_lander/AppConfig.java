@@ -8,16 +8,25 @@ public interface AppConfig {
     public static final int SCREEN_WIDTH    = 800;
     public static final int SCREEN_HEIGHT   = 600;
 
+    // Files
+
     public static final String DATA_DIR     = "data/";
     public static final String IMG_DIR      = "img/";
     public static final String LEVELS_DIR   = "levels/";
     public static final String GRAPHICS_FILE= "graphics.png";
+
+    // Graphics
 
     public static final int ROCKET_TEXTURE_WIDTH    = 8;
     public static final int ROCKET_TEXTURE_HEIGHT   = 8;
 
     public static final int ROCKET_WIDTH    = 32;
     public static final int ROCKET_HEIGHT   = 32;
+
+    public static final int LANDING_PLATFORM_BORDER = 3;
+    public static final int LANDING_PLATFORM_HEIGHT = 6;
+
+    // Physics
 
     public static final int ROCKET_AY       = 3;
     public static final int ROCKET_ROTATING = 90;

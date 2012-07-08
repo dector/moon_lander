@@ -42,19 +42,19 @@ public class Level {
         return map[i];
     }
 
-    public int getLendingLeftX() {
+    public int getLandingLeftX() {
         return land[0];
     }
 
-    public int getLendingRightX() {
+    public int getLandingRightX() {
         return land[2];
     }
 
-    public int getLendingBottomY() {
+    public int getLandingBottomY() {
         return land[1];
     }
 
-    public int getLendingTopY() {
+    public int getLandingTopY() {
         return land[3];
     }
 }
