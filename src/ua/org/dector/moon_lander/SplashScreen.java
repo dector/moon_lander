@@ -4,15 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 
@@ -25,12 +28,16 @@ public class SplashScreen implements Screen, InputProcessor {
     private TextureRegion gaminatorLogo;
     private TextureRegion dedication;
 
+    private Sound fadeInSound;
+
     private Stage stage;
 
     private boolean completed;
 
     public SplashScreen(LanderGame landerGame) {
         this.landerGame = landerGame;
+
+        fadeInSound = ResourceLoader.loadSound(FADEIN_FILE);
 
         Texture splashTex = ResourceLoader.loadTexture(SPLASH_FILE);
         gaminatorLogo = new TextureRegion(
@@ -56,7 +63,7 @@ public class SplashScreen implements Screen, InputProcessor {
                 Delay.$(1f)//,
 //                FadeOut.$(.5f)
         );
-        Image gaminatorLogoImage = new Image(gaminatorLogo);
+        final Image gaminatorLogoImage = new Image(gaminatorLogo);
         gaminatorLogoImage.color.a = 0;
 
         final Image dedicationImage = new Image(dedication);
@@ -80,11 +87,23 @@ public class SplashScreen implements Screen, InputProcessor {
         gaminatorLogoAct.setCompletionListener(new OnActionCompleted() {
             public void completed(Action action) {
                 stage.addActor(dedicationImage);
+                fadeInSound.play();
             }
         });
         gaminatorLogoImage.action(gaminatorLogoAct);
 
-        stage.addActor(gaminatorLogoImage);
+        // Very dirty hack
+
+        Label emptyActor = new Label("", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        Action startedAct = Sequence.$(Delay.$(0.05f), Remove.$());
+        startedAct.setCompletionListener(new OnActionCompleted() {
+            public void completed(Action action) {
+                stage.addActor(gaminatorLogoImage);
+                fadeInSound.play();
+            }
+        });
+        emptyActor.action(startedAct);
+        stage.addActor(emptyActor);
     }
 
     public boolean keyDown(int keycode) {

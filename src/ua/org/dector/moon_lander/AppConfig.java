@@ -19,12 +19,13 @@ public interface AppConfig {
     public static final String BURN_FILE        = "burn.wav";
     public static final String CRASH_FILE       = "crash.wav";
     public static final String LANDING_FILE     = "landing.wav";
+    public static final String FADEIN_FILE      = "fadein.wav";
     public static final String MUSIC_FILE       = "Subterrestrial_-_Neighborhood_Arcade.ogg";
 
     public static final String SMALL_FONT_FILE  = "Sans-Light14.fnt";
     public static final String SMALL_FONT_IMG   = "Sans-Light14.png";
-    public static final String BIG_FONT_FILE    = "Sans-Light24.fnt";
-    public static final String BIG_FONT_IMG     = "Sans-Light24.png";
+    public static final String BIG_FONT_FILE    = "Sans-Light48.fnt";
+    public static final String BIG_FONT_IMG     = "Sans-Light48.png";
     public static final String GRAPHICS_FILE    = "graphics.png";
     public static final String SPLASH_FILE      = "splash.png";
 
