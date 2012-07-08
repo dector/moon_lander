@@ -93,4 +93,8 @@ public class Rocket {
     public void rotateRight(boolean rotateRight) {
         this.rotateRight = rotateRight;
     }
+
+    public boolean isMoveUp() {
+        return moveUp;
+    }
 }

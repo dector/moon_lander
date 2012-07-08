@@ -33,7 +33,12 @@ public class Graphics {
 
     public static void draw(TextureRegion tex, float x, float y,
                             int width, int height, float rotation) {
-        sb.draw(tex, x, y, width / 2, height / 2, width, height, 1, 1, rotation - 90);
+        draw(tex, x, y, width / 2, height / 2, width, height, rotation);
+    }
+
+    public static void draw(TextureRegion tex, float x, float y, int originX, int originY,
+                            int width, int height, float rotation) {
+        sb.draw(tex, x, y, originX, originY, width, height, 1, 1, rotation - 90);
     }
 
     public static void draw(String string, int x, int y) {

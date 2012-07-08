@@ -20,8 +20,15 @@ public interface AppConfig {
     public static final int ROCKET_TEXTURE_WIDTH    = 8;
     public static final int ROCKET_TEXTURE_HEIGHT   = 8;
 
+    public static final int FIRE_TEXTURE_WIDTH      = 8;
+    public static final int FIRE_TEXTURE_HEIGHT     = 8;
+
     public static final int ROCKET_WIDTH    = 32;
     public static final int ROCKET_HEIGHT   = 32;
+
+    public static final int FIRE_PADDING  = 8;
+    public static final int FIRE_WIDTH    = 16;
+    public static final int FIRE_HEIGHT   = 16;
 
     public static final int LANDING_PLATFORM_BORDER = 3;
     public static final int LANDING_PLATFORM_HEIGHT = 6;
