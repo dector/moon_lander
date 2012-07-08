@@ -23,6 +23,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     private TextureRegion rocketTexture;
     private TextureRegion fireTexture;
+    private TextureRegion pointerTexture;
+    
     private TextureRegion levelTexture;
 
     private boolean collided;
@@ -45,6 +47,14 @@ public class GameScreen implements Screen, InputProcessor {
                 FIRE_TEXTURE_WIDTH,
                 FIRE_TEXTURE_HEIGHT
         );
+        pointerTexture = new TextureRegion(
+                graphicsTexture,
+                ROCKET_TEXTURE_WIDTH + FIRE_TEXTURE_WIDTH,       // x
+                0,                          // y
+                POINTER_TEXTURE_WIDTH,
+                POINTER_TEXTURE_HEIGHT
+        );
+        
 
         buildLevelTexture();
     }
@@ -129,7 +139,7 @@ public class GameScreen implements Screen, InputProcessor {
                 ROCKET_HEIGHT,
                 rocket.getDirectionAngle()
         );
-        if (rocket.isMoveUp()) {
+        if (rocket.isMoveUp() && ! collided) {
             Graphics.draw(
                     fireTexture,
                     rocket.getX() + FIRE_PADDING,
@@ -139,6 +149,49 @@ public class GameScreen implements Screen, InputProcessor {
                     FIRE_WIDTH,
                     FIRE_HEIGHT,
                     rocket.getDirectionAngle()
+            );
+        }
+        
+        if (rocket.getX() < 0
+                || level.getWidth() < rocket.getX()
+                || level.getHeight() < rocket.getY()) {
+            int pointerX = 0;
+            int pointerY = 0;
+            float pointerAngle = 0;
+            
+            if (rocket.getX() < 0) {
+                pointerX = 0;
+
+                if (level.getHeight() < rocket.getY()) {
+                    pointerY = SCREEN_HEIGHT - POINTER_HEIGHT;
+                    pointerAngle = 135;
+                } else {
+                    pointerY = (int)rocket.getY();
+                    pointerAngle = 180;
+                }
+            } else if (level.getWidth() < rocket.getX()) {
+                pointerX = SCREEN_WIDTH - POINTER_WIDTH;
+
+                if (level.getHeight() < rocket.getY()) {
+                    pointerY = SCREEN_HEIGHT - POINTER_HEIGHT;
+                    pointerAngle = 45;
+                } else {
+                    pointerY = (int)rocket.getY();
+                    pointerAngle = 0;
+                }
+            } else if (level.getHeight() < rocket.getY()) {
+                pointerX = (int)rocket.getX();
+                pointerY = SCREEN_HEIGHT - POINTER_HEIGHT;
+                pointerAngle = 90;
+            }
+
+            Graphics.draw(
+                    pointerTexture,
+                    pointerX,
+                    pointerY,
+                    POINTER_WIDTH,
+                    POINTER_HEIGHT,
+                    pointerAngle
             );
         }
 
@@ -156,48 +209,57 @@ public class GameScreen implements Screen, InputProcessor {
     private void updateCollisions() {
         int rocketLeftX = (int)rocket.getX();
         int rocketRightX = (int)rocket.getX() + ROCKET_WIDTH;
+        int rocketBottomY = (int)rocket.getY();
 
-        int[] leftPoint = new int[2];
-        int[] rightPoint = new int[2];
+        if (rocketRightX < 0) {
+            if (rocketBottomY <= level.get(1))
+                collided = true;
+        } else if (level.getWidth() < rocketLeftX) {
+            if (rocketBottomY <= level.get(level.getMapLength() - 1))
+                collided = true;
+        } else {
+            int[] leftPoint = new int[2];
+            int[] rightPoint = new int[2];
 
-        int pointsCount = level.getPointsCount();
+            int pointsCount = level.getPointsCount();
 
-        int leftBound = 0;
-        int rightBound = pointsCount - 1;
+            int leftBound = 0;
+            int rightBound = pointsCount - 1;
 
-        // Find left and right point
+            // Find left and right point
 
-        while (leftBound + 1 < pointsCount
-                && level.get(2 * (leftBound + 1)) <= rocketLeftX) {
-            leftBound++;
+            while (leftBound + 1 < pointsCount
+                    && level.get(2 * (leftBound + 1)) <= rocketLeftX) {
+                leftBound++;
+            }
+
+            while (0 <= rightBound - 1
+                    && rocketRightX <= level.get(2 * (rightBound - 1))) {
+                rightBound--;
+            }
+
+            for (int i = leftBound; i < rightBound && ! collided; i++) {
+                leftPoint[0] = level.get(2 * i);
+                leftPoint[1] = level.get(2 * i + 1);
+
+                rightPoint[0] = level.get(2 * (i + 1));
+                rightPoint[1] = level.get(2 * (i + 1) + 1);
+
+                // Check intersection
+                collided = new Rectangle(
+                        (int)rocket.getX(),
+                        (int)rocket.getY(),
+                        ROCKET_WIDTH,
+                        ROCKET_HEIGHT
+                ).intersectsLine(
+                        leftPoint[0],
+                        leftPoint[1],
+                        rightPoint[0],
+                        rightPoint[1]
+                );
+            }
         }
-
-        while (0 <= rightBound - 1
-                && rocketRightX <= level.get(2 * (rightBound - 1))) {
-            rightBound--;
-        }
-
-        for (int i = leftBound; i < rightBound && ! collided; i++) {
-            leftPoint[0] = level.get(2 * i);
-            leftPoint[1] = level.get(2 * i + 1);
-
-            rightPoint[0] = level.get(2 * (i + 1));
-            rightPoint[1] = level.get(2 * (i + 1) + 1);
-
-            // Check intersection
-            collided = new Rectangle(
-                    (int)rocket.getX(),
-                    (int)rocket.getY(),
-                    ROCKET_WIDTH,
-                    ROCKET_HEIGHT
-            ).intersectsLine(
-                    leftPoint[0],
-                    leftPoint[1],
-                    rightPoint[0],
-                    rightPoint[1]
-            );
-        }
-
+        
         if (collided) {
             landed = level.getLandingLeftX() <= rocketLeftX
                     && rocketLeftX <= level.getLandingRightX()
