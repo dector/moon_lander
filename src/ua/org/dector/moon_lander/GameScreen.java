@@ -20,7 +20,9 @@ import static ua.org.dector.moon_lander.Graphics.FontSize;
  */
 public class GameScreen implements Screen, InputProcessor {
     private Rocket rocket;
+    private Level[] levels;
     private Level level;
+    private int levelIndex;
 
     private TextureRegion rocketTexture;
     private TextureRegion fireTexture;
@@ -33,9 +35,11 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean collided;
     private boolean landed;
 
-    public GameScreen(Rocket rocket, Level level) {
+    public GameScreen(Rocket rocket, Level[] levels) {
         this.rocket = rocket;
-        this.level = level;
+        this.levels = levels;
+
+        playLevel(0);
 
         reset();
 
@@ -72,14 +76,22 @@ public class GameScreen implements Screen, InputProcessor {
                 FLAG_TEXTURE_WIDTH,
                 FLAG_TEXTURE_HEIGHT
         );
-        
-        buildLevelTexture();
+    }
+
+    private void playLevel(int levelIndex) {
+        if (levelIndex < levels.length) {
+            this.levelIndex = levelIndex;
+            level = levels[levelIndex];
+            buildLevelTexture();
+        }
     }
 
     private void reset() {
         rocket.reset(level.getRocketX(), level.getRocketY(), level.getRocketAngle());
 
-        Graphics.clearColor(level.getBackgroundColor());
+        if (level.getBackgroundColor() != null) {
+            Graphics.clearColor(level.getBackgroundColor());
+        }
 
         collided = false;
         landed = false;
@@ -354,6 +366,16 @@ public class GameScreen implements Screen, InputProcessor {
                 break;
             case Keys.R:
                 reset();
+                break;
+            case Keys.SPACE:
+                if (collided) {
+                    if (landed) {
+                        playLevel(++levelIndex);
+
+                    }
+
+                    reset();
+                }
                 break;
         }
 

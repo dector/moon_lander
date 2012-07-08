@@ -82,12 +82,16 @@ public class Level {
     }
 
     public Color getBackgroundColor() {
-        return new Color(
-                background.color[0],
-                background.color[1],
-                background.color[2],
-                background.color[3]
-        );
+        if (background != null) {
+            return new Color(
+                    background.color[0],
+                    background.color[1],
+                    background.color[2],
+                    background.color[3]
+            );
+        } else {
+            return null;
+        }
     }
 
     public String getBackgroundImage() {

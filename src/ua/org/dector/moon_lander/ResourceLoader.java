@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Json;
+
+import java.lang.reflect.Array;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 
@@ -45,5 +48,18 @@ public class ResourceLoader {
         FileHandle fontFile = Gdx.files.internal(DATA_DIR + FONTS_DIR + font);
         FileHandle imageFile = Gdx.files.internal(DATA_DIR + FONTS_DIR + fontImg);
         return new BitmapFont(fontFile, imageFile, false);
+    }
+
+    public static Level[] loadLevelSet(String levelSet) {
+        FileHandle file = Gdx.files.internal(DATA_DIR + LEVELS_DIR + levelSet);
+        String[] levelNames = new Json().fromJson(String[].class, file);
+
+        Level[] levels = new Level[levelNames.length];
+
+        for (int i = 0; i < levelNames.length; i++) {
+            levels[i] = loadLevel(levelNames[i]);
+        }
+
+        return levels;
     }
 }
