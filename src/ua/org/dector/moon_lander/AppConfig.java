@@ -17,4 +17,9 @@ public interface AppConfig {
 
     public static final int ROCKET_WIDTH    = 32;
     public static final int ROCKET_HEIGHT   = 32;
+
+    public static final int ROCKET_VX       = 10;
+    public static final int ROCKET_AY       = 30;
+    public static final int GRAVITY         = 10;
+    public static final float FRICTION      = 0.8f;
 }
