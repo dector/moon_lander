@@ -12,7 +12,10 @@ import static ua.org.dector.moon_lander.AppConfig.*;
 public class Level {
     private int width;
     private int height;
+
     private int[] map;
+
+    private int[] land;
 
     public int getWidth() {
         return width;
@@ -37,5 +40,21 @@ public class Level {
 
     public int get(int i) {
         return map[i];
+    }
+
+    public int getLendingLeftX() {
+        return land[0];
+    }
+
+    public int getLendingRightX() {
+        return land[2];
+    }
+
+    public int getLendingBottomY() {
+        return land[1];
+    }
+
+    public int getLendingTopY() {
+        return land[3];
     }
 }

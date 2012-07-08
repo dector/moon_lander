@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import com.badlogic.gdx.Input.Keys;
+
+import java.awt.*;
+
 import static ua.org.dector.moon_lander.AppConfig.*;
 
 /**
@@ -20,6 +23,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     private TextureRegion rocketTexture;
     private TextureRegion levelTexture;
+    private boolean collided;
+    private boolean landed;
 
     public GameScreen(Rocket rocket, Level level) {
         this.rocket = rocket;
@@ -38,8 +43,8 @@ public class GameScreen implements Screen, InputProcessor {
 
         Pixmap pixmap = new Pixmap(levelWidth, levelHeight, Pixmap.Format.RGBA8888);
 
-        pixmap.setColor(Color.BLACK);
-        pixmap.fill();
+//        pixmap.setColor(Color.BLACK);
+//        pixmap.fill();
         pixmap.setColor(Color.WHITE);
 
         int i = 0;
@@ -83,7 +88,10 @@ public class GameScreen implements Screen, InputProcessor {
     public void render(float delta) {
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)) Gdx.app.exit();
 
-        rocket.updateRocket(delta);
+        if (! collided) {
+            updateCollisions();
+            rocket.updateRocket(delta);
+        }
 
         Graphics.clear();
 
@@ -106,6 +114,78 @@ public class GameScreen implements Screen, InputProcessor {
                 String.format("Angle: %.1f", rocket.getDirectionAngle())
         );
         Graphics.end();
+    }
+
+    private void updateCollisions() {
+        int rocketLeftX = (int)rocket.getX();
+        int rocketRightX = (int)rocket.getX() + ROCKET_WIDTH;
+
+        int[] leftPoint = new int[2];
+        int[] rightPoint = new int[2];
+
+        int pointsCount = level.getPointsCount();
+
+        int leftBound = 0;
+        int rightBound = pointsCount - 1;
+
+        // Find left and right point
+
+        while (leftBound + 1 < pointsCount
+                && level.get(2 * (leftBound + 1)) <= rocketLeftX) {
+            leftBound++;
+        }
+
+        while (0 <= rightBound - 1
+                && rocketRightX <= level.get(2 * (rightBound - 1))) {
+            rightBound--;
+        }
+
+        for (int i = leftBound; i < rightBound && ! collided; i++) {
+            leftPoint[0] = level.get(2 * i);
+            leftPoint[1] = level.get(2 * i + 1);
+
+            rightPoint[0] = level.get(2 * (i + 1));
+            rightPoint[1] = level.get(2 * (i + 1) + 1);
+
+            // Check intersection
+            collided = new Rectangle(
+                    (int)rocket.getX(),
+                    (int)rocket.getY(),
+                    ROCKET_WIDTH,
+                    ROCKET_HEIGHT
+            ).intersectsLine(
+                    leftPoint[0],
+                    leftPoint[1],
+                    rightPoint[0],
+                    rightPoint[1]
+            );
+
+//            int dx = rightPoint[0] - leftPoint[0];
+//            int dy = rightPoint[1] - leftPoint[1];
+//
+//            int d1 = dy * (rocketLeftX - leftPoint[0]);
+//            int d2 = dy * (rocketRightX - leftPoint[0]);
+//            int d3 = dx * (rocketTopY - leftPoint[1]);
+//            int d4 = dx * (rocketBottomY - leftPoint[1]);
+//
+//            collided = ((d3 >= d1) ^ (d4 > d2)) || ((d4 >= d1) ^ (d3 > d2));
+        }
+
+        if (collided) {
+            landed = level.getLendingLeftX() <= rocketLeftX
+                    && rocketLeftX <= level.getLendingRightX()
+                    && rocket.getVx() <= LANDING_VX_BOUND
+                    && rocket.getVy() <= LANDING_VY_BOUND
+                    && Math.abs(rocket.getDirectionAngle() - 90) <= LANDING_DIFF_ANGLE;
+        }
+
+        if (collided) {
+            if (landed) {
+                System.out.println("Landed!");
+            } else {
+                System.out.println("Crashed!");
+            }
+        }
     }
 
     public void resize(int width, int height) {

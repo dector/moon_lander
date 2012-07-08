@@ -22,5 +22,9 @@ public interface AppConfig {
     public static final int ROCKET_AY       = 3;
     public static final int ROCKET_ROTATING = 90;
     public static final int GRAVITY         = 1;
-    public static final float FRICTION      = 0.7f;
+    public static final float FRICTION      = .7f;
+
+    public static final float LANDING_VX_BOUND  = .5f;
+    public static final float LANDING_VY_BOUND  = .5f;
+    public static final int LANDING_DIFF_ANGLE  = 5;
 }
