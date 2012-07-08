@@ -36,9 +36,7 @@ public class GameScreen implements Screen, InputProcessor {
         this.rocket = rocket;
         this.level = level;
 
-        rocket.reset(level.getRocketX(), level.getRocketY(), level.getRocketAngle());
-
-        Graphics.clearColor(level.getBackgroundColor());
+        reset();
 
         String backgroundImg = level.getBackgroundImage();
         if (backgroundImg != null) {
@@ -75,6 +73,15 @@ public class GameScreen implements Screen, InputProcessor {
         );
         
         buildLevelTexture();
+    }
+
+    private void reset() {
+        rocket.reset(level.getRocketX(), level.getRocketY(), level.getRocketAngle());
+
+        Graphics.clearColor(level.getBackgroundColor());
+
+        collided = false;
+        landed = false;
     }
 
     private void buildLevelTexture() {
@@ -138,8 +145,6 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     public void render(float delta) {
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) Gdx.app.exit();
-
         if (! collided) {
             updateCollisions();
             rocket.updateRocket(delta);
@@ -336,6 +341,12 @@ public class GameScreen implements Screen, InputProcessor {
                 break;
             case Keys.RIGHT:
                 rocket.rotateRight(true);
+                break;
+            case Keys.ESCAPE:
+                Gdx.app.exit();
+                break;
+            case Keys.R:
+                reset();
                 break;
         }
 
