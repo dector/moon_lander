@@ -105,6 +105,10 @@ public class Graphics {
         gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
     }
 
+    public static SpriteBatch getSpriteBatch() {
+        return sb;
+    }
+
     public static enum FontSize {
         DEFAULT, SMALL, BIG
     }

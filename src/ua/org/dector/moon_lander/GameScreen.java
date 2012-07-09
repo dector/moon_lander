@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,6 +26,8 @@ public class GameScreen implements Screen, InputProcessor {
     private Level[] levels;
     private Level level;
     private int levelIndex;
+
+    private OrthographicCamera cam;
 
     private TextureRegion rocketTexture;
     private TextureRegion fireTexture;
@@ -50,6 +53,12 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(Rocket rocket, Level[] levels) {
         this.rocket = rocket;
         this.levels = levels;
+
+        cam = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
+        cam.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
+        cam.update();
+
+        Graphics.getSpriteBatch().setProjectionMatrix(cam.combined);
 
         playLevel(0);
 
