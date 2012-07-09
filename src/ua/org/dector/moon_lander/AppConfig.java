@@ -32,7 +32,7 @@ public interface AppConfig {
 
     public static final String FIRE_EFFECT      = "fire.p";
 
-    public static final float MUSIC_VOLUME      = 1;
+    public static final float MUSIC_VOLUME      = .3f;
     public static final float SFX_VOLUME        = .5f;
 
     // Graphics
