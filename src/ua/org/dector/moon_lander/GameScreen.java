@@ -47,8 +47,10 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean collided;
     private boolean landed;
 
+    private boolean paused;
+
     private boolean soundMuted = false;
-    private boolean debug = true;
+    private boolean debug = false;
 
     public GameScreen(Rocket rocket, Level[] levels) {
         this.rocket = rocket;
@@ -142,6 +144,8 @@ public class GameScreen implements Screen, InputProcessor {
 
         collided = false;
         landed = false;
+
+        paused = false;
     }
 
     private void buildLevelTexture() {
@@ -205,7 +209,7 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     public void render(float delta) {
-        if (! collided) {
+        if (! collided && ! paused) {
             updateCollisions();
             rocket.updateRocket(delta);
         }
@@ -310,7 +314,10 @@ public class GameScreen implements Screen, InputProcessor {
 
         // Draw centered text
 
-        if (collided) {
+        if (paused) {
+            Graphics.drawCentered("Paused", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                    FontSize.BIG);
+        } else if (collided) {
             String text;
 
             if (landed) {
@@ -466,6 +473,9 @@ public class GameScreen implements Screen, InputProcessor {
                 } else {
                     music.play();
                 }
+                break;
+            case Keys.P:
+                paused = ! paused;
                 break;
         }
 
