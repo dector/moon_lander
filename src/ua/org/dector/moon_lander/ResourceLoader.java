@@ -8,6 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Json;
 
@@ -22,6 +23,15 @@ public class ResourceLoader {
     public static Texture loadTexture(String image) {
         FileHandle file = Gdx.files.internal(DATA_DIR + IMG_DIR + image);
         return new Texture(file);
+    }
+
+    public static ParticleEffect loadParticleEffect(String effect) {
+        FileHandle particlesDir = Gdx.files.internal(DATA_DIR + PARTICLES_DIR);
+        FileHandle file = Gdx.files.internal(DATA_DIR + PARTICLES_DIR + effect);
+
+        ParticleEffect pEffect = new ParticleEffect();
+        pEffect.load(file, particlesDir);
+        return pEffect;
     }
 
     public static Sound loadSound(String sound) {

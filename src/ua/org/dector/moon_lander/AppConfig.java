@@ -15,6 +15,7 @@ public interface AppConfig {
     public static final String SOUND_DIR    = "sound/";
     public static final String LEVELS_DIR   = "levels/";
     public static final String FONTS_DIR    = "fonts/";
+    public static final String PARTICLES_DIR= "particles/";
 
     public static final String BURN_FILE        = "burn.wav";
     public static final String CRASH_FILE       = "crash.wav";
@@ -28,6 +29,8 @@ public interface AppConfig {
     public static final String BIG_FONT_IMG     = "Sans-Light48.png";
     public static final String GRAPHICS_FILE    = "graphics.png";
     public static final String SPLASH_FILE      = "splash.png";
+
+    public static final String FIRE_EFFECT      = "fire.p";
 
     public static final float MUSIC_VOLUME      = 1;
     public static final float SFX_VOLUME        = .5f;
