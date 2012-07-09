@@ -401,8 +401,8 @@ public class GameScreen implements Screen, InputProcessor {
         if (collided) {
             landed = Math.max(level.getLandingLeftX() - rocketLeftX,
                     rocketRightX - level.getLandingRightX()) < ROCKET_WIDTH / 5
-                    && rocket.getVx() <= LANDING_VX_BOUND
-                    && rocket.getVy() <= LANDING_VY_BOUND
+                    && Math.abs(rocket.getVx()) <= LANDING_VX_BOUND
+                    && Math.abs(rocket.getVy()) <= LANDING_VY_BOUND
                     && Math.abs(rocket.getDirectionAngle() - 90) <= LANDING_DIFF_ANGLE;
 
             if (landed && ! soundMuted) {
