@@ -19,13 +19,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import ua.org.dector.moon_lander.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.ResourceLoader;
+import ua.org.dector.moon_lander.managers.GameManagers;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 
 /**
  * @author dector (dector9@gmail.com)
  */
-public class SplashScreen implements Screen, InputProcessor {
+public class SplashScreen extends AbstractScreen {
     private LanderGame landerGame;
 
     private TextureRegion gaminatorLogo;
@@ -37,7 +38,9 @@ public class SplashScreen implements Screen, InputProcessor {
 
     private boolean completed;
 
-    public SplashScreen(LanderGame landerGame) {
+    public SplashScreen(GameManagers gameManagers, LanderGame landerGame) {
+        super(gameManagers);
+
         this.landerGame = landerGame;
 
         fadeInSound = ResourceLoader.loadSound(FADEIN_FILE);
@@ -119,34 +122,6 @@ public class SplashScreen implements Screen, InputProcessor {
         return true;
     }
 
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    public boolean touchDown(int x, int y, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchUp(int x, int y, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchDragged(int x, int y, int pointer) {
-        return false;
-    }
-
-    public boolean touchMoved(int x, int y) {
-        return false;
-    }
-
-    public boolean scrolled(int amount) {
-        return false;
-    }
-
     public void render(float delta) {
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
@@ -159,21 +134,6 @@ public class SplashScreen implements Screen, InputProcessor {
                     SCREEN_WIDTH / 2, 100, Graphics.FontSize.BIG);
             Graphics.end();
         }
-    }
-
-    public void resize(int width, int height) {
-    }
-
-    public void show() {
-    }
-
-    public void hide() {
-    }
-
-    public void pause() {
-    }
-
-    public void resume() {
     }
 
     public void dispose() {

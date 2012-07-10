@@ -93,7 +93,11 @@ public class Level {
     }
 
     public String getBackgroundImage() {
-        return background.image;
+        if (background != null) {
+            return background.image;
+        } else {
+            return null;
+        }
     }
 
     public static class Background {

@@ -2,8 +2,10 @@ package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import ua.org.dector.moon_lander.managers.GameManagers;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
+import ua.org.dector.moon_lander.screen.AbstractScreen;
 import ua.org.dector.moon_lander.screen.GameScreen;
 import ua.org.dector.moon_lander.screen.SplashScreen;
 
@@ -14,6 +16,10 @@ public class LanderGame extends Game {
     private GameScreen gameScreen;
     private SplashScreen splashScreen;
 
+    private AbstractScreen currentScreen;
+
+    private GameManagers gameManagers;
+
     private Rocket rocket;
     private Level[] levels;
 
@@ -21,18 +27,25 @@ public class LanderGame extends Game {
         rocket = new Rocket();
         levels = ResourceLoader.loadLevelSet("levelset.json");
 
-        splashScreen = new SplashScreen(this);
-        setScreen(splashScreen);
-        Gdx.input.setInputProcessor(splashScreen);
+        gameManagers = new GameManagers();
+
+        splashScreen = new SplashScreen(gameManagers, this);
+        switchScreen(splashScreen);
     }
 
     public void play() {
-        splashScreen.dispose();
-        splashScreen = null;
+        gameScreen = new GameScreen(gameManagers, rocket, levels);
+        switchScreen(gameScreen);
+    }
 
-        gameScreen = new GameScreen(rocket, levels);
+    public void switchScreen(AbstractScreen screen) {
+        if (screen != null) {
+            if (currentScreen != null) {
+                currentScreen.dispose();
+            }
 
-        setScreen(gameScreen);
-        Gdx.input.setInputProcessor(gameScreen);
+            setScreen(screen);
+            Gdx.input.setInputProcessor(screen);
+        }
     }
 }

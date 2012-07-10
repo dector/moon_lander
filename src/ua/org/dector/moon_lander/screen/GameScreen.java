@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import ua.org.dector.moon_lander.*;
 import ua.org.dector.moon_lander.Graphics;
+import ua.org.dector.moon_lander.managers.GameManagers;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
 import ua.org.dector.moon_lander.utils.LevelRenderer;
@@ -32,16 +33,20 @@ public class GameScreen extends AbstractScreen {
     private EntityController entityController;
     private LevelRenderer levelRenderer;
 
-    public GameScreen(Rocket rocket, Level[] levels) {
+    public GameScreen(GameManagers gameManagers, Rocket rocket, Level[] levels) {
+        super(gameManagers);
+
         this.rocket = rocket;
         this.levels = levels;
 
-        entityController = new EntityController(rocket);
+        entityController = new EntityController(gameManagers, rocket);
         levelRenderer = new LevelRenderer(rocket);
 
         playLevel(0);
 
         reset();
+
+        gameManagers.getSoundManager().playMusic();
     }
 
     private void playLevel(int levelIndex) {
@@ -71,7 +76,7 @@ public class GameScreen extends AbstractScreen {
         }
 
         levelRenderer.render(
-                entityController.isSoundMuted(),
+                gameManagers.getSoundManager().isMuted(),
                 paused,
                 collided,
                 landed,
@@ -168,7 +173,7 @@ public class GameScreen extends AbstractScreen {
                     playLevel(++levelIndex);
                     reset();
                 }                                                           break;
-            case Keys.M:    entityController.toggleSoundMuted();            break;
+            case Keys.M:    gameManagers.getSoundManager().toggleMuted();   break;
             case Keys.P:    paused = ! paused;                              break;
         }
 
