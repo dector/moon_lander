@@ -30,48 +30,60 @@ public class LevelBuilder {
         int[] currPoint = new int[2];
         int mapLength = level.getMapLength();
 
-        prevPoint[0] = level.get(i++);
-        prevPoint[1] = level.get(i++);
+        if (mapLength > 0) {
+            prevPoint[0] = level.get(i++);
+            prevPoint[1] = level.get(i++);
 
-        while (i < mapLength) {
-            currPoint[0] = level.get(i++);
-            currPoint[1] = level.get(i++);
+            while (i < mapLength) {
+                currPoint[0] = level.get(i++);
+                currPoint[1] = level.get(i++);
 
-            pixmap.drawLine(
-                    prevPoint[0],
-                    levelHeight - prevPoint[1],
-                    currPoint[0],
-                    levelHeight - currPoint[1]
-            );
+                pixmap.drawLine(
+                        prevPoint[0],
+                        levelHeight - prevPoint[1],
+                        currPoint[0],
+                        levelHeight - currPoint[1]
+                );
 
-            prevPoint[0] = currPoint[0];
-            prevPoint[1] = currPoint[1];
+                prevPoint[0] = currPoint[0];
+                prevPoint[1] = currPoint[1];
+            }
         }
 
         // Draw landing platform
-        pixmap.fillRectangle(
-                level.getLandingLeftX() + LANDING_PLATFORM_BORDER,
-                levelHeight -
-                        (level.getLandingBottomY() + LANDING_PLATFORM_HEIGHT / 2),
-                level.getLandingRightX() - level.getLandingLeftX()
-                        - 2 * LANDING_PLATFORM_BORDER,
-                LANDING_PLATFORM_HEIGHT
-        );
+        if (level.hasLanding()) {
+            pixmap.fillRectangle(
+                    level.getLandingLeftX() + LANDING_PLATFORM_BORDER,
+                    levelHeight -
+                            (level.getLandingBottomY() + LANDING_PLATFORM_HEIGHT / 2),
+                    level.getLandingRightX() - level.getLandingLeftX()
+                            - 2 * LANDING_PLATFORM_BORDER,
+                    LANDING_PLATFORM_HEIGHT
+            );
+        }
 
         // Prepare texture
 
+        int textureWidth = Utils.toPowerOfTwo(pixmap.getWidth());
+        int textureHeight = Utils.toPowerOfTwo(pixmap.getHeight());
+
         Pixmap texturePixmap = new Pixmap(
-                Utils.toPowerOfTwo(pixmap.getWidth()),
-                Utils.toPowerOfTwo(pixmap.getHeight()),
+                (textureWidth > 0) ? textureWidth : 1,
+                (textureHeight > 0) ? textureHeight : 1,
                 Pixmap.Format.RGBA8888
         );
 
         texturePixmap.drawPixmap(pixmap, 0, 0);
-
-        return new TextureRegion(
+        
+        TextureRegion texture = new TextureRegion(
                 new Texture(texturePixmap),
                 pixmap.getWidth(),
                 pixmap.getHeight()
         );
+
+        pixmap.dispose();
+        texturePixmap.dispose();
+
+        return texture;
     }
 }

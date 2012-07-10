@@ -5,6 +5,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Json;
 
+import java.util.Arrays;
+
 /**
  * @author dector (dector9@gmail.com)
  */
@@ -18,6 +20,14 @@ public class Level {
     private int[] flag;
     private Background background;
 
+    public Level(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public Level() {
+    }
+
     public int getWidth() {
         return width;
     }
@@ -27,11 +37,15 @@ public class Level {
     }
 
     public int getMapLength() {
-        return map.length;
+        if (map != null) {
+            return map.length;
+        } else {
+            return 0;
+        }
     }
 
     public int getPointsCount() {
-        return map.length / 2;
+        return getMapLength() / 2;
     }
 
     public static Level fromFile(String fileName) {
@@ -41,6 +55,10 @@ public class Level {
 
     public int get(int i) {
         return map[i];
+    }
+
+    public boolean hasLanding() {
+        return (land != null && land.length > 3);
     }
 
     public int getLandingLeftX() {
@@ -98,6 +116,36 @@ public class Level {
         } else {
             return null;
         }
+    }
+
+    public boolean hasFlag() {
+        return (flag != null && flag.length > 1);
+    }
+
+    public void addPoint(int x, int y) {
+        if (map == null) {
+            map = new int[2];
+        } else {
+            map = Arrays.copyOf(map, getMapLength() + 2);
+        }
+
+        map[getMapLength() - 2] = x;
+        map[getMapLength() - 1] = y;
+    }
+
+    public void removeLastPoint() {
+        if (map != null && getMapLength() > 0) {
+            map = Arrays.copyOf(map, getMapLength() - 2);
+        }
+    }
+
+    public void setFlagPosition(int x, int y) {
+        if (flag == null) {
+            flag = new int[2];
+        }
+
+        flag[0] = x;
+        flag[1] = y;
     }
 
     public static class Background {

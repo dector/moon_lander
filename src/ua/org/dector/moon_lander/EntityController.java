@@ -33,7 +33,7 @@ public class EntityController {
         rocket.moveUp(moveUp);
 
         if (moveUp) {
-            soundManager.playEvent(SoundEvent.BURN);
+            soundManager.playEvent(SoundEvent.BURN, true);
         } else {
             soundManager.stopEvent(SoundEvent.BURN);
         }

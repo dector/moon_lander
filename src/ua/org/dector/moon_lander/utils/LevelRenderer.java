@@ -1,5 +1,6 @@
 package ua.org.dector.moon_lander.utils;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -91,18 +92,9 @@ public class LevelRenderer {
     }
 
     public void setLevel(Level level) {
-        if (levelTexture != null) {
-            levelTexture.getTexture().dispose();
-        }
-
         this.level = level;
 
-        levelTexture = LevelBuilder.buildLevelTexture(level);
-
-        String backgroundImg = level.getBackgroundImage();
-        if (backgroundImg != null) {
-            backgroundTexture = ResourceLoader.loadLevelTexture(backgroundImg);
-        }
+        rebuild();
     }
 
     public void reset() {
@@ -118,9 +110,9 @@ public class LevelRenderer {
             Graphics.begin();
 
             drawLevel();
-            drawRocket();
+            drawRocket(rocket);
             drawHUD(soundMuted);
-            drawPointer();
+            drawPointer(level, rocket);
 
             drawNotifications(paused, collided, landed, hasMoreLevels);
 
@@ -154,7 +146,7 @@ public class LevelRenderer {
         }
     }
 
-    private void drawHUD(boolean soundMuted) {
+    public void drawHUD(boolean soundMuted) {
         // Draw sound ico
         int soundTextureIndex;
         if (soundMuted) {
@@ -173,31 +165,30 @@ public class LevelRenderer {
 
         // Draw text
 
-        Graphics.draw(
-                10, SCREEN_HEIGHT - 10, 20,
-                String.format("X: %d", (int) rocket.getX()),
-                String.format("Y: %d", (int) rocket.getY()),
-                String.format("Vx: %.2f", rocket.getVx()),
-                String.format("Vy: %.2f", rocket.getVy()),
-                String.format("Angle: %.1f", rocket.getDirectionAngle())
-        );
+        if (rocket != null) {
+            Graphics.draw(
+                    10, SCREEN_HEIGHT - 10, 20,
+                    String.format("X: %d", (int) rocket.getX()),
+                    String.format("Y: %d", (int) rocket.getY()),
+                    String.format("Vx: %.2f", rocket.getVx()),
+                    String.format("Vy: %.2f", rocket.getVy()),
+                    String.format("Angle: %.1f", rocket.getDirectionAngle())
+            );
+        }
     }
 
-    private void drawLevel() {
+    public void drawLevel() {
         if (backgroundTexture != null)
             Graphics.draw(backgroundTexture, 0, 0);
+
         Graphics.draw(levelTexture, 0, 0);
-        Graphics.draw(
-                flagTexture,
-                level.getFlagX(),
-                level.getFlagY(),
-                FLAG_WIDTH,
-                FLAG_HEIGHT
-        );
+
+        if (level.hasFlag())
+            drawFlag(level.getFlagX(), level.getFlagY());
     }
 
 
-    private void drawRocket() {
+    public void drawRocket(Rocket rocket) {
         Graphics.draw(
                 rocketTexture,
                 rocket.getX(),
@@ -220,7 +211,7 @@ public class LevelRenderer {
         }
     }
 
-    private void drawPointer() {
+    public void drawPointer(Level level, Rocket rocket) {
         if (rocket.getX() < 0
                 || level.getWidth() < rocket.getX()
                 || level.getHeight() < rocket.getY()) {
@@ -267,5 +258,30 @@ public class LevelRenderer {
                     pointerAngle
             );
         }
+    }
+
+    public void rebuild() {
+        if (levelTexture != null) {
+            levelTexture.getTexture().dispose();
+        }
+
+        levelTexture = LevelBuilder.buildLevelTexture(level);
+
+        String backgroundImg = level.getBackgroundImage();
+        if (backgroundImg != null) {
+            backgroundTexture = ResourceLoader.loadLevelTexture(backgroundImg);
+        } else {
+            backgroundTexture = null;
+        }
+    }
+
+    public void drawFlag(int x, int y) {
+        Graphics.draw(
+                flagTexture,
+                x,
+                y,
+                FLAG_WIDTH,
+                FLAG_HEIGHT
+        );
     }
 }

@@ -1,11 +1,10 @@
-package ua.org.dector.moon_lander.screen;
+package ua.org.dector.moon_lander.screens;
 
 import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import ua.org.dector.moon_lander.*;
-import ua.org.dector.moon_lander.Graphics;
 import ua.org.dector.moon_lander.managers.GameManagers;
 import ua.org.dector.moon_lander.managers.SoundManager;
 import ua.org.dector.moon_lander.models.Level;
@@ -31,18 +30,21 @@ public class GameScreen extends AbstractScreen {
 
     private boolean paused;
 
-    private boolean debug = false;
+    private boolean debug = true;
 
     private EntityController entityController;
     private LevelRenderer levelRenderer;
+    private LanderGame landerGame;
 
-    public GameScreen(GameManagers gameManagers, Rocket rocket, Level[] levels) {
+    public GameScreen(GameManagers gameManagers, Rocket rocket,
+                      Level[] levels, LanderGame landerGame) {
         super(gameManagers);
 
-        loadSounds();
-
+        this.landerGame = landerGame;
         this.rocket = rocket;
         this.levels = levels;
+
+        loadSounds();
 
         entityController = new EntityController(gameManagers, rocket);
         levelRenderer = new LevelRenderer(rocket);
@@ -192,6 +194,15 @@ public class GameScreen extends AbstractScreen {
                 }                                                           break;
             case Keys.M:    gameManagers.getSoundManager().toggleMuted();   break;
             case Keys.P:    paused = ! paused;                              break;
+            case Keys.E:
+                if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
+                    landerGame.openEditor(
+                            new Level(SCREEN_WIDTH, SCREEN_HEIGHT),
+                            new Rocket()
+                    );
+                } else {
+                    landerGame.openEditor(level, rocket);
+                }                                                           break;
         }
 
         return true;

@@ -22,11 +22,16 @@ public class Rocket {
     private boolean rotateLeft;
     private boolean rotateRight;
 
-    public Rocket() {
-        int x = (Gdx.graphics.getWidth() - ROCKET_WIDTH) / 2;
-        int y = Gdx.graphics.getHeight();
+    public Rocket(int x, int y, float directionAngle) {
+        reset(x, y, directionAngle);
+    }
 
-        reset(x, y, 90);
+    public Rocket() {
+        this(
+                (Gdx.graphics.getWidth() - ROCKET_WIDTH) / 2,
+                Gdx.graphics.getHeight(),
+                90
+        );
     }
 
     public void reset(int x, int y, float angle) {

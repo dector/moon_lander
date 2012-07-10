@@ -5,9 +5,11 @@ import com.badlogic.gdx.Gdx;
 import ua.org.dector.moon_lander.managers.GameManagers;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
-import ua.org.dector.moon_lander.screen.AbstractScreen;
-import ua.org.dector.moon_lander.screen.GameScreen;
-import ua.org.dector.moon_lander.screen.SplashScreen;
+import ua.org.dector.moon_lander.screens.AbstractScreen;
+import ua.org.dector.moon_lander.screens.EditorScreen;
+import ua.org.dector.moon_lander.screens.GameScreen;
+import ua.org.dector.moon_lander.screens.SplashScreen;
+import ua.org.dector.moon_lander.utils.LevelRenderer;
 
 /**
  * @author dector (dector9@gmail.com)
@@ -15,6 +17,7 @@ import ua.org.dector.moon_lander.screen.SplashScreen;
 public class LanderGame extends Game {
     private GameScreen gameScreen;
     private SplashScreen splashScreen;
+    private EditorScreen editorScreen;
 
     private AbstractScreen currentScreen;
 
@@ -34,7 +37,8 @@ public class LanderGame extends Game {
     }
 
     public void play() {
-        gameScreen = new GameScreen(gameManagers, rocket, levels);
+        if (gameScreen == null)
+            gameScreen = new GameScreen(gameManagers, rocket, levels, this);
         switchScreen(gameScreen);
     }
 
@@ -47,5 +51,12 @@ public class LanderGame extends Game {
             setScreen(screen);
             Gdx.input.setInputProcessor(screen);
         }
+    }
+
+    public void openEditor(Level level, Rocket rocket) {
+        if (editorScreen == null)
+            editorScreen = new EditorScreen(gameManagers, level, rocket, this);
+
+        switchScreen(editorScreen);
     }
 }
