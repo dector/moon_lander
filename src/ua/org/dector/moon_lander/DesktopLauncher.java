@@ -1,6 +1,7 @@
 package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 
@@ -9,12 +10,13 @@ import static ua.org.dector.moon_lander.AppConfig.*;
  */
 public class DesktopLauncher {
     public static void main(String[] args) {
-        new LwjglApplication(
-                new LanderGame(),
-                TITLE,
-                SCREEN_WIDTH,
-                SCREEN_HEIGHT,
-                false
-        );
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.width = SCREEN_WIDTH;
+        config.height = SCREEN_HEIGHT;
+        config.title = TITLE;
+        config.resizable = false;
+        config.useGL20 = false;
+
+        new LwjglApplication(new LanderGame(), config);
     }
 }
