@@ -90,7 +90,7 @@ public interface AppConfig {
     public static final int GRAVITY         = 1;
     public static final float FRICTION      = .7f;
 
-    public static final float LANDING_VX_BOUND  = .15f;
-    public static final float LANDING_VY_BOUND  = .2f;
+    public static final float LANDING_VX_BOUND  = .2f;
+    public static final float LANDING_VY_BOUND  = .5f;
     public static final int LANDING_DIFF_ANGLE  = 5;
 }
