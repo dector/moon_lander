@@ -19,7 +19,7 @@ public class LevelRenderer {
     private Rocket rocket;
     private Level level;
 
-    private OrthographicCamera cam;
+    private OrthographicCamera camera;
 
     private TextureRegion rocketTexture;
     private TextureRegion fireTexture;
@@ -34,11 +34,11 @@ public class LevelRenderer {
     public LevelRenderer(Rocket rocket) {
         this.rocket = rocket;
 
-        cam = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
-        cam.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
-        cam.update();
+        camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
+        camera.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
+        camera.update();
 
-        Graphics.getSpriteBatch().setProjectionMatrix(cam.combined);
+        Graphics.getSpriteBatch().setProjectionMatrix(camera.combined);
 
         Texture graphicsTexture = ResourceLoader.loadTexture(GRAPHICS_FILE);
         rocketTexture = new TextureRegion(
@@ -111,7 +111,6 @@ public class LevelRenderer {
         }
     }
 
-    // TODO make some kind of state manager
     public void render(boolean soundMuted, boolean paused, boolean collided,
                        boolean landed, boolean hasMoreLevels) {
         if (level != null) {
