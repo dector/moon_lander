@@ -35,6 +35,7 @@ public class EditorScreen extends AbstractScreen {
     private float rocketAngle;
     private int landWidth;
     private int[] lastPoint;
+    private TextureRegion lineTexture;
 
     private enum Tool {
         POINTER, DRAWER, ROCKET, FLAG, LAND
@@ -106,9 +107,13 @@ public class EditorScreen extends AbstractScreen {
                 if (drawingState == DrawingState.NOT_STARTED
                         && x == 0) {
                     Graphics.draw(pointTexture, x + 8, y + 8);
-                } else if (drawingState == DrawingState.DRAWING
-                        && x == level.getWidth() - 1) {
-                    Graphics.draw(pointTexture, x - 16, y + 8);
+                } else if (drawingState == DrawingState.DRAWING) {
+                    rebuildLineTexture(x, y);
+                    Graphics.draw(lineTexture, 0, 0);
+
+                    if (x == level.getWidth() - 1) {
+                        Graphics.draw(pointTexture, x - 16, y + 8);
+                    }
                 }
             } break;
             case FLAG: {
@@ -175,7 +180,7 @@ public class EditorScreen extends AbstractScreen {
                 levelRenderer.getRocket().setDirectionAngle(rocketAngle);
             } break;
             case LAND: {
-                level.setLand(x, y, landWidth);
+                level.setLand(x, y + LANDING_PLATFORM_HEIGHT / 2, landWidth);
                 levelRenderer.rebuild();
             } break;
         }
@@ -332,5 +337,24 @@ public class EditorScreen extends AbstractScreen {
         Texture landTex = new Texture(p);
         p.dispose();
         landTexture = new TextureRegion(landTex, landWidth, LANDING_PLATFORM_HEIGHT);
+    }
+
+    private void rebuildLineTexture(int x, int y) {
+        if (lineTexture != null)
+            lineTexture.getTexture().dispose();
+
+        Pixmap p = new Pixmap(Utils.toPowerOfTwo(level.getWidth()),
+                Utils.toPowerOfTwo(level.getHeight()),
+                Pixmap.Format.RGBA8888);
+
+        p.setColor(Color.WHITE);
+        p.drawLine(lastPoint[0],
+                level.getHeight() - lastPoint[1],
+                x,
+                level.getHeight() - y);
+
+        Texture lineTex = new Texture(p);
+        p.dispose();
+        lineTexture = new TextureRegion(lineTex, level.getWidth(), level.getHeight());
     }
 }
