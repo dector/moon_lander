@@ -42,6 +42,16 @@ public class LanderGame extends Game {
         switchScreen(gameScreen);
     }
 
+    public void play(Level level) {
+        if (gameScreen == null)
+            gameScreen = new GameScreen(gameManagers, rocket, new Level[] {level}, this);
+
+        gameScreen.setLevelSet(new Level[] {level});
+
+        gameScreen.playLevel(0);
+        switchScreen(gameScreen);
+    }
+
     public void switchScreen(AbstractScreen screen) {
         if (screen != null) {
             if (currentScreen != null) {

@@ -152,6 +152,7 @@ public class EditorScreen extends AbstractScreen {
                 level.setFlagPosition(x, y);
             } break;
             case ROCKET: {
+                level.setRocketParams(x, y, rocketAngle);
                 levelRenderer.getRocket().setPosition(x, y);
                 levelRenderer.getRocket().setDirectionAngle(rocketAngle);
             } break;
@@ -220,6 +221,9 @@ public class EditorScreen extends AbstractScreen {
                         }
                     }
                 } break;
+            case Keys.R: {
+                landerGame.play(level);
+            } break;
         }
 
         return true;

@@ -42,7 +42,7 @@ public class GameScreen extends AbstractScreen {
 
         this.landerGame = landerGame;
         this.rocket = rocket;
-        this.levels = levels;
+        setLevelSet(levels);
 
         loadSounds();
 
@@ -68,12 +68,13 @@ public class GameScreen extends AbstractScreen {
         sm.addSound(SoundEvent.LAND, landingSound);
     }
 
-    private void playLevel(int levelIndex) {
+    public void playLevel(int levelIndex) {
         if (levelIndex < levels.length) {
             this.levelIndex = levelIndex;
             level = levels[levelIndex];
 
             levelRenderer.setLevel(level);
+            reset();
         }
     }
 
@@ -225,5 +226,9 @@ public class GameScreen extends AbstractScreen {
             return true;
         } else
             return false;
+    }
+
+    public void setLevelSet(Level[] levels) {
+        this.levels = levels;
     }
 }

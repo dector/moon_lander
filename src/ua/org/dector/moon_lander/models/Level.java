@@ -158,6 +158,15 @@ public class Level {
         land[3] = AppConfig.LANDING_PLATFORM_HEIGHT;
     }
 
+    public void setRocketParams(int x, int y, float angle) {
+        if (rocket == null)
+            rocket = new int[3];
+
+        rocket[0] = x;
+        rocket[1] = y;
+        rocket[2] = (int)angle;
+    }
+
     public static class Background {
         float[] color;
         String image;
