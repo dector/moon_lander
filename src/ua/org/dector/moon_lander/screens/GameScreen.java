@@ -202,6 +202,7 @@ public class GameScreen extends AbstractScreen {
                             new Rocket()
                     );
                 } else {
+                    reset();
                     landerGame.openEditor(level, rocket);
                 }                                                           break;
         }

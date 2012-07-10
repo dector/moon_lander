@@ -54,7 +54,8 @@ public class EditorScreen extends AbstractScreen {
         this.level = level;
 
         levelRenderer = new LevelRenderer(rocket);
-        levelRenderer.setLevel(level);
+
+        editLevel(level);
 
         selectedTool = Tool.POINTER;
 
@@ -83,6 +84,13 @@ public class EditorScreen extends AbstractScreen {
         Texture pointTex = new Texture(p);
         p.dispose();
         pointTexture = new TextureRegion(pointTex);
+    }
+
+    private void editLevel(Level level) {
+        levelRenderer.setLevel(level);
+
+        levelRenderer.getRocket().setPosition(level.getRocketX(), level.getRocketY());
+        levelRenderer.getRocket().setDirectionAngle(level.getRocketAngle());
     }
 
     public void render(float delta) {
@@ -243,7 +251,18 @@ public class EditorScreen extends AbstractScreen {
                     public void canceled() {}
                 };
                 Gdx.input.getTextInput(inputer, "Input file name", "level");
+            } break;
+            case Keys.L: {
+                Input.TextInputListener inputer = new Input.TextInputListener() {
+                    public void input(String text) {
+                        level = Level.fromFile(text);
+                        editLevel(level);
+                    }
 
+                    public void canceled() {}
+                };
+                Gdx.input.getTextInput(inputer, "Input file name",
+                        SAVED_LEVELS_DIR + "level.json");
             } break;
         }
 
