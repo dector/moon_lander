@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Json;
 import ua.org.dector.moon_lander.AppConfig;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * @author dector (dector9@gmail.com)
@@ -165,6 +166,22 @@ public class Level {
         rocket[0] = x;
         rocket[1] = y;
         rocket[2] = (int)angle;
+    }
+
+    public void toFile(String filename) {
+        FileHandle levelsDir = Gdx.files.local(AppConfig.SAVED_LEVELS_DIR);
+        if (! levelsDir.exists())
+            levelsDir.mkdirs();
+
+        FileHandle file = Gdx.files.local(AppConfig.SAVED_LEVELS_DIR + filename + ".json");
+        Json json = new Json();
+
+        if (file.exists()) {
+            filename += new Date().toString();
+            file = Gdx.files.local(AppConfig.SAVED_LEVELS_DIR + filename + "-" + ".json");
+        }
+
+        file.writeString(json.toJson(this, Level.class), false);
     }
 
     public static class Background {

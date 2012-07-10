@@ -16,6 +16,7 @@ public interface AppConfig {
     public static final String LEVELS_DIR   = "levels/";
     public static final String FONTS_DIR    = "fonts/";
     public static final String PARTICLES_DIR= "particles/";
+    public static final String SAVED_LEVELS_DIR= "saved_levels/";
 
     public static final String BURN_FILE        = "burn.wav";
     public static final String CRASH_FILE       = "crash.wav";

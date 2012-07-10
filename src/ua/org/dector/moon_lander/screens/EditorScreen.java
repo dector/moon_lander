@@ -1,6 +1,7 @@
 package ua.org.dector.moon_lander.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,7 +41,7 @@ public class EditorScreen extends AbstractScreen {
     }
 
     private enum DrawingState {
-        FIRST_POINT, DRAWING, LAST_POINT
+        NOT_STARTED, DRAWING, FINISHED
     }
 
     public EditorScreen(GameManagers gameManagers,
@@ -56,7 +57,16 @@ public class EditorScreen extends AbstractScreen {
         levelRenderer.setLevel(level);
 
         selectedTool = Tool.POINTER;
-        drawingState = DrawingState.FIRST_POINT;
+
+        if (level.getMapLength() > 0) {
+            if (level.get(level.getMapLength() - 2) == level.getWidth()) {
+                drawingState = DrawingState.FINISHED;
+            } else {
+                drawingState = DrawingState.DRAWING;
+            }
+        } else {
+            drawingState = DrawingState.NOT_STARTED;
+        }
 
         rocketAngle = 90;
 
@@ -85,7 +95,7 @@ public class EditorScreen extends AbstractScreen {
         Graphics.begin();
         switch (selectedTool) {
             case DRAWER: {
-                if (drawingState == DrawingState.FIRST_POINT
+                if (drawingState == DrawingState.NOT_STARTED
                         && x == 0) {
                     Graphics.draw(pointTexture, x + 8, y + 8);
                 } else if (drawingState == DrawingState.DRAWING
@@ -110,7 +120,7 @@ public class EditorScreen extends AbstractScreen {
         if (selectedTool == Tool.DRAWER) {
             String text;
 
-            if (drawingState == DrawingState.FIRST_POINT) {
+            if (drawingState == DrawingState.NOT_STARTED) {
                 text = "Click on left border to start drawing";
             } else if (drawingState == DrawingState.DRAWING) {
                 text = "Click on right border to finish drawing";
@@ -134,7 +144,7 @@ public class EditorScreen extends AbstractScreen {
 
         switch (selectedTool) {
             case DRAWER: {
-                if (drawingState == DrawingState.FIRST_POINT) {
+                if (drawingState == DrawingState.NOT_STARTED) {
                     if (x == 0) {
                         setPoint(x, y);
 
@@ -144,7 +154,7 @@ public class EditorScreen extends AbstractScreen {
                     setPoint(x, y);
 
                     if (x == level.getWidth() - 1) {
-                        drawingState = DrawingState.LAST_POINT;
+                        drawingState = DrawingState.FINISHED;
                     }
                 }
             } break;
@@ -201,7 +211,7 @@ public class EditorScreen extends AbstractScreen {
                 } break;
             case Keys.BACKSPACE:
                 if (selectedTool == Tool.DRAWER) {
-                    if (drawingState != DrawingState.FIRST_POINT) {
+                    if (drawingState != DrawingState.NOT_STARTED) {
                         level.removeLastPoint();
                         levelRenderer.rebuild();
 
@@ -215,14 +225,25 @@ public class EditorScreen extends AbstractScreen {
                         }
                         
                         if (mapLength == 0) {
-                            drawingState = DrawingState.FIRST_POINT;
-                        } else if (drawingState == DrawingState.LAST_POINT) {
+                            drawingState = DrawingState.NOT_STARTED;
+                        } else if (drawingState == DrawingState.FINISHED) {
                             drawingState = DrawingState.DRAWING;
                         }
                     }
                 } break;
             case Keys.R: {
                 landerGame.play(level);
+            } break;
+            case Keys.S: {
+                Input.TextInputListener inputer = new Input.TextInputListener() {
+                    public void input(String text) {
+                        level.toFile(text);
+                    }
+
+                    public void canceled() {}
+                };
+                Gdx.input.getTextInput(inputer, "Input file name", "level");
+
             } break;
         }
 
