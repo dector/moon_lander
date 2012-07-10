@@ -117,4 +117,9 @@ public class Rocket {
     public void setX(float x) {
         this.x = x;
     }
+
+    public void setPosition(int x, int y) {
+        setX(x);
+        setY(y);
+    }
 }

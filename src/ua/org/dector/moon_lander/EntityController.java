@@ -1,5 +1,6 @@
 package ua.org.dector.moon_lander;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import ua.org.dector.moon_lander.models.Rocket;
 
@@ -15,12 +16,21 @@ public class EntityController {
     private Sound crashSound;
     private Sound landingSound;
 
+    private Music music;
+
     private boolean soundMuted; // TODO Add Sound Manager
 
     public EntityController(Rocket rocket) {
         this.rocket = rocket;
 
         loadSounds();
+
+        music = ResourceLoader.loadMusic(MUSIC_FILE);
+
+        music.setLooping(true);
+        music.setVolume(MUSIC_VOLUME);
+
+        music.play();
     }
 
     private void loadSounds() {
@@ -57,5 +67,23 @@ public class EntityController {
 
     public void rotateRocketRight(boolean rotateRight) {
         rocket.rotateRight(rotateRight);
+    }
+
+    public boolean isSoundMuted() {
+        return soundMuted;
+    }
+
+    public void setSoundMuted(boolean soundMuted) {
+        this.soundMuted = soundMuted;
+
+        if (soundMuted) {
+            music.pause();
+        } else {
+            music.play();
+        }
+    }
+
+    public void toggleSoundMuted() {
+        setSoundMuted(! isSoundMuted());
     }
 }
