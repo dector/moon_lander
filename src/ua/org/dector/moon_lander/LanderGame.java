@@ -2,6 +2,10 @@ package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import ua.org.dector.moon_lander.models.Level;
+import ua.org.dector.moon_lander.models.Rocket;
+import ua.org.dector.moon_lander.screen.GameScreen;
+import ua.org.dector.moon_lander.screen.SplashScreen;
 
 /**
  * @author dector (dector9@gmail.com)

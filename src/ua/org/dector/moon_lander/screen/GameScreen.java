@@ -1,19 +1,19 @@
-package ua.org.dector.moon_lander;
+package ua.org.dector.moon_lander.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import com.badlogic.gdx.Input.Keys;
+import ua.org.dector.moon_lander.*;
+import ua.org.dector.moon_lander.Graphics;
+import ua.org.dector.moon_lander.models.Level;
+import ua.org.dector.moon_lander.models.Rocket;
+import ua.org.dector.moon_lander.utils.LevelBuilder;
 
-import java.awt.*;
+import java.awt.Rectangle;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 import static ua.org.dector.moon_lander.Graphics.FontSize;
@@ -21,7 +21,7 @@ import static ua.org.dector.moon_lander.Graphics.FontSize;
 /**
  * @author dector (dector9@gmail.com)
  */
-public class GameScreen implements Screen, InputProcessor {
+public class GameScreen extends AbstractScreen {
     private Rocket rocket;
     private Level[] levels;
     private Level level;
@@ -39,9 +39,6 @@ public class GameScreen implements Screen, InputProcessor {
     private TextureRegion levelTexture;
     private TextureRegion backgroundTexture;
 
-    private Sound burnSound;
-    private Sound crashSound;
-    private Sound landingSound;
     private Music music;
 
     private boolean collided;
@@ -52,6 +49,8 @@ public class GameScreen implements Screen, InputProcessor {
     private boolean soundMuted = false;
     private boolean debug = false;
 
+    private EntityController entityController;
+
     public GameScreen(Rocket rocket, Level[] levels) {
         this.rocket = rocket;
         this.levels = levels;
@@ -59,6 +58,8 @@ public class GameScreen implements Screen, InputProcessor {
         cam = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
         cam.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
         cam.update();
+
+        entityController = new EntityController(rocket);
 
         Graphics.getSpriteBatch().setProjectionMatrix(cam.combined);
 
@@ -71,9 +72,6 @@ public class GameScreen implements Screen, InputProcessor {
             backgroundTexture = ResourceLoader.loadLevelTexture(backgroundImg);
         }
 
-        burnSound = ResourceLoader.loadSound(BURN_FILE);
-        crashSound = ResourceLoader.loadSound(CRASH_FILE);
-        landingSound = ResourceLoader.loadSound(LANDING_FILE);
         music = ResourceLoader.loadMusic(MUSIC_FILE);
 
         music.setLooping(true);
@@ -131,7 +129,12 @@ public class GameScreen implements Screen, InputProcessor {
         if (levelIndex < levels.length) {
             this.levelIndex = levelIndex;
             level = levels[levelIndex];
-            buildLevelTexture();
+
+            if (levelTexture != null) {
+                levelTexture.getTexture().dispose();
+            }
+
+            levelTexture = LevelBuilder.buildLevelTexture(level);
         }
     }
 
@@ -146,66 +149,6 @@ public class GameScreen implements Screen, InputProcessor {
         landed = false;
 
         paused = false;
-    }
-
-    private void buildLevelTexture() {
-        int levelWidth = level.getWidth();
-        int levelHeight = level.getHeight();
-
-        Pixmap pixmap = new Pixmap(levelWidth, levelHeight, Pixmap.Format.RGBA8888);
-
-//        pixmap.setColor(Color.BLACK);
-//        pixmap.fill();
-        pixmap.setColor(Color.WHITE);
-
-        int i = 0;
-        int[] prevPoint = new int[2];
-        int[] currPoint = new int[2];
-        int mapLength = level.getMapLength();
-
-        prevPoint[0] = level.get(i++);
-        prevPoint[1] = level.get(i++);
-
-        while (i < mapLength) {
-            currPoint[0] = level.get(i++);
-            currPoint[1] = level.get(i++);
-
-            pixmap.drawLine(
-                    prevPoint[0],
-                    levelHeight - prevPoint[1],
-                    currPoint[0],
-                    levelHeight - currPoint[1]
-            );
-
-            prevPoint[0] = currPoint[0];
-            prevPoint[1] = currPoint[1];
-        }
-
-        // Draw landing platform
-        pixmap.fillRectangle(
-                level.getLandingLeftX() + LANDING_PLATFORM_BORDER,
-                levelHeight -
-                        (level.getLandingBottomY() + LANDING_PLATFORM_HEIGHT / 2),
-                level.getLandingRightX() - level.getLandingLeftX()
-                        - 2 * LANDING_PLATFORM_BORDER,
-                LANDING_PLATFORM_HEIGHT
-        );
-
-        // Prepare texture
-
-        Pixmap texturePixmap = new Pixmap(
-                Utils.toPowerOfTwo(pixmap.getWidth()),
-                Utils.toPowerOfTwo(pixmap.getHeight()),
-                Pixmap.Format.RGBA8888
-        );
-
-        texturePixmap.drawPixmap(pixmap, 0, 0);
-
-        levelTexture = new TextureRegion(
-                new Texture(texturePixmap),
-                pixmap.getWidth(),
-                pixmap.getHeight()
-        );
     }
 
     public void render(float delta) {
@@ -316,7 +259,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         if (paused) {
             Graphics.drawCentered("Paused", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
-                    FontSize.BIG);
+                    Graphics.FontSize.BIG);
         } else if (collided) {
             String text;
 
@@ -330,13 +273,14 @@ public class GameScreen implements Screen, InputProcessor {
                 text = "Crashed! =(";
             }
 
-            Graphics.drawCentered(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, FontSize.BIG);
+            Graphics.drawCentered(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+                    Graphics.FontSize.BIG);
         }
 
         Graphics.draw(
                 10, SCREEN_HEIGHT - 10, 20,
-                String.format("X: %d", (int)rocket.getX()),
-                String.format("Y: %d", (int)rocket.getY()),
+                String.format("X: %d", (int) rocket.getX()),
+                String.format("Y: %d", (int) rocket.getY()),
                 String.format("Vx: %.2f", rocket.getVx()),
                 String.format("Vy: %.2f", rocket.getVy()),
                 String.format("Angle: %.1f", rocket.getDirectionAngle())
@@ -405,44 +349,24 @@ public class GameScreen implements Screen, InputProcessor {
                     && Math.abs(rocket.getVy()) <= LANDING_VY_BOUND
                     && Math.abs(rocket.getDirectionAngle() - 90) <= LANDING_DIFF_ANGLE;
 
-            if (landed && ! soundMuted) {
-                    landingSound.play(SFX_VOLUME);
-                } else {
-                    crashSound.play(SFX_VOLUME);
+            if (landed) {
+                entityController.land();
+            } else {
+                entityController.crash();
             }
         }
-    }
-
-    public void resize(int width, int height) {
-    }
-
-    public void show() {
-    }
-
-    public void hide() {
-    }
-
-    public void pause() {
-    }
-
-    public void resume() {
-    }
-
-    public void dispose() {
     }
 
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Keys.UP:
-                rocket.moveUp(true);
-                if (! soundMuted)
-                    burnSound.loop(SFX_VOLUME);
+                entityController.moveUpRocket(true);
                 break;
             case Keys.LEFT:
-                rocket.rotateLeft(true);
+                entityController.rotateRocketLeft(true);
                 break;
             case Keys.RIGHT:
-                rocket.rotateRight(true);
+                entityController.rotateRocketRight(true);
                 break;
             case Keys.ESCAPE:
                 Gdx.app.exit();
@@ -485,22 +409,17 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean keyUp(int keycode) {
         switch (keycode) {
             case Keys.UP:
-                rocket.moveUp(false);
-                burnSound.stop();
+                entityController.moveUpRocket(false);
                 break;
             case Keys.LEFT:
-                rocket.rotateLeft(false);
+                entityController.rotateRocketLeft(false);
                 break;
             case Keys.RIGHT:
-                rocket.rotateRight(false);
+                entityController.rotateRocketRight(false);
                 break;
         }
 
         return true;
-    }
-
-    public boolean keyTyped(char character) {
-        return false;
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
@@ -511,21 +430,5 @@ public class GameScreen implements Screen, InputProcessor {
             return true;
         } else
             return false;
-    }
-
-    public boolean touchUp(int x, int y, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchDragged(int x, int y, int pointer) {
-        return false;
-    }
-
-    public boolean touchMoved(int x, int y) {
-        return false;
-    }
-
-    public boolean scrolled(int amount) {
-        return false;
     }
 }

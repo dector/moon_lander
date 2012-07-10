@@ -1,4 +1,4 @@
-package ua.org.dector.moon_lander;
+package ua.org.dector.moon_lander.models;
 
 import com.badlogic.gdx.Gdx;
 

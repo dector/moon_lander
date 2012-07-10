@@ -1,4 +1,4 @@
-package ua.org.dector.moon_lander;
+package ua.org.dector.moon_lander.utils;
 
 /**
  * @author dector (dector9@gmail.com)

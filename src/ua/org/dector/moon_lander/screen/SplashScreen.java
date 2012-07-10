@@ -1,4 +1,4 @@
-package ua.org.dector.moon_lander;
+package ua.org.dector.moon_lander.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -16,6 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import ua.org.dector.moon_lander.Graphics;
+import ua.org.dector.moon_lander.LanderGame;
+import ua.org.dector.moon_lander.ResourceLoader;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 

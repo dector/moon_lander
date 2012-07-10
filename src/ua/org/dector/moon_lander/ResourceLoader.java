@@ -3,7 +3,6 @@ package ua.org.dector.moon_lander;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.backends.openal.Wav;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Json;
-
-import java.lang.reflect.Array;
+import ua.org.dector.moon_lander.models.Level;
+import ua.org.dector.moon_lander.utils.Utils;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 
