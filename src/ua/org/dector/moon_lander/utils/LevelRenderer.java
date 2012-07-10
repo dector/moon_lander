@@ -110,7 +110,7 @@ public class LevelRenderer {
             Graphics.begin();
 
             drawLevel();
-            drawRocket(rocket);
+            drawRocket((int)rocket.getX(), (int)rocket.getY(), rocket.getDirectionAngle());
             drawHUD(soundMuted);
             drawPointer(level, rocket);
 
@@ -188,25 +188,25 @@ public class LevelRenderer {
     }
 
 
-    public void drawRocket(Rocket rocket) {
+    public void drawRocket(int x, int y, float directionAnle) {
         Graphics.draw(
                 rocketTexture,
-                rocket.getX(),
-                rocket.getY(),
+                x,
+                y,
                 ROCKET_WIDTH,
                 ROCKET_HEIGHT,
-                rocket.getDirectionAngle()
+                directionAnle
         );
         if (rocket.isMoveUp()) {
             Graphics.draw(
                     fireTexture,
-                    rocket.getX() + FIRE_PADDING,
-                    rocket.getY() - FIRE_HEIGHT,
+                    x + FIRE_PADDING,
+                    y - FIRE_HEIGHT,
                     FIRE_WIDTH / 2,
                     FIRE_HEIGHT + ROCKET_HEIGHT / 2,
                     FIRE_WIDTH,
                     FIRE_HEIGHT,
-                    rocket.getDirectionAngle()
+                    directionAnle
             );
         }
     }
@@ -283,5 +283,9 @@ public class LevelRenderer {
                 FLAG_WIDTH,
                 FLAG_HEIGHT
         );
+    }
+
+    public Rocket getRocket() {
+        return rocket;
     }
 }

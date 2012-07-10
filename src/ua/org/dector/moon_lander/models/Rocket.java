@@ -127,4 +127,8 @@ public class Rocket {
         setX(x);
         setY(y);
     }
+
+    public void setDirectionAngle(float directionAngle) {
+        this.directionAngle = directionAngle;
+    }
 }

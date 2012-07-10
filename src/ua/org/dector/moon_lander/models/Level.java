@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Json;
+import ua.org.dector.moon_lander.AppConfig;
 
 import java.util.Arrays;
 
@@ -146,6 +147,15 @@ public class Level {
 
         flag[0] = x;
         flag[1] = y;
+    }
+
+    public void setLand(int x, int y, int landWidth) {
+        if (land == null)
+            land = new int[4];
+        land[0] = x;
+        land[1] = y;
+        land[2] = x + landWidth;
+        land[3] = AppConfig.LANDING_PLATFORM_HEIGHT;
     }
 
     public static class Background {
