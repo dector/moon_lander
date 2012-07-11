@@ -67,7 +67,9 @@ public class LanderGame extends Game {
         if (editorScreen == null)
             editorScreen = new EditorScreen(gameManagers, level, rocket, this);
 
-        editorScreen.editLevel(level, null);
+        if (level != editorScreen.getLevel())
+            editorScreen.editLevel(level, null);
+        
         switchScreen(editorScreen);
     }
 }

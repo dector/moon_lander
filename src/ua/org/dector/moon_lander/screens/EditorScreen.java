@@ -40,6 +40,10 @@ public class EditorScreen extends AbstractScreen {
 
     private String levelName;
 
+    public Level getLevel() {
+        return levelRenderer.getLevel();
+    }
+
     private enum Tool {
         POINTER, DRAWER, ROCKET, FLAG, LAND
     }
@@ -54,8 +58,8 @@ public class EditorScreen extends AbstractScreen {
                         LanderGame landerGame) {
         super(gameManagers);
 
-        this.landerGame = landerGame;
         this.level = level;
+        this.landerGame = landerGame;
 
         levelRenderer = new LevelRenderer(rocket);
 
@@ -91,13 +95,19 @@ public class EditorScreen extends AbstractScreen {
     }
 
     public void editLevel(Level level, String levelName) {
+        this.level = level;
         levelRenderer.setLevel(level);
 
         levelRenderer.getRocket().setPosition(level.getRocketX(), level.getRocketY());
         levelRenderer.getRocket().setDirectionAngle(level.getRocketAngle());
 
-        if (this.levelName == null)
+        if (level.getMapLength() == 0) {
+            drawingState = DrawingState.NOT_STARTED;
+        }
+
+        if (levelName != null)
             this.levelName = levelName;
+
         levelRenderer.rebuild();
     }
 
