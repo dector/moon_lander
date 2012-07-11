@@ -22,7 +22,7 @@ import static ua.org.dector.moon_lander.AppConfig.*;
  * @author dector (dector9@gmail.com)
  */
 public class EditorScreen extends AbstractScreen {
-    private Level level;
+//    private Level level;
     private LanderGame landerGame;
 
     private Tool selectedTool;
@@ -58,7 +58,7 @@ public class EditorScreen extends AbstractScreen {
                         LanderGame landerGame) {
         super(gameManagers);
 
-        this.level = level;
+//        this.level = level;
         this.landerGame = landerGame;
 
         levelRenderer = new LevelRenderer(rocket);
@@ -95,7 +95,7 @@ public class EditorScreen extends AbstractScreen {
     }
 
     public void editLevel(Level level, String levelName) {
-        this.level = level;
+//        this.level = level;
         levelRenderer.setLevel(level);
 
         levelRenderer.getRocket().setPosition(level.getRocketX(), level.getRocketY());
@@ -107,6 +107,8 @@ public class EditorScreen extends AbstractScreen {
 
         if (levelName != null)
             this.levelName = levelName;
+
+        lastPoint = new int[2];
 
         levelRenderer.rebuild();
     }
@@ -128,7 +130,7 @@ public class EditorScreen extends AbstractScreen {
                     rebuildLineTexture(x, y);
                     Graphics.draw(lineTexture, 0, 0);
 
-                    if (x == level.getWidth() - 1) {
+                    if (x == getLevel().getWidth() - 1) {
                         Graphics.draw(pointTexture, x - 16, y + 8);
                     }
                 }
@@ -183,21 +185,21 @@ public class EditorScreen extends AbstractScreen {
                 } else if (drawingState == DrawingState.DRAWING) {
                     setPoint(x, y);
 
-                    if (x == level.getWidth() - 1) {
+                    if (x == getLevel().getWidth() - 1) {
                         drawingState = DrawingState.FINISHED;
                     }
                 }
             } break;
             case FLAG: {
-                level.setFlagPosition(x, y);
+                getLevel().setFlagPosition(x, y);
             } break;
             case ROCKET: {
-                level.setRocketParams(x, y, rocketAngle);
+                getLevel().setRocketParams(x, y, rocketAngle);
                 levelRenderer.getRocket().setPosition(x, y);
                 levelRenderer.getRocket().setDirectionAngle(rocketAngle);
             } break;
             case LAND: {
-                level.setLand(x, y + LANDING_PLATFORM_HEIGHT / 2, landWidth);
+                getLevel().setLand(x, y + LANDING_PLATFORM_HEIGHT / 2, landWidth);
                 levelRenderer.rebuild();
             } break;
         }
@@ -207,7 +209,7 @@ public class EditorScreen extends AbstractScreen {
 
     private void setPoint(int x, int y) {
         if (x >= lastPoint[0]) {
-            level.addPoint(x, y);
+            getLevel().addPoint(x, y);
             lastPoint[0] = x;
             lastPoint[1] = y;
             levelRenderer.rebuild();
@@ -215,6 +217,8 @@ public class EditorScreen extends AbstractScreen {
     }
 
     public boolean keyDown(int keycode) {
+        final Level level = getLevel();
+
         switch (keycode) {
             case Keys.ESCAPE: Gdx.app.exit();                               break;
             case Keys.M:    gameManagers.getSoundManager().toggleMuted();   break;
@@ -258,6 +262,8 @@ public class EditorScreen extends AbstractScreen {
                         } else if (drawingState == DrawingState.FINISHED) {
                             drawingState = DrawingState.DRAWING;
                         }
+
+                        levelRenderer.rebuild();
                     }
                 } break;
             case Keys.R: {
@@ -282,7 +288,7 @@ public class EditorScreen extends AbstractScreen {
             case Keys.L: {
                 Input.TextInputListener inputer = new Input.TextInputListener() {
                     public void input(String text) {
-                        level = Level.fromFile(text);
+                        setLevel(Level.fromFile(text));
 
                         if (text.startsWith(SAVED_LEVELS_DIR))
                             text = text.substring(SAVED_LEVELS_DIR.length(), text.length());
@@ -298,6 +304,10 @@ public class EditorScreen extends AbstractScreen {
         }
 
         return true;
+    }
+
+    private void setLevel(Level level) {
+        levelRenderer.setLevel(level);
     }
 
     public boolean scrolled(int amount) {
@@ -330,8 +340,8 @@ public class EditorScreen extends AbstractScreen {
                 }
 
                 landWidth += diff;
-                if (landWidth > level.getWidth()) {
-                    landWidth = level.getWidth();
+                if (landWidth > getLevel().getWidth()) {
+                    landWidth = getLevel().getWidth();
                 } else if (landWidth < 5) {
                     landWidth = 5;
                 }
@@ -366,6 +376,8 @@ public class EditorScreen extends AbstractScreen {
     }
 
     private void rebuildLineTexture(int x, int y) {
+        Level level = getLevel();
+
         if (lineTexture != null)
             lineTexture.getTexture().dispose();
 
