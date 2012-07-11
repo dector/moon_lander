@@ -51,6 +51,7 @@ public class Level {
     }
 
     public static Level fromFile(String fileName) {
+        if (! fileName.endsWith(".json")) fileName += ".json";
         FileHandle file = Gdx.files.internal(fileName);
         return new Json().fromJson(Level.class, file);
     }
@@ -168,17 +169,23 @@ public class Level {
         rocket[2] = (int)angle;
     }
 
-    public void toFile(String filename) {
+    public void toFile(String filename, boolean force) {
         FileHandle levelsDir = Gdx.files.local(AppConfig.SAVED_LEVELS_DIR);
         if (! levelsDir.exists())
             levelsDir.mkdirs();
 
-        FileHandle file = Gdx.files.local(AppConfig.SAVED_LEVELS_DIR + filename + ".json");
+        if (! filename.endsWith(".json")) filename += ".json";
+
+        FileHandle file = Gdx.files.local(AppConfig.SAVED_LEVELS_DIR + filename);
         Json json = new Json();
 
-        if (file.exists()) {
-            filename += new Date().toString();
-            file = Gdx.files.local(AppConfig.SAVED_LEVELS_DIR + filename + "-" + ".json");
+        if (file.exists() && ! force) {
+            if (filename.endsWith(".json")) {
+                filename = filename.substring(0, filename.lastIndexOf(".json"));
+            }
+
+            file = Gdx.files.local(AppConfig.SAVED_LEVELS_DIR + filename +
+                    "-" + new Date().toString() + ".json");
         }
 
         file.writeString(json.toJson(this, Level.class), false);

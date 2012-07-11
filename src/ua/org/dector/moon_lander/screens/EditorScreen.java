@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ua.org.dector.moon_lander.AppConfig;
 import ua.org.dector.moon_lander.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.managers.GameManagers;
@@ -37,6 +38,8 @@ public class EditorScreen extends AbstractScreen {
     private int[] lastPoint;
     private TextureRegion lineTexture;
 
+    private String levelName;
+
     private enum Tool {
         POINTER, DRAWER, ROCKET, FLAG, LAND
     }
@@ -56,7 +59,7 @@ public class EditorScreen extends AbstractScreen {
 
         levelRenderer = new LevelRenderer(rocket);
 
-        editLevel(level);
+        editLevel(level, null);
 
         selectedTool = Tool.POINTER;
 
@@ -87,11 +90,15 @@ public class EditorScreen extends AbstractScreen {
         pointTexture = new TextureRegion(pointTex);
     }
 
-    private void editLevel(Level level) {
+    public void editLevel(Level level, String levelName) {
         levelRenderer.setLevel(level);
 
         levelRenderer.getRocket().setPosition(level.getRocketX(), level.getRocketY());
         levelRenderer.getRocket().setDirectionAngle(level.getRocketAngle());
+
+        if (this.levelName == null)
+            this.levelName = levelName;
+        levelRenderer.rebuild();
     }
 
     public void render(float delta) {
@@ -226,7 +233,6 @@ public class EditorScreen extends AbstractScreen {
                 if (selectedTool == Tool.DRAWER) {
                     if (drawingState != DrawingState.NOT_STARTED) {
                         level.removeLastPoint();
-                        levelRenderer.rebuild();
 
                         int mapLength = level.getMapLength();
                         if (mapLength != 0) {
@@ -248,26 +254,36 @@ public class EditorScreen extends AbstractScreen {
                 landerGame.play(level);
             } break;
             case Keys.S: {
-                Input.TextInputListener inputer = new Input.TextInputListener() {
-                    public void input(String text) {
-                        level.toFile(text);
-                    }
+                if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && levelName != null) {
+                    level.toFile(levelName, true);
+                } else {
+                    Input.TextInputListener inputer = new Input.TextInputListener() {
+                        public void input(String text) {
+                            level.toFile(text, false);
+                            levelName = text;
+                        }
 
-                    public void canceled() {}
-                };
-                Gdx.input.getTextInput(inputer, "Input file name", "level");
+                        public void canceled() {}
+                    };
+                    Gdx.input.getTextInput(inputer, "Input file name", "level");
+                }
+
             } break;
             case Keys.L: {
                 Input.TextInputListener inputer = new Input.TextInputListener() {
                     public void input(String text) {
                         level = Level.fromFile(text);
-                        editLevel(level);
+
+                        if (text.startsWith(SAVED_LEVELS_DIR))
+                            text = text.substring(SAVED_LEVELS_DIR.length(), text.length());
+                        editLevel(level, text);
                     }
 
                     public void canceled() {}
                 };
                 Gdx.input.getTextInput(inputer, "Input file name",
-                        SAVED_LEVELS_DIR + "level.json");
+                        AppConfig.SAVED_LEVELS_DIR + (
+                                (levelName != null) ? levelName : "level"));
             } break;
         }
 

@@ -30,7 +30,7 @@ public class GameScreen extends AbstractScreen {
 
     private boolean paused;
 
-    private boolean debug = true;
+    private boolean debug = false;
 
     private EntityController entityController;
     private LevelRenderer levelRenderer;
@@ -197,8 +197,10 @@ public class GameScreen extends AbstractScreen {
             case Keys.P:    paused = ! paused;                              break;
             case Keys.E:
                 if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
+                    Level newLevel = new Level(SCREEN_WIDTH, SCREEN_HEIGHT);
+                    newLevel.setRocketParams(SCREEN_WIDTH / 2, SCREEN_HEIGHT, 90);
                     landerGame.openEditor(
-                            new Level(SCREEN_WIDTH, SCREEN_HEIGHT),
+                            newLevel,
                             new Rocket()
                     );
                 } else {
