@@ -292,7 +292,7 @@ public class EditorScreen extends AbstractScreen {
 
                         if (text.startsWith(SAVED_LEVELS_DIR))
                             text = text.substring(SAVED_LEVELS_DIR.length(), text.length());
-                        editLevel(level, text);
+                        editLevel(getLevel(), text);
                     }
 
                     public void canceled() {}
