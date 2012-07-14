@@ -1,13 +1,17 @@
 package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Gdx;
-import ua.org.dector.moon_lander.managers.AbstractGame;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import ua.org.dector.gcore.core.AbstractGame;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
 import ua.org.dector.moon_lander.screens.AbstractScreen;
 import ua.org.dector.moon_lander.screens.EditorScreen;
 import ua.org.dector.moon_lander.screens.GameScreen;
 import ua.org.dector.moon_lander.screens.SplashScreen;
+
+import static ua.org.dector.moon_lander.AppConfig.MUSIC_FILE;
 
 /**
  * @author dector (dector9@gmail.com)
@@ -24,6 +28,13 @@ public class LanderGame extends AbstractGame {
 
     public void create() {
         super.create();
+
+//        Music backgroundMusic = ResourceLoader.loadMusic(MUSIC_FILE);
+//
+//        getSoundManager().addMusicToList();
+
+        //////////////////////////////
+
         rocket = new Rocket();
         levels = ResourceLoader.loadLevelSet("levelset.json");
 

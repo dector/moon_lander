@@ -1,8 +1,10 @@
-package ua.org.dector.moon_lander.managers;
+package ua.org.dector.gcore.core;
 
 import com.badlogic.gdx.Game;
 
 /**
+ * Base game application
+ *
  * @author dector (dector9@gmail.com)
  */
 public abstract class AbstractGame extends Game {

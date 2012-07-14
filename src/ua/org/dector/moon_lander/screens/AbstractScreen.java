@@ -2,7 +2,7 @@ package ua.org.dector.moon_lander.screens;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import ua.org.dector.moon_lander.managers.AbstractGame;
+import ua.org.dector.gcore.core.AbstractGame;
 
 /**
  * @author dector (dector9@gmail.com)

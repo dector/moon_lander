@@ -1,9 +1,7 @@
 package ua.org.dector.moon_lander;
 
-import ua.org.dector.moon_lander.managers.SoundManager;
+import ua.org.dector.gcore.core.SoundManager;
 import ua.org.dector.moon_lander.models.Rocket;
-
-import static ua.org.dector.moon_lander.managers.SoundManager.SoundEvent;
 
 /**
  * @author dector (dector9@gmail.com)
@@ -29,18 +27,18 @@ public class EntityController {
         rocket.moveUp(moveUp);
 
         if (moveUp) {
-            soundManager.playEvent(SoundEvent.BURN, true);
+            soundManager.play(Sounds.BURN, true);
         } else {
-            soundManager.stopEvent(SoundEvent.BURN);
+            soundManager.stop(Sounds.BURN);
         }
     }
 
     public void land() {
-        soundManager.playEvent(SoundEvent.LAND);
+        soundManager.play(Sounds.LAND);
     }
 
     public void crash() {
-        soundManager.playEvent(SoundEvent.CRASH);
+        soundManager.play(Sounds.CRASH);
     }
 
     public void rotateRocketLeft(boolean rotateLeft) {
