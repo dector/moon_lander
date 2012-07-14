@@ -14,62 +14,64 @@ import static ua.org.dector.moon_lander.AppConfig.*;
  * @author dector (dector9@gmail.com)
  */
 public class Graphics {
-    // TODO setResourceLoaderButRefactorThisMethodAndThisClass
-    private static ResourceLoader resLoader = new ResourceLoader();
-    static {
-        resLoader.setFontsDirPath(DATA_DIR + FONTS_DIR);
+    private SpriteBatch sb;
+    private BitmapFont defaultFont;
+    private BitmapFont smallFont;
+    private BitmapFont bigFont;
+
+    private GL10 gl10;
+
+    public Graphics(LanderGame game) {
+        sb = new SpriteBatch();
+
+        defaultFont = new BitmapFont();
+        smallFont = game.getResourceLoader().loadFont(SMALL_FONT_FILE, SMALL_FONT_IMG);
+        bigFont = game.getResourceLoader().loadFont(BIG_FONT_FILE, BIG_FONT_IMG);
+
+        gl10 = Gdx.graphics.getGL10();
+        setClearColor(0, 0, 0, 1);
     }
 
-
-    private static SpriteBatch sb = new SpriteBatch();
-    private static BitmapFont defaultFont = new BitmapFont();
-    private static BitmapFont smallFont =
-            resLoader.loadFont(SMALL_FONT_FILE, SMALL_FONT_IMG);
-    private static BitmapFont bigFont =
-            resLoader.loadFont(BIG_FONT_FILE, BIG_FONT_IMG);
-
-    private static GL10 gl10 = Gdx.graphics.getGL10();
-
-    public static void init() {
-        gl10.glClearColor(0, 0, 0, 1);
+    public void setClearColor(Color c) {
+        setClearColor(c.r, c.g, c.b, c.a);
     }
 
-    public static void clearColor(Color c) {
-        gl10.glClearColor(c.r, c.g, c.b, c.a);
+    public void setClearColor(float r, float g, float b, float a) {
+        gl10.glClearColor(r, g, b, a);
     }
 
-    public static void begin() {
+    public void begin() {
         sb.begin();
     }
 
-    public static void end() {
+    public void end() {
         sb.end();
     }
 
-    public static void draw(TextureRegion tex, float x, float y) {
+    public void draw(TextureRegion tex, float x, float y) {
         sb.draw(tex, x, y);
     }
 
-    public static void draw(TextureRegion tex, float x, float y,
+    public void draw(TextureRegion tex, float x, float y,
                             int width, int height) {
         sb.draw(tex, x, y, width, height);
     }
 
-    public static void draw(TextureRegion tex, float x, float y,
+    public void draw(TextureRegion tex, float x, float y,
                             int width, int height, float rotation) {
         draw(tex, x, y, width / 2, height / 2, width, height, rotation);
     }
 
-    public static void draw(TextureRegion tex, float x, float y, int originX, int originY,
+    public void draw(TextureRegion tex, float x, float y, int originX, int originY,
                             int width, int height, float rotation) {
         sb.draw(tex, x, y, originX, originY, width, height, 1, 1, rotation - 90);
     }
 
-    public static void draw(String string, int x, int y) {
+    public void draw(String string, int x, int y) {
         draw(string, x, y, FontSize.DEFAULT);
     }
 
-    public static void drawCentered(String string, int x, int y, FontSize size) {
+    public void drawCentered(String string, int x, int y, FontSize size) {
         BitmapFont font = getFont(size);
         BitmapFont.TextBounds bounds = font.getBounds(string);
 
@@ -79,7 +81,7 @@ public class Graphics {
         draw(string, x, y, size);
     }
 
-    private static BitmapFont getFont(FontSize size) {
+    private BitmapFont getFont(FontSize size) {
         BitmapFont font;
 
         switch (size) {
@@ -98,22 +100,22 @@ public class Graphics {
         return font;
     }
 
-    public static void draw(String string, int x, int y, FontSize size) {
+    public void draw(String string, int x, int y, FontSize size) {
         getFont(size).draw(sb, string, x, y);
     }
 
-    public static void draw(int x, int y, int stepY, String... strings) {
+    public void draw(int x, int y, int stepY, String... strings) {
         for (String s : strings) {
             draw(s, x, y, FontSize.SMALL);
             y -= stepY;
         }
     }
 
-    public static void clear() {
+    public void clear() {
         gl10.glClear(GL10.GL_COLOR_BUFFER_BIT);
     }
 
-    public static SpriteBatch getSpriteBatch() {
+    public SpriteBatch getSpriteBatch() {
         return sb;
     }
 

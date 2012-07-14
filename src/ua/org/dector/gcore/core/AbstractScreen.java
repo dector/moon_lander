@@ -1,4 +1,4 @@
-package ua.org.dector.moon_lander.screens;
+package ua.org.dector.gcore.core;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;

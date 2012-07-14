@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import ua.org.dector.gcore.core.ResourceLoader;
+import ua.org.dector.gcore.core.AbstractScreen;
 import ua.org.dector.moon_lander.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
 
@@ -126,10 +126,11 @@ public class SplashScreen extends AbstractScreen {
         stage.draw();
 
         if (completed) {
-            Graphics.begin();
-            Graphics.drawCentered("Press <<Space>> to start",
+            Graphics g = game.getGraphics();
+            g.begin();
+            g.drawCentered("Press <<Space>> to start",
                     SCREEN_WIDTH / 2, 100, Graphics.FontSize.BIG);
-            Graphics.end();
+            g.end();
         }
     }
 

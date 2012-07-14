@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ua.org.dector.gcore.core.AbstractScreen;
 import ua.org.dector.moon_lander.AppConfig;
 import ua.org.dector.moon_lander.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
@@ -112,18 +113,20 @@ public class EditorScreen extends AbstractScreen {
         levelRenderer.render(game.getSoundManager().isMuted(),
                 false, false, false, false);
 
-        Graphics.begin();
+        Graphics g = game.getGraphics();
+
+        g.begin();
         switch (selectedTool) {
             case DRAWER: {
                 if (drawingState == DrawingState.NOT_STARTED
                         && x == 0) {
-                    Graphics.draw(pointTexture, x + 8, y + 8);
+                    g.draw(pointTexture, x + 8, y + 8);
                 } else if (drawingState == DrawingState.DRAWING) {
                     rebuildLineTexture(x, y);
-                    Graphics.draw(lineTexture, 0, 0);
+                    g.draw(lineTexture, 0, 0);
 
                     if (x == getLevel().getWidth() - 1) {
-                        Graphics.draw(pointTexture, x - 16, y + 8);
+                        g.draw(pointTexture, x - 16, y + 8);
                     }
                 }
             } break;
@@ -134,11 +137,11 @@ public class EditorScreen extends AbstractScreen {
                 levelRenderer.drawRocket(x, y, rocketAngle);
             } break;
             case LAND: {
-                Graphics.draw(landTexture, x, y);
+                g.draw(landTexture, x, y);
             } break;
         }
 
-        Graphics.draw(10, 300, 20,
+        g.draw(10, 300, 20,
                 String.format("Tool %s", selectedTool),
                 String.format("Mouse at %d:%d", x, y));
         if (selectedTool == Tool.DRAWER) {
@@ -152,15 +155,15 @@ public class EditorScreen extends AbstractScreen {
                 text = "Drawing finished";
             }
 
-            Graphics.draw(text, 10, 260, Graphics.FontSize.SMALL);
+            g.draw(text, 10, 260, Graphics.FontSize.SMALL);
         } else if (selectedTool == Tool.ROCKET) {
-            Graphics.draw(String.format("Rocket angle: %.1f", rocketAngle), 10, 260,
+            g.draw(String.format("Rocket angle: %.1f", rocketAngle), 10, 260,
                     Graphics.FontSize.SMALL);
         } else if (selectedTool == Tool.LAND) {
-            Graphics.draw(String.format("Land width: %d", landWidth), 10, 260,
+            g.draw(String.format("Land width: %d", landWidth), 10, 260,
                     Graphics.FontSize.SMALL);
         }
-        Graphics.end();
+        g.end();
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
@@ -213,7 +216,10 @@ public class EditorScreen extends AbstractScreen {
 
         switch (keycode) {
             case Keys.ESCAPE: Gdx.app.exit();                               break;
-            case Keys.M:    game.getSoundManager().toggleMuted();   break;
+            case Keys.M: {
+                game.getSoundManager().toggleMuted();
+                game.getMusicManager().toggleMuted();
+            } break;
             case Keys.NUM_1: selectedTool = Tool.POINTER; break;
             case Keys.NUM_2: selectedTool = Tool.DRAWER; break;
             case Keys.NUM_3: selectedTool = Tool.FLAG; break;

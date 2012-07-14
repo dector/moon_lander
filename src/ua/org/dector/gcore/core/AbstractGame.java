@@ -1,6 +1,7 @@
 package ua.org.dector.gcore.core;
 
 import com.badlogic.gdx.Game;
+import ua.org.dector.moon_lander.Graphics;
 
 /**
  * Base game application
@@ -29,4 +30,6 @@ public abstract class AbstractGame extends Game {
     public ResourceLoader getResourceLoader() {
         return resourceLoader;
     }
+
+    public abstract Graphics getGraphics();
 }

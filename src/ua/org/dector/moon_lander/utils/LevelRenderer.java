@@ -32,6 +32,8 @@ public class LevelRenderer {
     private TextureRegion levelTexture;
     private TextureRegion backgroundTexture;
 
+    private Graphics g;
+
     public LevelRenderer(LanderGame game, Rocket rocket) {
         this.rocket = rocket;
 
@@ -39,7 +41,8 @@ public class LevelRenderer {
         camera.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
         camera.update();
 
-        Graphics.getSpriteBatch().setProjectionMatrix(camera.combined);
+        g = game.getGraphics();
+        g.getSpriteBatch().setProjectionMatrix(camera.combined);
 
         Texture graphicsTexture = game.getResourceLoader().loadTexture(GRAPHICS_FILE);
         rocketTexture = new TextureRegion(
@@ -99,15 +102,15 @@ public class LevelRenderer {
 
     public void reset() {
         if (level.getBackgroundColor() != null) {
-            Graphics.clearColor(level.getBackgroundColor());
+            g.setClearColor(level.getBackgroundColor());
         }
     }
 
     public void render(boolean soundMuted, boolean paused, boolean collided,
                        boolean landed, boolean hasMoreLevels) {
         if (level != null) {
-            Graphics.clear();
-            Graphics.begin();
+            g.clear();
+            g.begin();
 
             drawLevel();
             drawRocket((int)rocket.getX(), (int)rocket.getY(), rocket.getDirectionAngle());
@@ -116,7 +119,7 @@ public class LevelRenderer {
 
             drawNotifications(paused, collided, landed, hasMoreLevels);
 
-            Graphics.end();
+            g.end();
         }
     }
 
@@ -124,7 +127,7 @@ public class LevelRenderer {
                                    boolean landed, boolean hasMoreLevels) {
         // Draw centered text
         if (paused) {
-            Graphics.drawCentered("Paused", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+            g.drawCentered("Paused", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
                     Graphics.FontSize.BIG);
         } else if (collided) {
             rocket.moveUp(false);
@@ -141,7 +144,7 @@ public class LevelRenderer {
                 text = "Crashed! =(";
             }
 
-            Graphics.drawCentered(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+            g.drawCentered(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
                     Graphics.FontSize.BIG);
         }
     }
@@ -155,7 +158,7 @@ public class LevelRenderer {
             soundTextureIndex = 0;
         }
 
-        Graphics.draw(
+        g.draw(
                 soundTextures[soundTextureIndex],
                 SOUND_ICO_X,
                 SOUND_ICO_Y,
@@ -166,7 +169,7 @@ public class LevelRenderer {
         // Draw text
 
         if (rocket != null) {
-            Graphics.draw(
+            g.draw(
                     10, SCREEN_HEIGHT - 10, 20,
                     String.format("X: %d", (int) rocket.getX()),
                     String.format("Y: %d", (int) rocket.getY()),
@@ -179,9 +182,9 @@ public class LevelRenderer {
 
     public void drawLevel() {
         if (backgroundTexture != null)
-            Graphics.draw(backgroundTexture, 0, 0);
+            g.draw(backgroundTexture, 0, 0);
 
-        Graphics.draw(levelTexture, 0, 0);
+        g.draw(levelTexture, 0, 0);
 
         if (level.hasFlag())
             drawFlag(level.getFlagX(), level.getFlagY());
@@ -189,7 +192,7 @@ public class LevelRenderer {
 
 
     public void drawRocket(int x, int y, float directionAnle) {
-        Graphics.draw(
+        g.draw(
                 rocketTexture,
                 x,
                 y,
@@ -199,7 +202,7 @@ public class LevelRenderer {
         );
         // TODO Fix fire drawing when landed
         if (rocket.isMoveUp()) {
-            Graphics.draw(
+            g.draw(
                     fireTexture,
                     x + FIRE_PADDING,
                     y - FIRE_HEIGHT,
@@ -250,7 +253,7 @@ public class LevelRenderer {
                 pointerAngle = 90;
             }
 
-            Graphics.draw(
+            g.draw(
                     pointerTexture,
                     pointerX,
                     pointerY,
@@ -277,7 +280,7 @@ public class LevelRenderer {
     }
 
     public void drawFlag(int x, int y) {
-        Graphics.draw(
+        g.draw(
                 flagTexture,
                 x,
                 y,

@@ -2,10 +2,10 @@ package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Gdx;
 import ua.org.dector.gcore.core.AbstractGame;
+import ua.org.dector.gcore.core.AbstractScreen;
 import ua.org.dector.gcore.core.ResourceLoader;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
-import ua.org.dector.moon_lander.screens.AbstractScreen;
 import ua.org.dector.moon_lander.screens.EditorScreen;
 import ua.org.dector.moon_lander.screens.GameScreen;
 import ua.org.dector.moon_lander.screens.SplashScreen;
@@ -23,6 +23,8 @@ public class LanderGame extends AbstractGame {
 
     private AbstractScreen currentScreen;
 
+    private Graphics g;
+
     private Rocket rocket;
     private Level[] levels;
 
@@ -38,6 +40,8 @@ public class LanderGame extends AbstractGame {
         resLoader.setMusicDirPath(DATA_DIR + SOUND_DIR);
         resLoader.setParticlesDirPath(DATA_DIR + PARTICLES_DIR);
         resLoader.setSoundsDirPath(DATA_DIR + SOUND_DIR);
+
+        g = new Graphics(this);
 
         //////////////////////////////
 
@@ -91,5 +95,9 @@ public class LanderGame extends AbstractGame {
 
     public boolean isDebug() {
         return debug;
+    }
+
+    public Graphics getGraphics() {
+        return g;
     }
 }

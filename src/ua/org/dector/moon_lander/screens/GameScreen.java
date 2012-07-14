@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import ua.org.dector.gcore.core.ResourceLoader;
+import ua.org.dector.gcore.core.AbstractScreen;
 import ua.org.dector.gcore.core.SoundManager;
 import ua.org.dector.moon_lander.*;
 import ua.org.dector.moon_lander.models.Level;
