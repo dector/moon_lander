@@ -26,6 +26,8 @@ public class LanderGame extends AbstractGame {
     private Rocket rocket;
     private Level[] levels;
 
+    private boolean debug;
+
     public void create() {
         super.create();
 
@@ -77,5 +79,9 @@ public class LanderGame extends AbstractGame {
             editorScreen.editLevel(level, null);
         
         switchScreen(editorScreen);
+    }
+
+    public boolean isDebug() {
+        return debug;
     }
 }

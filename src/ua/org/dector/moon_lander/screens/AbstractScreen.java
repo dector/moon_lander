@@ -7,10 +7,11 @@ import ua.org.dector.gcore.core.AbstractGame;
 /**
  * @author dector (dector9@gmail.com)
  */
-public class AbstractScreen implements Screen, InputProcessor {
-    protected AbstractGame game;
+public class AbstractScreen<ConcreteGame extends AbstractGame>
+        implements Screen, InputProcessor {
+    protected ConcreteGame game;
 
-    public AbstractScreen(AbstractGame game) {
+    public AbstractScreen(ConcreteGame game) {
         this.game = game;
     }
 

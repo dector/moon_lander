@@ -27,7 +27,7 @@ public class EntityController {
         rocket.moveUp(moveUp);
 
         if (moveUp) {
-            soundManager.play(Sounds.BURN, true);
+            soundManager.loop(Sounds.BURN);
         } else {
             soundManager.stop(Sounds.BURN);
         }

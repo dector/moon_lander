@@ -37,6 +37,10 @@ public class SoundManager extends AudioManager {
         play(id, false);
     }
 
+    public void loop(String id) {
+        play(id, true);
+    }
+
     public void play(String id, boolean loop) {
         if (isMuted()) return;
         if (! sounds.containsKey(id)) return;

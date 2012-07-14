@@ -17,7 +17,7 @@ import static ua.org.dector.moon_lander.AppConfig.*;
 /**
  * @author dector (dector9@gmail.com)
  */
-public class GameScreen extends AbstractScreen {
+public class GameScreen extends AbstractScreen<LanderGame> {
     private Rocket rocket;
     private Level[] levels;
     private Level level;
@@ -27,8 +27,6 @@ public class GameScreen extends AbstractScreen {
     private boolean landed;
 
     private boolean paused;
-
-    private boolean debug = false;
 
     private EntityController entityController;
     private LevelRenderer levelRenderer;
@@ -186,7 +184,7 @@ public class GameScreen extends AbstractScreen {
                     reset();
                 }                                                           break;
             case Keys.N:
-                if (debug) {
+                if (game.isDebug()) {
                     playLevel(++levelIndex);
                     reset();
                 }                                                           break;
@@ -220,7 +218,7 @@ public class GameScreen extends AbstractScreen {
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
-        if (debug) {
+        if (game.isDebug()) {
             rocket.setPosition(x, SCREEN_HEIGHT - y);
 
             return true;
