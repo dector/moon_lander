@@ -47,4 +47,6 @@ public abstract class AudioManager {
     public void toggleMuted() {
         setMuted(! isMuted());
     }
+
+    public abstract void disposeAll();
 }

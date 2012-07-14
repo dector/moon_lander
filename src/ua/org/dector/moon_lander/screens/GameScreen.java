@@ -3,6 +3,7 @@ package ua.org.dector.moon_lander.screens;
 import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import ua.org.dector.gcore.core.SoundManager;
 import ua.org.dector.moon_lander.*;
@@ -39,6 +40,7 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         setLevelSet(levels);
 
         loadSounds();
+        loadMusic();
 
         entityController = new EntityController(game, rocket);
         levelRenderer = new LevelRenderer(rocket);
@@ -49,6 +51,19 @@ public class GameScreen extends AbstractScreen<LanderGame> {
 
         // TODO fix
 //        game.getSoundManager().playMusic();
+    }
+
+    private void loadMusic() {
+        Music music = ResourceLoader.loadMusic(MUSIC_FILE);
+        game.getMusicManager().setMusic(music, true);
+        game.getMusicManager().play();
+    }
+
+    public void dispose() {
+        super.dispose();
+
+        game.getMusicManager().disposeAll();
+        game.getSoundManager().disposeAll();
     }
 
     private void loadSounds() {
@@ -188,7 +203,10 @@ public class GameScreen extends AbstractScreen<LanderGame> {
                     playLevel(++levelIndex);
                     reset();
                 }                                                           break;
-            case Keys.M:    game.getSoundManager().toggleMuted();   break;
+            case Keys.M: {
+                game.getSoundManager().toggleMuted();
+                game.getMusicManager().toggleMuted();
+            } break;
             case Keys.P:    paused = ! paused;                              break;
             case Keys.E:
                 if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {

@@ -28,6 +28,7 @@ public class SoundManager extends AudioManager {
     }
 
     public void addSound(String id, Sound sound) {
+        if (sound == null) return;
         if (sounds.containsKey(id)) return;
 
         sounds.put(id, sound);
@@ -58,5 +59,10 @@ public class SoundManager extends AudioManager {
         if (! sounds.containsKey(id)) return;
 
         sounds.get(id).stop();
+    }
+
+    public void disposeAll() {
+        for (String id : sounds.keySet())
+            sounds.get(id).dispose();
     }
 }
