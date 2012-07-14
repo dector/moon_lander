@@ -107,7 +107,7 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         }
 
         levelRenderer.render(
-                game.getSoundManager().isMuted(),
+                game.getSoundManager().isEnabled(),
                 paused,
                 collided,
                 landed,

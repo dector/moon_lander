@@ -25,12 +25,14 @@ public class MusicManager extends AudioManager {
 
     public void play() {
         if (musicIsNull()) return;
+        if (getMusic().isPlaying()) return;
 
         getMusic().play();
     }
 
     public void pause() {
         if (musicIsNull()) return;
+        if (! getMusic().isPlaying()) return;
 
         getMusic().pause();
     }
@@ -43,13 +45,13 @@ public class MusicManager extends AudioManager {
         getMusic().setVolume(getVolume());
     }
 
-    public void setMuted(boolean muted) {
-        super.setMuted(muted);
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
 
-        if (isMuted())
-            pause();
-        else
+        if (isEnabled())
             play();
+        else
+            pause();
     }
 
     public void disposeAll() {

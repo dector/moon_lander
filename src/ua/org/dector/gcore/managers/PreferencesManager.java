@@ -6,11 +6,11 @@ import com.badlogic.gdx.Preferences;
 /**
  * @author dector (dector9@gmail.com)
  */
-public class SettingsManager {
+public class PreferencesManager {
     private Preferences preferences;
 
-    public SettingsManager(String settingsName) {
-        preferences = Gdx.app.getPreferences(settingsName);
+    public PreferencesManager(String preferencesName) {
+        preferences = Gdx.app.getPreferences(preferencesName);
     }
 
     public boolean getBoolean(String name, boolean defaultValue) {

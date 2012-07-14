@@ -1,6 +1,7 @@
 package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Gdx;
+import ua.org.dector.gcore.common.Settings;
 import ua.org.dector.gcore.game.AbstractGame;
 import ua.org.dector.gcore.game.AbstractScreen;
 import ua.org.dector.gcore.utils.ResourceLoader;
@@ -25,6 +26,7 @@ public class LanderGame extends AbstractGame {
     private AbstractScreen currentScreen;
 
     private Graphics g;
+    private Settings settings;
 
     private Rocket rocket;
     private Level[] levels;
@@ -34,6 +36,14 @@ public class LanderGame extends AbstractGame {
 
     public void create() {
         super.create();
+
+        settings = new Settings(SETTINGS_FILE);
+
+        getMusicManager().setEnabled(settings.getMusicEnabled());
+        getMusicManager().setVolume(settings.getMusicVolume());
+
+        getSoundManager().setEnabled(settings.getSfxEnabled());
+        getSoundManager().setVolume(settings.getSfxVolume());
 
         ResourceLoader resLoader = getResourceLoader();
         resLoader.setImagesDirPath(DATA_DIR + IMG_DIR);

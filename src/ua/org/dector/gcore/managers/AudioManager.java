@@ -9,19 +9,19 @@ public abstract class AudioManager {
     public static final float MIN_VOLUME    = 0;
 
     private float volume;
-    private boolean muted;
+    private boolean enabled;
 
     public AudioManager() {
         this(MAX_VOLUME);
     }
 
     public AudioManager(float volume) {
-        this(volume, false);
+        this(volume, true);
     }
 
-    public AudioManager(float volume, boolean muted) {
+    public AudioManager(float volume, boolean enabled) {
         this.volume = volume;
-        this.muted = muted;
+        this.enabled = enabled;
 
         init();
     }
@@ -36,16 +36,16 @@ public abstract class AudioManager {
         this.volume = volume;
     }
 
-    public boolean isMuted() {
-        return muted;
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setMuted(boolean muted) {
-        this.muted = muted;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public void toggleMuted() {
-        setMuted(! isMuted());
+        setEnabled(!isEnabled());
     }
 
     public abstract void disposeAll();

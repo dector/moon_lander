@@ -18,6 +18,8 @@ public interface AppConfig {
     public static final String PARTICLES_DIR= "particles/";
     public static final String SAVED_LEVELS_DIR= "saved_levels/";
 
+    public static final String SETTINGS_FILE    = "settings";
+
     public static final String BURN_FILE        = "burn.wav";
     public static final String CRASH_FILE       = "crash.wav";
     public static final String LANDING_FILE     = "landing.wav";
@@ -32,9 +34,6 @@ public interface AppConfig {
     public static final String SPLASH_FILE      = "splash.png";
 
     public static final String FIRE_EFFECT      = "fire.p";
-
-    public static final float MUSIC_VOLUME      = .3f;
-    public static final float SFX_VOLUME        = .5f;
 
     // Graphics
 

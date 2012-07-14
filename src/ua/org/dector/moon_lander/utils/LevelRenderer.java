@@ -105,7 +105,7 @@ public class LevelRenderer {
         }
     }
 
-    public void render(boolean soundMuted, boolean paused, boolean collided,
+    public void render(boolean musicEnabled, boolean paused, boolean collided,
                        boolean landed, boolean hasMoreLevels) {
         if (level != null) {
             g.clear();
@@ -113,7 +113,7 @@ public class LevelRenderer {
 
             drawLevel();
             drawRocket((int)rocket.getX(), (int)rocket.getY(), rocket.getDirectionAngle());
-            drawHUD(soundMuted);
+            drawHUD(musicEnabled);
             drawPointer(level, rocket);
 
             drawNotifications(paused, collided, landed, hasMoreLevels);
@@ -148,13 +148,13 @@ public class LevelRenderer {
         }
     }
 
-    public void drawHUD(boolean soundMuted) {
+    public void drawHUD(boolean musicEnabled) {
         // Draw sound ico
         int soundTextureIndex;
-        if (soundMuted) {
-            soundTextureIndex = 1;
-        } else {
+        if (musicEnabled) {
             soundTextureIndex = 0;
+        } else {
+            soundTextureIndex = 1;
         }
 
         g.draw(

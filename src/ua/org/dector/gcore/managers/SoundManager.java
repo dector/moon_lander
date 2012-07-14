@@ -15,8 +15,8 @@ public class SoundManager extends AudioManager {
         super(volume);
     }
 
-    public SoundManager(float volume, boolean muted) {
-        super(volume, muted);
+    public SoundManager(float volume, boolean enabled) {
+        super(volume, enabled);
     }
 
     public SoundManager() {
@@ -43,7 +43,7 @@ public class SoundManager extends AudioManager {
     }
 
     public void play(String id, boolean loop) {
-        if (isMuted()) return;
+        if (! isEnabled()) return;
         if (! sounds.containsKey(id)) return;
 
         Sound sound = sounds.get(id);
@@ -55,7 +55,6 @@ public class SoundManager extends AudioManager {
     }
 
     public void stop(String id) {
-        if (isMuted()) return;
         if (! sounds.containsKey(id)) return;
 
         sounds.get(id).stop();

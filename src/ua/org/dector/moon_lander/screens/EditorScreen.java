@@ -110,7 +110,7 @@ public class EditorScreen extends AbstractScreen {
         int x = Gdx.input.getX();
         int y = SCREEN_HEIGHT - Gdx.input.getY() - 1;
 
-        levelRenderer.render(game.getSoundManager().isMuted(),
+        levelRenderer.render(game.getSoundManager().isEnabled(),
                 false, false, false, false);
 
         Graphics g = game.getGraphics();
