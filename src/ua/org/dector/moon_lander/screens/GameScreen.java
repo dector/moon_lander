@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import ua.org.dector.gcore.common.Settings;
 import ua.org.dector.gcore.game.AbstractScreen;
 import ua.org.dector.gcore.managers.SoundManager;
 import ua.org.dector.moon_lander.*;
@@ -185,6 +186,10 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     }
 
     public boolean keyDown(int keycode) {
+        Settings gameSettings = game.getSettings();
+        int screenWidth = gameSettings.getScreenWidth();
+        int screenHeight = gameSettings.getScreenHeight();
+
         switch (keycode) {
             case Keys.UP:       entityController.moveUpRocket(true);        break;
             case Keys.LEFT:     entityController.rotateRocketLeft(true);    break;
@@ -211,8 +216,8 @@ public class GameScreen extends AbstractScreen<LanderGame> {
             case Keys.P:    paused = ! paused;                              break;
             case Keys.E:
                 if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
-                    Level newLevel = new Level(SCREEN_WIDTH, SCREEN_HEIGHT);
-                    newLevel.setRocketParams(SCREEN_WIDTH / 2, SCREEN_HEIGHT, 90);
+                    Level newLevel = new Level(screenWidth, screenHeight);
+                    newLevel.setRocketParams(screenWidth / 2, screenHeight, 90);
                     ((LanderGame) game).openEditor(
                             newLevel,
                             new Rocket()
@@ -237,8 +242,10 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
+        int screenHeight = game.getSettings().getScreenHeight();
+
         if (game.isDebug()) {
-            rocket.setPosition(x, SCREEN_HEIGHT - y);
+            rocket.setPosition(x, screenHeight - y);
 
             return true;
         } else

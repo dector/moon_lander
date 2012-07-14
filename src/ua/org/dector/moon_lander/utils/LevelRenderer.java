@@ -3,6 +3,7 @@ package ua.org.dector.moon_lander.utils;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ua.org.dector.gcore.common.Settings;
 import ua.org.dector.moon_lander.graphics.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.models.Level;
@@ -33,11 +34,18 @@ public class LevelRenderer {
 
     private Graphics g;
 
+    private int screenWidth;
+    private int screenHeight;
+
     public LevelRenderer(LanderGame game, Rocket rocket) {
         this.rocket = rocket;
 
-        camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
-        camera.position.set(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0);
+        Settings gameSettings = game.getSettings();
+        screenWidth = gameSettings.getScreenWidth();
+        screenHeight = gameSettings.getScreenHeight();
+
+        camera = new OrthographicCamera(screenWidth, screenHeight);
+        camera.position.set(screenWidth / 2, screenHeight / 2, 0);
         camera.update();
 
         g = game.getGraphics();
@@ -126,7 +134,7 @@ public class LevelRenderer {
                                    boolean landed, boolean hasMoreLevels) {
         // Draw centered text
         if (paused) {
-            g.drawCentered("Paused", SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+            g.drawCentered("Paused", screenWidth / 2, screenHeight / 2,
                     Graphics.FontSize.BIG);
         } else if (collided) {
             rocket.moveUp(false);
@@ -143,7 +151,7 @@ public class LevelRenderer {
                 text = "Crashed! =(";
             }
 
-            g.drawCentered(text, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2,
+            g.drawCentered(text, screenWidth / 2, screenHeight / 2,
                     Graphics.FontSize.BIG);
         }
     }
@@ -169,7 +177,7 @@ public class LevelRenderer {
 
         if (rocket != null) {
             g.draw(
-                    10, SCREEN_HEIGHT - 10, 20,
+                    10, screenHeight - 10, 20,
                     String.format("X: %d", (int) rocket.getX()),
                     String.format("Y: %d", (int) rocket.getY()),
                     String.format("Vx: %.2f", rocket.getVx()),
@@ -226,7 +234,7 @@ public class LevelRenderer {
                 pointerX = 0;
 
                 if (level.getHeight() < rocket.getY()) {
-                    pointerY = SCREEN_HEIGHT - POINTER_HEIGHT;
+                    pointerY = screenHeight - POINTER_HEIGHT;
                     pointerAngle = (float)Math.toDegrees(Math.atan(
                             (rocket.getY() - level.getHeight()) / rocket.getX()
                     )) - 180;
@@ -235,10 +243,10 @@ public class LevelRenderer {
                     pointerAngle = 180;
                 }
             } else if (level.getWidth() < rocket.getX()) {
-                pointerX = SCREEN_WIDTH - POINTER_WIDTH;
+                pointerX = screenWidth - POINTER_WIDTH;
 
                 if (level.getHeight() < rocket.getY()) {
-                    pointerY = SCREEN_HEIGHT - POINTER_HEIGHT;
+                    pointerY = screenHeight - POINTER_HEIGHT;
                     pointerAngle = (float)Math.toDegrees(Math.atan(
                             (rocket.getY() - level.getHeight()) / rocket.getX()
                     ));
@@ -248,7 +256,7 @@ public class LevelRenderer {
                 }
             } else if (level.getHeight() < rocket.getY()) {
                 pointerX = (int)rocket.getX();
-                pointerY = SCREEN_HEIGHT - POINTER_HEIGHT;
+                pointerY = screenHeight - POINTER_HEIGHT;
                 pointerAngle = 90;
             }
 

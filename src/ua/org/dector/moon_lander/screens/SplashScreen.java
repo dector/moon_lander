@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import ua.org.dector.gcore.common.Settings;
 import ua.org.dector.gcore.game.AbstractScreen;
 import ua.org.dector.moon_lander.graphics.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
@@ -56,11 +57,15 @@ public class SplashScreen extends AbstractScreen {
                 DEDICATION_HEIGHT
         );
 
-        stage = new Stage(SCREEN_WIDTH, SCREEN_HEIGHT, false);
+        Settings gameSettings = landerGame.getSettings();
+        int screenWidth = gameSettings.getScreenWidth();
+        int screenHeight = gameSettings.getScreenHeight();
+
+        stage = new Stage(screenWidth, screenHeight, false);
 
         Action gaminatorLogoAct = Sequence.$(
-                MoveTo.$((SCREEN_WIDTH / 2 - GAMINATOR_LOGO_WIDTH) / 2,
-                        (SCREEN_HEIGHT - GAMINATOR_LOGO_HEIGHT) / 2,
+                MoveTo.$((screenWidth / 2 - GAMINATOR_LOGO_WIDTH) / 2,
+                        (screenHeight - GAMINATOR_LOGO_HEIGHT) / 2,
                         0),
                 FadeIn.$(.5f),
                 Delay.$(1f)//,
@@ -72,8 +77,8 @@ public class SplashScreen extends AbstractScreen {
         final Image dedicationImage = new Image(dedication);
         dedicationImage.color.a = 0;
         Action dedicationAction = Sequence.$(
-                MoveTo.$((3 * SCREEN_WIDTH / 2 - DEDICATION_WIDTH) / 2,
-                        (SCREEN_HEIGHT - DEDICATION_HEIGHT) / 2,
+                MoveTo.$((3 * screenWidth / 2 - DEDICATION_WIDTH) / 2,
+                        (screenHeight - DEDICATION_HEIGHT) / 2,
                         0),
                 FadeIn.$(.5f),
                 Delay.$(1f)//,
@@ -125,11 +130,14 @@ public class SplashScreen extends AbstractScreen {
         stage.act(delta);
         stage.draw();
 
+
+        int screenWidth = ((LanderGame)game).getSettings().getScreenWidth();
+
         if (completed) {
             Graphics g = game.getGraphics();
             g.begin();
             g.drawCentered("Press <<Space>> to start",
-                    SCREEN_WIDTH / 2, 100, Graphics.FontSize.BIG);
+                    screenWidth / 2, 100, Graphics.FontSize.BIG);
             g.end();
         }
     }

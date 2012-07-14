@@ -31,21 +31,25 @@ public class PreferencesManager {
 
     public void putBoolean(String name, boolean value) {
         preferences.putBoolean(name, value);
-        preferences.flush();
+        save();
     }
 
     public void putInt(String name, int value) {
         preferences.putInteger(name, value);
-        preferences.flush();
+        save();
     }
 
     public void putFloat(String name, float value) {
         preferences.putFloat(name, value);
-        preferences.flush();
+        save();
     }
 
     public void putString(String name, String value) {
         preferences.putString(name, value);
+        save();
+    }
+
+    public void save() {
         preferences.flush();
     }
 }

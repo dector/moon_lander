@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ua.org.dector.gcore.common.Settings;
 import ua.org.dector.gcore.game.AbstractScreen;
 import ua.org.dector.moon_lander.AppConfig;
 import ua.org.dector.moon_lander.graphics.Graphics;
@@ -21,7 +22,7 @@ import static ua.org.dector.moon_lander.AppConfig.*;
 /**
  * @author dector (dector9@gmail.com)
  */
-public class EditorScreen extends AbstractScreen {
+public class EditorScreen extends AbstractScreen<LanderGame> {
     private Tool selectedTool;
     private DrawingState drawingState;
 
@@ -107,8 +108,11 @@ public class EditorScreen extends AbstractScreen {
     }
 
     public void render(float delta) {
+        Settings gameSettings = game.getSettings();
+        int screenHeight = gameSettings.getScreenHeight();
+
         int x = Gdx.input.getX();
-        int y = SCREEN_HEIGHT - Gdx.input.getY() - 1;
+        int y = screenHeight - Gdx.input.getY() - 1;
 
         levelRenderer.render(game.getSoundManager().isEnabled(),
                 false, false, false, false);
@@ -167,7 +171,10 @@ public class EditorScreen extends AbstractScreen {
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
-        y = SCREEN_HEIGHT - y - 1;
+        Settings gameSettings = game.getSettings();
+        int screenHeight = gameSettings.getScreenHeight();
+
+        y = screenHeight - y - 1;
 
         switch (selectedTool) {
             case DRAWER: {
