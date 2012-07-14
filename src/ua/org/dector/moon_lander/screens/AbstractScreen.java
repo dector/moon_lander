@@ -2,16 +2,16 @@ package ua.org.dector.moon_lander.screens;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import ua.org.dector.moon_lander.managers.GameManagers;
+import ua.org.dector.moon_lander.managers.AbstractGame;
 
 /**
  * @author dector (dector9@gmail.com)
  */
 public class AbstractScreen implements Screen, InputProcessor {
-    protected GameManagers gameManagers;
+    protected AbstractGame game;
 
-    public AbstractScreen(GameManagers gameManagers) {
-        this.gameManagers = gameManagers;
+    public AbstractScreen(AbstractGame game) {
+        this.game = game;
     }
 
     public void render(float delta) {}

@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ua.org.dector.moon_lander.AppConfig;
 import ua.org.dector.moon_lander.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
-import ua.org.dector.moon_lander.managers.GameManagers;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
 import ua.org.dector.moon_lander.utils.LevelRenderer;
@@ -22,9 +21,6 @@ import static ua.org.dector.moon_lander.AppConfig.*;
  * @author dector (dector9@gmail.com)
  */
 public class EditorScreen extends AbstractScreen {
-//    private Level level;
-    private LanderGame landerGame;
-
     private Tool selectedTool;
     private DrawingState drawingState;
 
@@ -52,14 +48,10 @@ public class EditorScreen extends AbstractScreen {
         NOT_STARTED, DRAWING, FINISHED
     }
 
-    public EditorScreen(GameManagers gameManagers,
-                        Level level,
+    public EditorScreen(Level level,
                         Rocket rocket,
-                        LanderGame landerGame) {
-        super(gameManagers);
-
-//        this.level = level;
-        this.landerGame = landerGame;
+                        LanderGame game) {
+        super(game);
 
         levelRenderer = new LevelRenderer(rocket);
 
@@ -117,7 +109,7 @@ public class EditorScreen extends AbstractScreen {
         int x = Gdx.input.getX();
         int y = SCREEN_HEIGHT - Gdx.input.getY() - 1;
 
-        levelRenderer.render(gameManagers.getSoundManager().isMuted(),
+        levelRenderer.render(game.getSoundManager().isMuted(),
                 false, false, false, false);
 
         Graphics.begin();
@@ -221,7 +213,7 @@ public class EditorScreen extends AbstractScreen {
 
         switch (keycode) {
             case Keys.ESCAPE: Gdx.app.exit();                               break;
-            case Keys.M:    gameManagers.getSoundManager().toggleMuted();   break;
+            case Keys.M:    game.getSoundManager().toggleMuted();   break;
             case Keys.NUM_1: selectedTool = Tool.POINTER; break;
             case Keys.NUM_2: selectedTool = Tool.DRAWER; break;
             case Keys.NUM_3: selectedTool = Tool.FLAG; break;
@@ -267,7 +259,7 @@ public class EditorScreen extends AbstractScreen {
                     }
                 } break;
             case Keys.R: {
-                landerGame.play(level);
+                ((LanderGame) game).play(level);
             } break;
             case Keys.S: {
                 if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && levelName != null) {

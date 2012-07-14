@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import ua.org.dector.moon_lander.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.ResourceLoader;
-import ua.org.dector.moon_lander.managers.GameManagers;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 
@@ -36,8 +35,8 @@ public class SplashScreen extends AbstractScreen {
 
     private boolean completed;
 
-    public SplashScreen(GameManagers gameManagers, LanderGame landerGame) {
-        super(gameManagers);
+    public SplashScreen(LanderGame landerGame) {
+        super(landerGame);
 
         this.landerGame = landerGame;
 

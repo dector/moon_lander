@@ -1,12 +1,8 @@
 package ua.org.dector.moon_lander;
 
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import ua.org.dector.moon_lander.managers.GameManagers;
 import ua.org.dector.moon_lander.managers.SoundManager;
 import ua.org.dector.moon_lander.models.Rocket;
 
-import static ua.org.dector.moon_lander.AppConfig.*;
 import static ua.org.dector.moon_lander.managers.SoundManager.SoundEvent;
 
 /**
@@ -17,10 +13,10 @@ public class EntityController {
 
     private SoundManager soundManager;
 
-    public EntityController(GameManagers gameManagers, Rocket rocket) {
+    public EntityController(LanderGame game, Rocket rocket) {
         this.rocket = rocket;
 
-        soundManager = gameManagers.getSoundManager();
+        soundManager = game.getSoundManager();
 
         loadSounds();
     }

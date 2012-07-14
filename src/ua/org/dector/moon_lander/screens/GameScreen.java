@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Sound;
 import ua.org.dector.moon_lander.*;
-import ua.org.dector.moon_lander.managers.GameManagers;
 import ua.org.dector.moon_lander.managers.SoundManager;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
@@ -34,30 +33,30 @@ public class GameScreen extends AbstractScreen {
 
     private EntityController entityController;
     private LevelRenderer levelRenderer;
-    private LanderGame landerGame;
 
-    public GameScreen(GameManagers gameManagers, Rocket rocket,
-                      Level[] levels, LanderGame landerGame) {
-        super(gameManagers);
+    public GameScreen(Rocket rocket,
+                      Level[] levels, LanderGame game) {
+        super(game);
 
-        this.landerGame = landerGame;
         this.rocket = rocket;
         setLevelSet(levels);
 
         loadSounds();
 
-        entityController = new EntityController(gameManagers, rocket);
+        entityController = new EntityController(game, rocket);
         levelRenderer = new LevelRenderer(rocket);
 
         playLevel(0);
 
         reset();
 
-        gameManagers.getSoundManager().playMusic();
+        game.getSoundManager().playMusic();
     }
 
+
+
     private void loadSounds() {
-        SoundManager sm = gameManagers.getSoundManager();
+        SoundManager sm = game.getSoundManager();
 
         Sound burnSound = ResourceLoader.loadSound(BURN_FILE);
         Sound crashSound = ResourceLoader.loadSound(CRASH_FILE);
@@ -96,7 +95,7 @@ public class GameScreen extends AbstractScreen {
         }
 
         levelRenderer.render(
-                gameManagers.getSoundManager().isMuted(),
+                game.getSoundManager().isMuted(),
                 paused,
                 collided,
                 landed,
@@ -193,19 +192,19 @@ public class GameScreen extends AbstractScreen {
                     playLevel(++levelIndex);
                     reset();
                 }                                                           break;
-            case Keys.M:    gameManagers.getSoundManager().toggleMuted();   break;
+            case Keys.M:    game.getSoundManager().toggleMuted();   break;
             case Keys.P:    paused = ! paused;                              break;
             case Keys.E:
                 if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
                     Level newLevel = new Level(SCREEN_WIDTH, SCREEN_HEIGHT);
                     newLevel.setRocketParams(SCREEN_WIDTH / 2, SCREEN_HEIGHT, 90);
-                    landerGame.openEditor(
+                    ((LanderGame) game).openEditor(
                             newLevel,
                             new Rocket()
                     );
                 } else {
                     reset();
-                    landerGame.openEditor(level, rocket);
+                    ((LanderGame) game).openEditor(level, rocket);
                 }                                                           break;
         }
 
