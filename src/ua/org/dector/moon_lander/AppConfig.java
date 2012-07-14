@@ -18,7 +18,7 @@ public interface AppConfig {
     public static final String PARTICLES_DIR= "particles/";
     public static final String SAVED_LEVELS_DIR= "saved_levels/";
 
-    public static final String SETTINGS_FILE    = "settings";
+    public static final String MOON_LANDER      = "moon_lander";
 
     public static final String BURN_FILE        = "burn.wav";
     public static final String CRASH_FILE       = "crash.wav";

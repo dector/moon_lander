@@ -26,6 +26,7 @@ public class MusicManager extends AudioManager {
     public void play() {
         if (musicIsNull()) return;
         if (getMusic().isPlaying()) return;
+        if (! isEnabled()) return;
 
         getMusic().play();
     }

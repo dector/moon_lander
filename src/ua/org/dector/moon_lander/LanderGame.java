@@ -37,7 +37,7 @@ public class LanderGame extends AbstractGame {
     public void create() {
         super.create();
 
-        settings = new Settings(SETTINGS_FILE);
+        settings = new Settings(MOON_LANDER);
 
         getMusicManager().setEnabled(settings.getMusicEnabled());
         getMusicManager().setVolume(settings.getMusicVolume());
