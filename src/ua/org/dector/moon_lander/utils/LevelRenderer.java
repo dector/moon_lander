@@ -1,11 +1,11 @@
 package ua.org.dector.moon_lander.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ua.org.dector.gcore.core.ResourceLoader;
 import ua.org.dector.moon_lander.Graphics;
-import ua.org.dector.moon_lander.ResourceLoader;
+import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
 
@@ -32,7 +32,7 @@ public class LevelRenderer {
     private TextureRegion levelTexture;
     private TextureRegion backgroundTexture;
 
-    public LevelRenderer(Rocket rocket) {
+    public LevelRenderer(LanderGame game, Rocket rocket) {
         this.rocket = rocket;
 
         camera = new OrthographicCamera(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -41,7 +41,7 @@ public class LevelRenderer {
 
         Graphics.getSpriteBatch().setProjectionMatrix(camera.combined);
 
-        Texture graphicsTexture = ResourceLoader.loadTexture(GRAPHICS_FILE);
+        Texture graphicsTexture = game.getResourceLoader().loadTexture(GRAPHICS_FILE);
         rocketTexture = new TextureRegion(
                 graphicsTexture,
                 ROCKET_TEXTURE_WIDTH,
@@ -197,6 +197,7 @@ public class LevelRenderer {
                 ROCKET_HEIGHT,
                 directionAnle
         );
+        // TODO Fix fire drawing when landed
         if (rocket.isMoveUp()) {
             Graphics.draw(
                     fireTexture,
@@ -269,7 +270,7 @@ public class LevelRenderer {
 
         String backgroundImg = level.getBackgroundImage();
         if (backgroundImg != null) {
-            backgroundTexture = ResourceLoader.loadLevelTexture(backgroundImg);
+            backgroundTexture = LevelLoader.loadLevelTexture(backgroundImg);
         } else {
             backgroundTexture = null;
         }

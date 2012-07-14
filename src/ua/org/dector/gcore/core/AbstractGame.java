@@ -10,10 +10,12 @@ import com.badlogic.gdx.Game;
 public abstract class AbstractGame extends Game {
     private SoundManager soundManager;
     private MusicManager musicManager;
+    private ResourceLoader resourceLoader;
 
     public void create() {
         soundManager = new SoundManager();
         musicManager = new MusicManager();
+        resourceLoader = new ResourceLoader();
     }
 
     public SoundManager getSoundManager() {
@@ -22,5 +24,9 @@ public abstract class AbstractGame extends Game {
 
     public MusicManager getMusicManager() {
         return musicManager;
+    }
+
+    public ResourceLoader getResourceLoader() {
+        return resourceLoader;
     }
 }

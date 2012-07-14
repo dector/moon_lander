@@ -53,7 +53,7 @@ public class EditorScreen extends AbstractScreen {
                         LanderGame game) {
         super(game);
 
-        levelRenderer = new LevelRenderer(rocket);
+        levelRenderer = new LevelRenderer(game, rocket);
 
         editLevel(level, null);
 

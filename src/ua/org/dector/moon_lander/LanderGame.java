@@ -1,17 +1,17 @@
 package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import ua.org.dector.gcore.core.AbstractGame;
+import ua.org.dector.gcore.core.ResourceLoader;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
 import ua.org.dector.moon_lander.screens.AbstractScreen;
 import ua.org.dector.moon_lander.screens.EditorScreen;
 import ua.org.dector.moon_lander.screens.GameScreen;
 import ua.org.dector.moon_lander.screens.SplashScreen;
+import ua.org.dector.moon_lander.utils.LevelLoader;
 
-import static ua.org.dector.moon_lander.AppConfig.MUSIC_FILE;
+import static ua.org.dector.moon_lander.AppConfig.*;
 
 /**
  * @author dector (dector9@gmail.com)
@@ -26,22 +26,30 @@ public class LanderGame extends AbstractGame {
     private Rocket rocket;
     private Level[] levels;
 
-    private boolean debug;
+    // DEBUG MODE
+    private static final boolean debug = true;
 
     public void create() {
         super.create();
 
-//        Music backgroundMusic = ResourceLoader.loadMusic(MUSIC_FILE);
-//
-//        getSoundManager().addMusicToList();
+        ResourceLoader resLoader = getResourceLoader();
+        resLoader.setImagesDirPath(DATA_DIR + IMG_DIR);
+        resLoader.setFontsDirPath(DATA_DIR + FONTS_DIR);
+        resLoader.setMusicDirPath(DATA_DIR + SOUND_DIR);
+        resLoader.setParticlesDirPath(DATA_DIR + PARTICLES_DIR);
+        resLoader.setSoundsDirPath(DATA_DIR + SOUND_DIR);
 
         //////////////////////////////
 
         rocket = new Rocket();
-        levels = ResourceLoader.loadLevelSet("levelset.json");
+        levels = LevelLoader.loadLevelSet("levelset.json");
 
-        splashScreen = new SplashScreen(this);
-        switchScreen(splashScreen);
+        if (isDebug()) {
+            play();
+        } else {
+            splashScreen = new SplashScreen(this);
+            switchScreen(splashScreen);
+        }
     }
 
     public void play() {

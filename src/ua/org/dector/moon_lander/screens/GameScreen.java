@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import ua.org.dector.gcore.core.ResourceLoader;
 import ua.org.dector.gcore.core.SoundManager;
 import ua.org.dector.moon_lander.*;
 import ua.org.dector.moon_lander.models.Level;
@@ -43,7 +44,7 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         loadMusic();
 
         entityController = new EntityController(game, rocket);
-        levelRenderer = new LevelRenderer(rocket);
+        levelRenderer = new LevelRenderer(game, rocket);
 
         playLevel(0);
 
@@ -54,7 +55,7 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     }
 
     private void loadMusic() {
-        Music music = ResourceLoader.loadMusic(MUSIC_FILE);
+        Music music = game.getResourceLoader().loadMusic(MUSIC_FILE);
         game.getMusicManager().setMusic(music, true);
         game.getMusicManager().play();
     }
@@ -69,9 +70,9 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     private void loadSounds() {
         SoundManager sm = game.getSoundManager();
 
-        Sound burnSound = ResourceLoader.loadSound(BURN_FILE);
-        Sound crashSound = ResourceLoader.loadSound(CRASH_FILE);
-        Sound landingSound = ResourceLoader.loadSound(LANDING_FILE);
+        Sound burnSound = game.getResourceLoader().loadSound(BURN_FILE);
+        Sound crashSound = game.getResourceLoader().loadSound(CRASH_FILE);
+        Sound landingSound = game.getResourceLoader().loadSound(LANDING_FILE);
 
         sm.addSound(Sounds.BURN, burnSound);
         sm.addSound(Sounds.CRASH, crashSound);

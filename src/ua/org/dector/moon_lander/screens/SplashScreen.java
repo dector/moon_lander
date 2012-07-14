@@ -14,9 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import ua.org.dector.gcore.core.ResourceLoader;
 import ua.org.dector.moon_lander.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
-import ua.org.dector.moon_lander.ResourceLoader;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 
@@ -40,9 +40,9 @@ public class SplashScreen extends AbstractScreen {
 
         this.landerGame = landerGame;
 
-        fadeInSound = ResourceLoader.loadSound(FADEIN_FILE);
+        fadeInSound = landerGame.getResourceLoader().loadSound(FADEIN_FILE);
 
-        Texture splashTex = ResourceLoader.loadTexture(SPLASH_FILE);
+        Texture splashTex = landerGame.getResourceLoader().loadTexture(SPLASH_FILE);
         gaminatorLogo = new TextureRegion(
                 splashTex,
                 GAMINATOR_LOGO_WIDTH,

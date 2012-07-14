@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ua.org.dector.gcore.core.ResourceLoader;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 
@@ -13,12 +14,19 @@ import static ua.org.dector.moon_lander.AppConfig.*;
  * @author dector (dector9@gmail.com)
  */
 public class Graphics {
+    // TODO setResourceLoaderButRefactorThisMethodAndThisClass
+    private static ResourceLoader resLoader = new ResourceLoader();
+    static {
+        resLoader.setFontsDirPath(DATA_DIR + FONTS_DIR);
+    }
+
+
     private static SpriteBatch sb = new SpriteBatch();
     private static BitmapFont defaultFont = new BitmapFont();
     private static BitmapFont smallFont =
-            ResourceLoader.loadFont(SMALL_FONT_FILE, SMALL_FONT_IMG);
+            resLoader.loadFont(SMALL_FONT_FILE, SMALL_FONT_IMG);
     private static BitmapFont bigFont =
-            ResourceLoader.loadFont(BIG_FONT_FILE, BIG_FONT_IMG);
+            resLoader.loadFont(BIG_FONT_FILE, BIG_FONT_IMG);
 
     private static GL10 gl10 = Gdx.graphics.getGL10();
 
