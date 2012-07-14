@@ -1,4 +1,4 @@
-package ua.org.dector.moon_lander;
+package ua.org.dector.moon_lander.graphics;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import ua.org.dector.gcore.core.ResourceLoader;
+import ua.org.dector.moon_lander.LanderGame;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 

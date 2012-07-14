@@ -1,9 +1,10 @@
 package ua.org.dector.moon_lander;
 
 import com.badlogic.gdx.Gdx;
-import ua.org.dector.gcore.core.AbstractGame;
-import ua.org.dector.gcore.core.AbstractScreen;
-import ua.org.dector.gcore.core.ResourceLoader;
+import ua.org.dector.gcore.game.AbstractGame;
+import ua.org.dector.gcore.game.AbstractScreen;
+import ua.org.dector.gcore.utils.ResourceLoader;
+import ua.org.dector.moon_lander.graphics.Graphics;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
 import ua.org.dector.moon_lander.screens.EditorScreen;

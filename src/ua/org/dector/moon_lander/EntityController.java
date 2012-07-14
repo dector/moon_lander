@@ -1,6 +1,6 @@
 package ua.org.dector.moon_lander;
 
-import ua.org.dector.gcore.core.SoundManager;
+import ua.org.dector.gcore.managers.SoundManager;
 import ua.org.dector.moon_lander.models.Rocket;
 
 /**
