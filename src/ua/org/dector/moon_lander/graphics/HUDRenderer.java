@@ -2,6 +2,7 @@ package ua.org.dector.moon_lander.graphics;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import ua.org.dector.gcore.utils.ResourceLoader;
 import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.models.Rocket;
 
@@ -27,11 +28,11 @@ public class HUDRenderer {
         setDrawRocketInfo(true);
         setDrawSoundInfo(true);
 
-        loadTextures();
+        loadTextures(game.getResourceLoader());
     }
 
-    private void loadTextures() {
-        Texture graphicsTexture = game.getResourceLoader().loadTexture(GRAPHICS_FILE);
+    private void loadTextures(ResourceLoader loader) {
+        Texture graphicsTexture = loader.loadTexture(GRAPHICS_FILE);
 
         soundTextures = new TextureRegion[2];
         soundTextures[0] = new TextureRegion(

@@ -138,7 +138,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
                 levelRenderer.drawFlag(x, y);
             } break;
             case ROCKET: {
-                levelRenderer.drawRocket(x, y, rocketAngle);
+//                levelRenderer.drawRocket(x, y, rocketAngle);  #render
             } break;
             case LAND: {
                 g.draw(landTexture, x, y);

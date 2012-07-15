@@ -18,7 +18,7 @@ public class Rocket {
 
     private float directionAngle;
 
-    private boolean moveUp;
+    private boolean engineOn;
     private boolean rotateLeft;
     private boolean rotateRight;
 
@@ -45,7 +45,7 @@ public class Rocket {
 
         directionAngle = angle;
 
-        moveUp = false;
+        engineOn = false;
         rotateLeft = false;
         rotateRight = false;
     }
@@ -84,7 +84,7 @@ public class Rocket {
             directionAngle += 360;
         }
 
-        if (moveUp) {
+        if (engineOn) {
             ay = (float)(Math.sin(Math.toRadians(directionAngle)) * ROCKET_AY);
             ax = (float)(Math.cos(Math.toRadians(directionAngle)) * ROCKET_AY);
         } else {
@@ -99,8 +99,8 @@ public class Rocket {
         x += vx;
     }
 
-    public void moveUp(boolean moveUp) {
-        this.moveUp = moveUp;
+    public void setEngineOn(boolean engineOn) {
+        this.engineOn = engineOn;
     }
 
     public void rotateLeft(boolean rotateLeft) {
@@ -111,8 +111,8 @@ public class Rocket {
         this.rotateRight = rotateRight;
     }
 
-    public boolean isMoveUp() {
-        return moveUp;
+    public boolean isEngineOn() {
+        return engineOn;
     }
 
     public void setY(float y) {

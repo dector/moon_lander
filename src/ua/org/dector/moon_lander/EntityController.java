@@ -24,7 +24,7 @@ public class EntityController {
     }
 
     public void moveUpRocket(boolean moveUp){
-        rocket.moveUp(moveUp);
+        rocket.setEngineOn(moveUp);
 
         if (moveUp) {
             soundManager.loop(Sounds.BURN);

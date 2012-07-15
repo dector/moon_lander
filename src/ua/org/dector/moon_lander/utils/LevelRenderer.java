@@ -116,11 +116,11 @@ public class LevelRenderer {
     public void render(boolean musicEnabled, boolean paused, boolean collided,
                        boolean landed, boolean hasMoreLevels) {
         if (level != null) {
-            g.clear();
-            g.begin();
+//            g.clear();
+//            g.begin();
 
             drawLevel();
-            drawRocket((int)rocket.getX(), (int)rocket.getY(), rocket.getDirectionAngle());
+//            drawRocket((int)rocket.getX(), (int)rocket.getY(), rocket.getDirectionAngle());
 //            drawHUD(musicEnabled);
             drawPointer(level, rocket);
 
@@ -137,7 +137,7 @@ public class LevelRenderer {
             g.drawCentered("Paused", screenWidth / 2, screenHeight / 2,
                     Graphics.FontSize.BIG);
         } else if (collided) {
-            rocket.moveUp(false);
+            rocket.setEngineOn(false);
 
             String text;
 
@@ -198,7 +198,7 @@ public class LevelRenderer {
     }
 
 
-    public void drawRocket(int x, int y, float directionAnle) {
+    /*public void drawRocket(int x, int y, float directionAnle) {
         g.draw(
                 rocketTexture,
                 x,
@@ -208,7 +208,7 @@ public class LevelRenderer {
                 directionAnle
         );
         // TODO Fix fire drawing when landed
-        if (rocket.isMoveUp()) {
+        if (rocket.isEngineOn()) {
             g.draw(
                     fireTexture,
                     x + FIRE_PADDING,
@@ -220,7 +220,7 @@ public class LevelRenderer {
                     directionAnle
             );
         }
-    }
+    }*/
 
     public void drawPointer(Level level, Rocket rocket) {
         if (rocket.getX() < 0

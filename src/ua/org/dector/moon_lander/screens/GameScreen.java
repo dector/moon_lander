@@ -43,11 +43,12 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     public GameScreen(LanderGame game, Level[] levels) {
         super(game);
 
-        rocket = new Rocket();
-
         newLevelRenderer = new NewLevelRenderer(game);
         hudRenderer = new HUDRenderer(game);
+
+        rocket = new Rocket();
         hudRenderer.setRocket(rocket);
+        newLevelRenderer.setRocket(rocket);
 
         setLevelSet(levels);
 
@@ -128,6 +129,7 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         Graphics g = game.getGraphics();
         g.clear();
         g.begin();
+            newLevelRenderer.render(g);
             hudRenderer.render(g);
         g.end();
     }
