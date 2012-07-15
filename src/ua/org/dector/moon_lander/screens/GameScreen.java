@@ -48,22 +48,17 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         hudRenderer.setRocket(rocket);
         levelRenderer.setRocket(rocket);
 
-        levelRenderer.setLevel(levels[0]);
-
         setLevelSet(levels);
+        playLevel(0);
 
         loadSounds();
         loadMusic();
 
         entityController = new EntityController(game, rocket);
-//        levelRenderer = new LevelRenderer(game, rocket);    // #render
+    }
 
-        playLevel(0);
-
-        reset();
-
-        // TODO fix
-//        game.getSoundManager().playMusic();
+    private void reset() {
+        playLevel(levelIndex);
     }
 
     private void loadMusic() {
@@ -96,26 +91,19 @@ public class GameScreen extends AbstractScreen<LanderGame> {
             this.levelIndex = levelIndex;
             level = levels[levelIndex];
 
-//            levelRenderer.setLevel(level);  // #render
-            reset();
+            rocket.reset(level.getRocketX(), level.getRocketY(), level.getRocketAngle());
+            levelRenderer.setLevel(level);
+
+            collided = false;
+            landed = false;
+            paused = false;
         }
-    }
-
-    private void reset() {
-        rocket.reset(level.getRocketX(), level.getRocketY(), level.getRocketAngle());
-
-//        levelRenderer.reset();  // #render
-
-        collided = false;
-        landed = false;
-
-        paused = false;
     }
 
     public void render(float delta) {
         if (! collided && ! paused) {
-            updateCollisions();
             rocket.updateRocket(delta);
+            updateCollisions();
         }
 
         Graphics g = game.getGraphics();
@@ -179,7 +167,6 @@ public class GameScreen extends AbstractScreen<LanderGame> {
             int rightBound = pointsCount - 1;
 
             // Find left and right point
-
             while (leftBound + 1 < pointsCount
                     && level.get(2 * (leftBound + 1)) <= rocketLeftX) {
                 leftBound++;
@@ -233,7 +220,10 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         int screenHeight = gameSettings.getScreenHeight();
 
         switch (keycode) {
-            case Keys.UP:       entityController.moveUpRocket(true);        break;
+            case Keys.UP:
+                if (! collided && ! paused) {
+                    entityController.moveUpRocket(true);
+                } break;
             case Keys.LEFT:     entityController.rotateRocketLeft(true);    break;
             case Keys.RIGHT:    entityController.rotateRocketRight(true);   break;
             case Keys.ESCAPE:   Gdx.app.exit();                             break;
@@ -260,13 +250,13 @@ public class GameScreen extends AbstractScreen<LanderGame> {
                 if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
                     Level newLevel = new Level(screenWidth, screenHeight);
                     newLevel.setRocketParams(screenWidth / 2, screenHeight, 90);
-                    ((LanderGame) game).openEditor(
+                    game.openEditor(
                             newLevel,
                             new Rocket()
                     );
                 } else {
                     reset();
-                    ((LanderGame) game).openEditor(level, rocket);
+                    game.openEditor(level, rocket);
                 }                                                           break;
             case Keys.F1: hudRenderer.switchDrawHUD(); break;
             case Keys.F2: hudRenderer.switchDrawRocketInfo(); break;

@@ -15,12 +15,6 @@ public class EntityController {
         this.rocket = rocket;
 
         soundManager = game.getSoundManager();
-
-        loadSounds();
-    }
-
-    private void loadSounds() {
-
     }
 
     public void moveUpRocket(boolean moveUp){

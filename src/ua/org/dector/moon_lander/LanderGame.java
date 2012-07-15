@@ -28,7 +28,6 @@ public class LanderGame extends AbstractGame {
     private Graphics g;
     private Settings settings;
 
-    private Rocket rocket;
     private Level[] levels;
 
     // DEBUG MODE
@@ -120,9 +119,5 @@ public class LanderGame extends AbstractGame {
 
     public Settings getSettings() {
         return settings;
-    }
-
-    public Rocket getRocket() {
-        return rocket;
     }
 }

@@ -237,6 +237,7 @@ public class LevelRenderer {
         this.level = level;
 
         if (level != null && oldLevel != level) {
+            // TODO Set clear color as level background color
             rebuildMapTexture();
         }
     }
