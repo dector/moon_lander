@@ -121,7 +121,7 @@ public class LevelRenderer {
 
             drawLevel();
             drawRocket((int)rocket.getX(), (int)rocket.getY(), rocket.getDirectionAngle());
-            drawHUD(musicEnabled);
+//            drawHUD(musicEnabled);
             drawPointer(level, rocket);
 
             drawNotifications(paused, collided, landed, hasMoreLevels);
@@ -156,8 +156,8 @@ public class LevelRenderer {
         }
     }
 
-    public void drawHUD(boolean musicEnabled) {
-        /*// Draw sound ico
+    /*public void drawHUD(boolean musicEnabled) {
+        // Draw sound ico
         int soundTextureIndex;
         if (musicEnabled) {
             soundTextureIndex = 0;
@@ -171,7 +171,7 @@ public class LevelRenderer {
                 SOUND_ICO_Y,
                 SOUND_ICO_WIDTH,
                 SOUND_ICO_HEIGHT
-        );*/
+        );
 
         // Draw text
 
@@ -185,7 +185,7 @@ public class LevelRenderer {
                     String.format("Angle: %.1f", rocket.getDirectionAngle())
             );
         }
-    }
+    }*/
 
     public void drawLevel() {
         if (backgroundTexture != null)

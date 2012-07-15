@@ -49,7 +49,7 @@ public class Settings {
         prefs.putFloat(SFX_VOLUME, volume);
     }
 
-    public boolean getMusicEnabled() {
+    public boolean isMusicEnabled() {
         return prefs.getBoolean(MUSIC_ENABLED, DEFAULT_MUSIC_ENABLED);
     }
 
@@ -57,7 +57,7 @@ public class Settings {
         prefs.putBoolean(MUSIC_ENABLED, enabled);
     }
 
-    public boolean getSfxEnabled() {
+    public boolean isSfxEnabled() {
         return prefs.getBoolean(SFX_ENABLED, DEFAULT_SFX_ENABLED);
     }
 

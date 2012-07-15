@@ -9,6 +9,7 @@ import ua.org.dector.gcore.common.Settings;
 import ua.org.dector.gcore.game.AbstractScreen;
 import ua.org.dector.gcore.managers.SoundManager;
 import ua.org.dector.moon_lander.*;
+import ua.org.dector.moon_lander.graphics.Graphics;
 import ua.org.dector.moon_lander.graphics.HUDRenderer;
 import ua.org.dector.moon_lander.graphics.NewLevelRenderer;
 import ua.org.dector.moon_lander.models.Level;
@@ -42,10 +43,12 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     public GameScreen(LanderGame game, Level[] levels) {
         super(game);
 
+        rocket = new Rocket();
+
         newLevelRenderer = new NewLevelRenderer(game);
         hudRenderer = new HUDRenderer(game);
+        hudRenderer.setRocket(rocket);
 
-        rocket = new Rocket();
         setLevelSet(levels);
 
         loadSounds();
@@ -122,9 +125,11 @@ public class GameScreen extends AbstractScreen<LanderGame> {
 //                levelIndex != levels.length - 1
 //        );
 
-        game.getGraphics().begin();
-        hudRenderer.render(game.getGraphics());
-        game.getGraphics().end();
+        Graphics g = game.getGraphics();
+        g.clear();
+        g.begin();
+            hudRenderer.render(g);
+        g.end();
     }
 
     private void updateCollisions() {
@@ -237,6 +242,9 @@ public class GameScreen extends AbstractScreen<LanderGame> {
                     reset();
                     ((LanderGame) game).openEditor(level, rocket);
                 }                                                           break;
+            case Keys.F1: hudRenderer.switchDrawHUD(); break;
+            case Keys.F2: hudRenderer.switchDrawRocketInfo(); break;
+            case Keys.F3: hudRenderer.switchDrawSoundInfo(); break;
         }
 
         return true;

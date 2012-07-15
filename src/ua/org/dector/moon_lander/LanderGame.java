@@ -39,10 +39,10 @@ public class LanderGame extends AbstractGame {
 
         settings = new Settings(MOON_LANDER);
 
-        getMusicManager().setEnabled(settings.getMusicEnabled());
+        getMusicManager().setEnabled(settings.isMusicEnabled());
         getMusicManager().setVolume(settings.getMusicVolume());
 
-        getSoundManager().setEnabled(settings.getSfxEnabled());
+        getSoundManager().setEnabled(settings.isSfxEnabled());
         getSoundManager().setVolume(settings.getSfxVolume());
 
         ResourceLoader resLoader = getResourceLoader();
@@ -120,5 +120,9 @@ public class LanderGame extends AbstractGame {
 
     public Settings getSettings() {
         return settings;
+    }
+
+    public Rocket getRocket() {
+        return rocket;
     }
 }
