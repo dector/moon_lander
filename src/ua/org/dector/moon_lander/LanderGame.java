@@ -79,24 +79,29 @@ public class LanderGame extends AbstractGame {
     }
 
     public void play(Level level) {
+        Level[] levels = { level };
+
         if (gameScreen == null)
-            gameScreen = new GameScreen(this, new Level[] { level });
+            gameScreen = new GameScreen(this, levels);
 
-        gameScreen.setLevelSet(new Level[] { level });
-
+        gameScreen.setLevelSet(levels);
         gameScreen.playLevel(0);
-        switchScreen(gameScreen);
+        switchScreen(gameScreen, false);
     }
 
     public void switchScreen(AbstractScreen screen) {
-        if (screen != null) {
-            if (currentScreen != null) {
-                currentScreen.dispose();
-            }
+        switchScreen(screen, true);
+    }
 
-            setScreen(screen);
-            Gdx.input.setInputProcessor(screen);
+    public void switchScreen(AbstractScreen screen, boolean dispose) {
+        if (screen == null) return;
+
+        if (currentScreen != null && dispose) {
+            currentScreen.dispose();
         }
+
+        setScreen(screen);
+        Gdx.input.setInputProcessor(screen);
     }
 
     public void openEditor(Level level, Rocket rocket) {
@@ -106,7 +111,7 @@ public class LanderGame extends AbstractGame {
         if (level != editorScreen.getLevel())
             editorScreen.editLevel(level, null);
         
-        switchScreen(editorScreen);
+        switchScreen(editorScreen, false);
     }
 
     public boolean isDebug() {

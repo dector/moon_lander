@@ -220,15 +220,29 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         int screenHeight = gameSettings.getScreenHeight();
 
         switch (keycode) {
-            case Keys.UP:
+            case Keys.UP: {
                 if (! collided && ! paused) {
                     entityController.moveUpRocket(true);
-                } break;
-            case Keys.LEFT:     entityController.rotateRocketLeft(true);    break;
-            case Keys.RIGHT:    entityController.rotateRocketRight(true);   break;
-            case Keys.ESCAPE:   Gdx.app.exit();                             break;
-            case Keys.R:        reset();                                    break;
-            case Keys.SPACE:
+                }
+            } break;
+
+            case Keys.LEFT: {
+                entityController.rotateRocketLeft(true);
+            } break;
+
+            case Keys.RIGHT: {
+                entityController.rotateRocketRight(true);
+            } break;
+
+            case Keys.ESCAPE: {
+                Gdx.app.exit();
+            } break;
+
+            case Keys.R: {
+                reset();
+            } break;
+
+            case Keys.SPACE: {
                 if (collided) {
                     if (landed && hasMoreLevels())
                         levelIndex++;
@@ -236,18 +250,26 @@ public class GameScreen extends AbstractScreen<LanderGame> {
                     playLevel(levelIndex);
 
                     reset();
-                }                                                           break;
-            case Keys.N:
+                }
+            } break;
+
+            case Keys.N: {
                 if (game.isDebug()) {
                     playLevel(++levelIndex);
                     reset();
-                }                                                           break;
+                }
+            } break;
+
             case Keys.M: {
                 game.getSoundManager().toggleMuted();
                 game.getMusicManager().toggleMuted();
             } break;
-            case Keys.P:    paused = ! paused;                              break;
-            case Keys.E:
+
+            case Keys.P: {
+                paused = ! paused;
+            } break;
+
+            case Keys.E: {
                 if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
                     Level newLevel = new Level(screenWidth, screenHeight);
                     newLevel.setRocketParams(screenWidth / 2, screenHeight, 90);
@@ -258,7 +280,9 @@ public class GameScreen extends AbstractScreen<LanderGame> {
                 } else {
                     reset();
                     game.openEditor(level, rocket);
-                }                                                           break;
+                }
+            } break;
+
             case Keys.F1: hudRenderer.switchDrawHUD(); break;
             case Keys.F2: hudRenderer.switchDrawRocketInfo(); break;
             case Keys.F3: hudRenderer.switchDrawSoundInfo(); break;
