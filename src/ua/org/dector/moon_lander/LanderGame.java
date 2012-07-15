@@ -20,15 +20,12 @@ import static ua.org.dector.moon_lander.AppConfig.*;
  */
 public class LanderGame extends AbstractGame {
     private GameScreen gameScreen;
-    private SplashScreen splashScreen;
     private EditorScreen editorScreen;
 
     private AbstractScreen currentScreen;
 
     private Graphics g;
     private Settings settings;
-
-    private Level[] levels;
 
     // DEBUG MODE
     private static final boolean debug = true;
@@ -53,27 +50,29 @@ public class LanderGame extends AbstractGame {
 
         g = new Graphics(this);
 
+        restoreScreenSize();
+
+        if (isDebug()) {
+            play();
+        } else {
+            SplashScreen splashScreen = new SplashScreen(this);
+            switchScreen(splashScreen);
+        }
+    }
+
+    private void restoreScreenSize() {
         Settings settings = getSettings();
         int screenWidth = settings.getScreenWidth();
         int screenHeight = settings.getScreenHeight();
         boolean fullscreen = settings.isFullscreen();
         Gdx.graphics.setDisplayMode(screenWidth, screenHeight, fullscreen);
-
-        //////////////////////////////
-
-        levels = LevelLoader.loadLevelSet("levelset.json");
-
-        if (isDebug()) {
-            play();
-        } else {
-            splashScreen = new SplashScreen(this);
-            switchScreen(splashScreen);
-        }
     }
 
     public void play() {
-        if (gameScreen == null)
+        if (gameScreen == null) {
+            Level[] levels = LevelLoader.loadLevelSet("levelset.json");
             gameScreen = new GameScreen(this, levels);
+        }
 
         switchScreen(gameScreen);
     }
@@ -101,6 +100,7 @@ public class LanderGame extends AbstractGame {
         }
 
         setScreen(screen);
+        currentScreen = screen;
         Gdx.input.setInputProcessor(screen);
     }
 
