@@ -27,8 +27,7 @@ public class Level {
         this.height = height;
     }
 
-    public Level() {
-    }
+    public Level() {}
 
     public int getWidth() {
         return width;
@@ -189,6 +188,10 @@ public class Level {
         }
 
         file.writeString(json.toJson(this, Level.class), false);
+    }
+
+    public boolean hasBackground() {
+        return background != null; // Implement background
     }
 
     public static class Background {

@@ -104,7 +104,7 @@ public class LevelRenderer {
     public void setLevel(Level level) {
         this.level = level;
 
-        rebuild();
+//        rebuild();
     }
 
     public void reset() {
@@ -119,7 +119,7 @@ public class LevelRenderer {
 //            g.clear();
 //            g.begin();
 
-            drawLevel();
+//            drawLevel();
 //            drawRocket((int)rocket.getX(), (int)rocket.getY(), rocket.getDirectionAngle());
 //            drawHUD(musicEnabled);
             drawPointer(level, rocket);
@@ -187,7 +187,7 @@ public class LevelRenderer {
         }
     }*/
 
-    public void drawLevel() {
+    /*public void drawLevel() {
         if (backgroundTexture != null)
             g.draw(backgroundTexture, 0, 0);
 
@@ -195,7 +195,7 @@ public class LevelRenderer {
 
         if (level.hasFlag())
             drawFlag(level.getFlagX(), level.getFlagY());
-    }
+    }*/
 
 
     /*public void drawRocket(int x, int y, float directionAnle) {
@@ -271,20 +271,20 @@ public class LevelRenderer {
         }
     }
 
-    public void rebuild() {
-        if (levelTexture != null) {
-            levelTexture.getTexture().dispose();
-        }
-
-        levelTexture = LevelBuilder.buildLevelTexture(level);
-
-        String backgroundImg = level.getBackgroundImage();
-        if (backgroundImg != null) {
-            backgroundTexture = LevelLoader.loadLevelTexture(backgroundImg);
-        } else {
-            backgroundTexture = null;
-        }
-    }
+//    public void rebuild() {
+//        if (levelTexture != null) {
+//            levelTexture.getTexture().dispose();
+//        }
+//
+//        levelTexture = LevelBuilder.buildLevelTexture(level);
+//
+//        String backgroundImg = level.getBackgroundImage();
+//        if (backgroundImg != null) {
+//            backgroundTexture = LevelLoader.loadLevelTexture(backgroundImg);
+//        } else {
+//            backgroundTexture = null;
+//        }
+//    }
 
     public void drawFlag(int x, int y) {
         g.draw(

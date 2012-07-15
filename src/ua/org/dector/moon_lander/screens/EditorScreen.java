@@ -104,7 +104,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
 
         lastPoint = new int[2];
 
-        levelRenderer.rebuild();
+//        levelRenderer.rebuild();   #render
     }
 
     public void render(float delta) {
@@ -202,7 +202,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
             } break;
             case LAND: {
                 getLevel().setLand(x, y + LANDING_PLATFORM_HEIGHT / 2, landWidth);
-                levelRenderer.rebuild();
+//                levelRenderer.rebuild();  # render
             } break;
         }
 
@@ -214,7 +214,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
             getLevel().addPoint(x, y);
             lastPoint[0] = x;
             lastPoint[1] = y;
-            levelRenderer.rebuild();
+//            levelRenderer.rebuild();  #render
         }
     }
 
@@ -268,7 +268,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
                             drawingState = DrawingState.DRAWING;
                         }
 
-                        levelRenderer.rebuild();
+//                        levelRenderer.rebuild();   #render
                     }
                 } break;
             case Keys.R: {

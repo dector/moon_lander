@@ -8,6 +8,8 @@ import ua.org.dector.gcore.utils.ResourceLoader;
 import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
+import ua.org.dector.moon_lander.utils.LevelBuilder;
+import ua.org.dector.moon_lander.utils.LevelLoader;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
 import static ua.org.dector.moon_lander.AppConfig.FLAG_TEXTURE_HEIGHT;
@@ -25,6 +27,7 @@ public class NewLevelRenderer {
     private TextureRegion fireTexture;
     private TextureRegion pointerTexture;
     private TextureRegion flagTexture;
+    private TextureRegion mapTexture;
 
     public NewLevelRenderer(LanderGame game) {
         setupCamera(game);
@@ -112,6 +115,44 @@ public class NewLevelRenderer {
 
     private void drawLevel(Graphics g, Level level) {
         if (getLevel() == null) return;
+
+        drawBackground(g);
+        drawFlag(g);
+        drawMap(g);
+    }
+
+    private void drawMap(Graphics g) {
+        if (mapTexture == null) return;
+
+        g.draw(mapTexture, 0, 0);
+    }
+
+    private void drawFlag(Graphics g) {
+        if (! level.hasFlag()) return;
+
+        // TODO Implement flag drawing
+    }
+
+    private void drawBackground(Graphics g) {
+        if (! level.hasBackground()) return;
+
+        // TODO Implement background draw
+    }
+
+    private void rebuildMapTexture() {
+        if (mapTexture != null) {
+            mapTexture.getTexture().dispose();
+        }
+
+        mapTexture = LevelBuilder.buildLevelTexture(level);
+
+        // TODO Implement background image building
+//        String backgroundImg = level.getBackgroundImage();
+//        if (backgroundImg != null) {
+//            backgroundTexture = LevelLoader.loadLevelTexture(backgroundImg);
+//        } else {
+//            backgroundTexture = null;
+//        }
     }
 
     public void setRocket(Rocket rocket) {
@@ -123,7 +164,13 @@ public class NewLevelRenderer {
     }
 
     public void setLevel(Level level) {
+        Level oldLevel = getLevel();
+
         this.level = level;
+
+        if (level != null && oldLevel != level) {
+            rebuildMapTexture();
+        }
     }
 
     public Level getLevel() {

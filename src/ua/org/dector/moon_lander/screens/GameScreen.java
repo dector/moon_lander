@@ -50,6 +50,8 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         hudRenderer.setRocket(rocket);
         newLevelRenderer.setRocket(rocket);
 
+        newLevelRenderer.setLevel(levels[0]);
+
         setLevelSet(levels);
 
         loadSounds();
