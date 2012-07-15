@@ -39,10 +39,6 @@ public class LanderGame extends AbstractGame {
 
         settings = new Settings(MOON_LANDER);
 
-        getSettings().setScreenWidth(Gdx.graphics.getWidth());
-        getSettings().setScreenHeight(Gdx.graphics.getHeight());
-        getSettings().setFullscreen(Gdx.graphics.isFullscreen());
-
         getMusicManager().setEnabled(settings.getMusicEnabled());
         getMusicManager().setVolume(settings.getMusicVolume());
 
@@ -57,6 +53,12 @@ public class LanderGame extends AbstractGame {
         resLoader.setSoundsDirPath(DATA_DIR + SOUND_DIR);
 
         g = new Graphics(this);
+
+        Settings settings = getSettings();
+        int screenWidth = settings.getScreenWidth();
+        int screenHeight = settings.getScreenHeight();
+        boolean fullscreen = settings.isFullscreen();
+        Gdx.graphics.setDisplayMode(screenWidth, screenHeight, fullscreen);
 
         //////////////////////////////
 

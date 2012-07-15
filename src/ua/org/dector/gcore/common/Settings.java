@@ -89,5 +89,7 @@ public class Settings {
         prefs.putBoolean(SCREEN_FULLSCREEN, fullscreen);
     }
 
-    public void save() {}
+    public void save() {
+        prefs.save();
+    }
 }

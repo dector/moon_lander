@@ -9,12 +9,15 @@ import static ua.org.dector.moon_lander.AppConfig.*;
  * @author dector (dector9@gmail.com)
  */
 public class DesktopLauncher implements Runnable {
+    public static final int INIT_SCREEN_WIDTH   = 1;
+    public static final int INIT_SCREEN_HEIGHT  = 1;
+    public static final boolean INIT_FULLSCREEN = false;
+
     public void run() {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        // TODO fix this hack
-        config.width = 800;
-        config.height = 600;
-        config.fullscreen = false;
+        config.width = INIT_SCREEN_WIDTH;
+        config.height = INIT_SCREEN_HEIGHT;
+        config.fullscreen = INIT_FULLSCREEN;
         config.title = TITLE;
         config.resizable = false;
         config.useGL20 = false;
