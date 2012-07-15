@@ -13,7 +13,6 @@ import ua.org.dector.moon_lander.graphics.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
-import ua.org.dector.moon_lander.utils.LevelRenderer;
 import ua.org.dector.moon_lander.utils.Utils;
 
 import static com.badlogic.gdx.Input.Keys;
@@ -26,7 +25,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
     private Tool selectedTool;
     private DrawingState drawingState;
 
-    private LevelRenderer levelRenderer;
+//    private LevelRenderer levelRenderer; # render
 
     // Editor opts
     private TextureRegion pointTexture;
@@ -39,7 +38,8 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
     private String levelName;
 
     public Level getLevel() {
-        return levelRenderer.getLevel();
+        return null;    // #render
+//        return levelRenderer.getLevel(); # render
     }
 
     private enum Tool {
@@ -55,7 +55,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
                         LanderGame game) {
         super(game);
 
-        levelRenderer = new LevelRenderer(game, rocket);
+//        levelRenderer = new LevelRenderer(game, rocket); # render
 
         editLevel(level, null);
 
@@ -90,10 +90,10 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
 
     public void editLevel(Level level, String levelName) {
 //        this.level = level;
-        levelRenderer.setLevel(level);
-
-        levelRenderer.getRocket().setPosition(level.getRocketX(), level.getRocketY());
-        levelRenderer.getRocket().setDirectionAngle(level.getRocketAngle());
+//        levelRenderer.setLevel(level); #render
+//
+//        levelRenderer.getRocket().setPosition(level.getRocketX(), level.getRocketY()); #render
+//        levelRenderer.getRocket().setDirectionAngle(level.getRocketAngle()); #render
 
         if (level.getMapLength() == 0) {
             drawingState = DrawingState.NOT_STARTED;
@@ -114,8 +114,8 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
         int x = Gdx.input.getX();
         int y = screenHeight - Gdx.input.getY() - 1;
 
-        levelRenderer.render(game.getSoundManager().isEnabled(),
-                false, false, false, false);
+//        levelRenderer.render(game.getSoundManager().isEnabled(),
+//                false, false, false, false); # render
 
         Graphics g = game.getGraphics();
 
@@ -135,7 +135,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
                 }
             } break;
             case FLAG: {
-                levelRenderer.drawFlag(x, y);
+//                levelRenderer.drawFlag(x, y);  #render
             } break;
             case ROCKET: {
 //                levelRenderer.drawRocket(x, y, rocketAngle);  #render
@@ -197,8 +197,8 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
             } break;
             case ROCKET: {
                 getLevel().setRocketParams(x, y, rocketAngle);
-                levelRenderer.getRocket().setPosition(x, y);
-                levelRenderer.getRocket().setDirectionAngle(rocketAngle);
+//                levelRenderer.getRocket().setPosition(x, y); #render
+//                levelRenderer.getRocket().setDirectionAngle(rocketAngle); #render
             } break;
             case LAND: {
                 getLevel().setLand(x, y + LANDING_PLATFORM_HEIGHT / 2, landWidth);
@@ -312,7 +312,7 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
     }
 
     private void setLevel(Level level) {
-        levelRenderer.setLevel(level);
+//        levelRenderer.setLevel(level); #render
     }
 
     public boolean scrolled(int amount) {

@@ -17,7 +17,7 @@ import static ua.org.dector.moon_lander.AppConfig.FLAG_TEXTURE_HEIGHT;
 /**
  * @author dector (dector9@gmail.com)
  */
-public class NewLevelRenderer {
+public class LevelRenderer {
     private Level level;
     private Rocket rocket;
 
@@ -29,7 +29,7 @@ public class NewLevelRenderer {
     private TextureRegion flagTexture;
     private TextureRegion mapTexture;
 
-    public NewLevelRenderer(LanderGame game) {
+    public LevelRenderer(LanderGame game) {
         setupCamera(game);
         loadTextures(game.getResourceLoader());
     }

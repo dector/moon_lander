@@ -11,10 +11,9 @@ import ua.org.dector.gcore.managers.SoundManager;
 import ua.org.dector.moon_lander.*;
 import ua.org.dector.moon_lander.graphics.Graphics;
 import ua.org.dector.moon_lander.graphics.HUDRenderer;
-import ua.org.dector.moon_lander.graphics.NewLevelRenderer;
+import ua.org.dector.moon_lander.graphics.LevelRenderer;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
-import ua.org.dector.moon_lander.utils.LevelRenderer;
 
 import java.awt.Rectangle;
 
@@ -35,22 +34,21 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     private boolean paused;
 
     private EntityController entityController;
-    private LevelRenderer levelRenderer;
 
-    private NewLevelRenderer newLevelRenderer;
+    private LevelRenderer levelRenderer;
     private HUDRenderer hudRenderer;
 
     public GameScreen(LanderGame game, Level[] levels) {
         super(game);
 
-        newLevelRenderer = new NewLevelRenderer(game);
+        levelRenderer = new LevelRenderer(game);
         hudRenderer = new HUDRenderer(game);
 
         rocket = new Rocket();
         hudRenderer.setRocket(rocket);
-        newLevelRenderer.setRocket(rocket);
+        levelRenderer.setRocket(rocket);
 
-        newLevelRenderer.setLevel(levels[0]);
+        levelRenderer.setLevel(levels[0]);
 
         setLevelSet(levels);
 
@@ -120,20 +118,44 @@ public class GameScreen extends AbstractScreen<LanderGame> {
             rocket.updateRocket(delta);
         }
 
-//        levelRenderer.render(   // #render
-//                game.getSoundManager().isEnabled(),
-//                paused,
-//                collided,
-//                landed,
-//                levelIndex != levels.length - 1
-//        );
-
         Graphics g = game.getGraphics();
         g.clear();
         g.begin();
-            newLevelRenderer.render(g);
+            levelRenderer.render(g);
             hudRenderer.render(g);
+            drawNotification(g);
         g.end();
+    }
+
+    private void drawNotification(Graphics g) {
+        String text = null;
+
+        if (paused) {
+            text = "Pause";
+        } else if (collided) {
+            if (landed) {
+                if (hasMoreLevels()) {
+                    text = "Level passed";
+                } else {
+                    text = "Winner";
+                }
+            } else {
+                text = "Crashed";
+            }
+        }
+
+        if (text == null) return;
+
+        g.drawCentered(
+                text,
+                game.getSettings().getScreenWidth() / 2,
+                game.getSettings().getScreenHeight() / 2,
+                Graphics.FontSize.BIG
+        );
+    }
+
+    private boolean hasMoreLevels() {
+        return levelIndex != levels.length - 1;
     }
 
     private void updateCollisions() {
