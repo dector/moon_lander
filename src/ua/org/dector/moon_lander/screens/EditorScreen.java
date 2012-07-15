@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import ua.org.dector.gcore.common.Settings;
 import ua.org.dector.gcore.game.AbstractScreen;
 import ua.org.dector.moon_lander.AppConfig;
+import ua.org.dector.moon_lander.graphics.EditorLevelRenderer;
 import ua.org.dector.moon_lander.graphics.Graphics;
 import ua.org.dector.moon_lander.LanderGame;
 import ua.org.dector.moon_lander.models.Level;
@@ -17,94 +18,57 @@ import ua.org.dector.moon_lander.utils.Utils;
 
 import static com.badlogic.gdx.Input.Keys;
 import static ua.org.dector.moon_lander.AppConfig.*;
+import static ua.org.dector.moon_lander.graphics.EditorLevelRenderer.*;
 
 /**
  * @author dector (dector9@gmail.com)
  */
 public class EditorScreen extends AbstractScreen<LanderGame> {
-    private Tool selectedTool;
-    private DrawingState drawingState;
-
-//    private LevelRenderer levelRenderer; # render
-
-    // Editor opts
-    private TextureRegion pointTexture;
-    private TextureRegion landTexture;
-    private float rocketAngle;
-    private int landWidth;
-    private int[] lastPoint;
-    private TextureRegion lineTexture;
+    private EditorLevelRenderer levelRenderer;
 
     private String levelName;
 
     public Level getLevel() {
-        return null;    // #render
-//        return levelRenderer.getLevel(); # render
+        return levelRenderer.getLevel();
     }
 
-    private enum Tool {
-        POINTER, DRAWER, ROCKET, FLAG, LAND
-    }
-
-    private enum DrawingState {
-        NOT_STARTED, DRAWING, FINISHED
-    }
-
-    public EditorScreen(Level level,
-                        Rocket rocket,
-                        LanderGame game) {
+    public EditorScreen(Level level, LanderGame game) {
         super(game);
 
-//        levelRenderer = new LevelRenderer(game, rocket); # render
+        levelRenderer = new EditorLevelRenderer(game);
+        levelRenderer.setLevel(level);
+        levelRenderer.setRocket(
+                new Rocket(level.getRocketX(), level.getRocketY(), level.getRocketAngle())
+        );
 
         editLevel(level, null);
 
-        selectedTool = Tool.POINTER;
+        levelRenderer.setSelectedTool(Tool.POINTER);
 
         if (level.getMapLength() > 0) {
             if (level.get(level.getMapLength() - 2) == level.getWidth()) {
-                drawingState = DrawingState.FINISHED;
+                levelRenderer.setDrawingState(DrawingState.FINISHED);
             } else {
-                drawingState = DrawingState.DRAWING;
+                levelRenderer.setDrawingState(DrawingState.DRAWING);
             }
         } else {
-            drawingState = DrawingState.NOT_STARTED;
+            levelRenderer.setDrawingState(DrawingState.NOT_STARTED);
         }
 
-        rocketAngle = 90;
-
-        landWidth = 100;
-        rebuildLandTexture();
-
-        lastPoint = new int[2];
-
-        Pixmap p = new Pixmap(16, 16, Pixmap.Format.RGBA8888);
-        p.setColor(Color.WHITE);
-        p.fillCircle(8, 8, 8);
-        p.setColor(0, 0, 0, 1);
-        p.fillCircle(8, 8, 5);
-        Texture pointTex = new Texture(p);
-        p.dispose();
-        pointTexture = new TextureRegion(pointTex);
+        levelRenderer.rebuildLandTexture();
     }
 
     public void editLevel(Level level, String levelName) {
-//        this.level = level;
-//        levelRenderer.setLevel(level); #render
-//
-//        levelRenderer.getRocket().setPosition(level.getRocketX(), level.getRocketY()); #render
-//        levelRenderer.getRocket().setDirectionAngle(level.getRocketAngle()); #render
+        levelRenderer.setLevel(level);
+        levelRenderer.getRocket().setPosition(level.getRocketX(), level.getRocketY());
+        levelRenderer.getRocket().setDirectionAngle(level.getRocketAngle());
 
         if (level.getMapLength() == 0) {
-            drawingState = DrawingState.NOT_STARTED;
+            levelRenderer.setDrawingState(DrawingState.NOT_STARTED);
         }
 
         if (levelName != null)
             this.levelName = levelName;
-
-        lastPoint = new int[2];
-
-//        levelRenderer.rebuild();   #render
     }
 
     public void render(float delta) {
@@ -114,59 +78,13 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
         int x = Gdx.input.getX();
         int y = screenHeight - Gdx.input.getY() - 1;
 
-//        levelRenderer.render(game.getSoundManager().isEnabled(),
-//                false, false, false, false); # render
+        levelRenderer.setX(x);
+        levelRenderer.setY(y);
 
         Graphics g = game.getGraphics();
-
+        g.clear();
         g.begin();
-        switch (selectedTool) {
-            case DRAWER: {
-                if (drawingState == DrawingState.NOT_STARTED
-                        && x == 0) {
-                    g.draw(pointTexture, x + 8, y + 8);
-                } else if (drawingState == DrawingState.DRAWING) {
-                    rebuildLineTexture(x, y);
-                    g.draw(lineTexture, 0, 0);
-
-                    if (x == getLevel().getWidth() - 1) {
-                        g.draw(pointTexture, x - 16, y + 8);
-                    }
-                }
-            } break;
-            case FLAG: {
-//                levelRenderer.drawFlag(x, y);  #render
-            } break;
-            case ROCKET: {
-//                levelRenderer.drawRocket(x, y, rocketAngle);  #render
-            } break;
-            case LAND: {
-                g.draw(landTexture, x, y);
-            } break;
-        }
-
-        g.draw(10, 300, 20,
-                String.format("Tool %s", selectedTool),
-                String.format("Mouse at %d:%d", x, y));
-        if (selectedTool == Tool.DRAWER) {
-            String text;
-
-            if (drawingState == DrawingState.NOT_STARTED) {
-                text = "Click on left border to start drawing";
-            } else if (drawingState == DrawingState.DRAWING) {
-                text = "Click on right border to finish drawing";
-            } else {
-                text = "Drawing finished";
-            }
-
-            g.draw(text, 10, 260, Graphics.FontSize.SMALL);
-        } else if (selectedTool == Tool.ROCKET) {
-            g.draw(String.format("Rocket angle: %.1f", rocketAngle), 10, 260,
-                    Graphics.FontSize.SMALL);
-        } else if (selectedTool == Tool.LAND) {
-            g.draw(String.format("Land width: %d", landWidth), 10, 260,
-                    Graphics.FontSize.SMALL);
-        }
+            levelRenderer.render(g);
         g.end();
     }
 
@@ -176,45 +94,52 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
 
         y = screenHeight - y - 1;
 
-        switch (selectedTool) {
+        // TODO It must be some controller, not renderer
+        switch (levelRenderer.getSelectedTool()) {
             case DRAWER: {
-                if (drawingState == DrawingState.NOT_STARTED) {
+                if (levelRenderer.getDrawingState() == DrawingState.NOT_STARTED) {
                     if (x == 0) {
                         setPoint(x, y);
+                        levelRenderer.rebuild();
 
-                        drawingState = DrawingState.DRAWING;
+                        levelRenderer.setDrawingState(DrawingState.DRAWING);
                     }
-                } else if (drawingState == DrawingState.DRAWING) {
+                } else if (levelRenderer.getDrawingState() == DrawingState.DRAWING) {
                     setPoint(x, y);
+                    levelRenderer.rebuild();
 
                     if (x == getLevel().getWidth() - 1) {
-                        drawingState = DrawingState.FINISHED;
+                        levelRenderer.setDrawingState(DrawingState.FINISHED);
                     }
                 }
             } break;
             case FLAG: {
                 getLevel().setFlagPosition(x, y);
+                levelRenderer.rebuild();
             } break;
             case ROCKET: {
-                getLevel().setRocketParams(x, y, rocketAngle);
-//                levelRenderer.getRocket().setPosition(x, y); #render
-//                levelRenderer.getRocket().setDirectionAngle(rocketAngle); #render
+                getLevel().setRocketParams(x, y, levelRenderer.getRocketAngle());
+                levelRenderer.getRocket().setPosition(x, y);
+                levelRenderer.getRocket().setDirectionAngle(levelRenderer.getRocketAngle());
+                levelRenderer.rebuild();
             } break;
             case LAND: {
-                getLevel().setLand(x, y + LANDING_PLATFORM_HEIGHT / 2, landWidth);
-//                levelRenderer.rebuild();  # render
+                getLevel().setLand(x, y + LANDING_PLATFORM_HEIGHT / 2,
+                        levelRenderer.getLandWidth());
+                levelRenderer.rebuild();
             } break;
         }
+
 
         return true;
     }
 
     private void setPoint(int x, int y) {
-        if (x >= lastPoint[0]) {
+        if (x >= levelRenderer.getLastPoint(0)) {
             getLevel().addPoint(x, y);
-            lastPoint[0] = x;
-            lastPoint[1] = y;
-//            levelRenderer.rebuild();  #render
+            levelRenderer.setLastPoint(0, x);
+            levelRenderer.setLastPoint(1, y);
+            levelRenderer.rebuild();
         }
     }
 
@@ -227,52 +152,51 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
                 game.getSoundManager().toggleMuted();
                 game.getMusicManager().toggleMuted();
             } break;
-            case Keys.NUM_1: selectedTool = Tool.POINTER; break;
-            case Keys.NUM_2: selectedTool = Tool.DRAWER; break;
-            case Keys.NUM_3: selectedTool = Tool.FLAG; break;
-            case Keys.NUM_4: selectedTool = Tool.LAND; break;
-            case Keys.NUM_5: selectedTool = Tool.ROCKET; break;
+            case Keys.NUM_1: levelRenderer.setSelectedTool(Tool.POINTER); break;
+            case Keys.NUM_2: levelRenderer.setSelectedTool(Tool.DRAWER); break;
+            case Keys.NUM_3: levelRenderer.setSelectedTool(Tool.FLAG); break;
+            case Keys.NUM_4: levelRenderer.setSelectedTool(Tool.LAND); break;
+            case Keys.NUM_5: levelRenderer.setSelectedTool(Tool.ROCKET); break;
             case Keys.UP:
-                if (selectedTool == Tool.ROCKET) {
-                    rocketAngle = 90;
+                if (levelRenderer.getSelectedTool() == Tool.ROCKET) {
+                    levelRenderer.setRocketAngle(90);
                 } break;
             case Keys.RIGHT:
-                if (selectedTool == Tool.ROCKET) {
-                    rocketAngle = 0;
+                if (levelRenderer.getSelectedTool() == Tool.ROCKET) {
+                    levelRenderer.setRocketAngle(0);
                 } break;
             case Keys.DOWN:
-                if (selectedTool == Tool.ROCKET) {
-                    rocketAngle = 270;
+                if (levelRenderer.getSelectedTool() == Tool.ROCKET) {
+                    levelRenderer.setRocketAngle(270);
                 } break;
             case Keys.LEFT:
-                if (selectedTool == Tool.ROCKET) {
-                    rocketAngle = 180;
+                if (levelRenderer.getSelectedTool() == Tool.ROCKET) {
+                    levelRenderer.setRocketAngle(180);
                 } break;
             case Keys.BACKSPACE:
-                if (selectedTool == Tool.DRAWER) {
-                    if (drawingState != DrawingState.NOT_STARTED) {
+                if (levelRenderer.getSelectedTool() == Tool.DRAWER) {
+                    if (levelRenderer.getDrawingState() != DrawingState.NOT_STARTED) {
                         level.removeLastPoint();
+                        levelRenderer.rebuild();
 
                         int mapLength = level.getMapLength();
                         if (mapLength != 0) {
-                            lastPoint[0] = level.get(mapLength - 2);
-                            lastPoint[1] = level.get(mapLength - 1);
+                            levelRenderer.setLastPoint(0, level.get(mapLength - 2));
+                            levelRenderer.setLastPoint(1, level.get(mapLength - 1));
                         } else {
-                            lastPoint[0] = 0;
-                            lastPoint[1] = 0;
+                            levelRenderer.setLastPoint(0, 0);
+                            levelRenderer.setLastPoint(1, 0);
                         }
                         
                         if (mapLength == 0) {
-                            drawingState = DrawingState.NOT_STARTED;
-                        } else if (drawingState == DrawingState.FINISHED) {
-                            drawingState = DrawingState.DRAWING;
+                            levelRenderer.setDrawingState(DrawingState.NOT_STARTED);
+                        } else if (levelRenderer.getDrawingState() == DrawingState.FINISHED) {
+                            levelRenderer.setDrawingState(DrawingState.DRAWING);
                         }
-
-//                        levelRenderer.rebuild();   #render
                     }
                 } break;
             case Keys.R: {
-                ((LanderGame) game).play(level);
+                game.play(level);
             } break;
             case Keys.S: {
                 if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && levelName != null) {
@@ -312,11 +236,11 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
     }
 
     private void setLevel(Level level) {
-//        levelRenderer.setLevel(level); #render
+        levelRenderer.setLevel(level);
     }
 
     public boolean scrolled(int amount) {
-        switch (selectedTool) {
+        switch (levelRenderer.getSelectedTool()) {
             case ROCKET: {
                 float diff = -amount;
 
@@ -326,11 +250,11 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
                     diff *= .1f;
                 }
 
-                rocketAngle += diff;
-                if (rocketAngle > 360) {
-                    rocketAngle -= 360;
-                } else if (rocketAngle < 0) {
-                    rocketAngle += 360;
+                levelRenderer.setRocketAngle(levelRenderer.getRocketAngle() + diff);
+                if (levelRenderer.getRocketAngle() > 360) {
+                    levelRenderer.setRocketAngle(levelRenderer.getRocketAngle() - 360);
+                } else if (levelRenderer.getRocketAngle() < 0) {
+                    levelRenderer.setRocketAngle(levelRenderer.getRocketAngle() + 360);
                 }
             } break;
             case LAND: {
@@ -344,60 +268,17 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
                     diff *= 10;
                 }
 
-                landWidth += diff;
-                if (landWidth > getLevel().getWidth()) {
-                    landWidth = getLevel().getWidth();
-                } else if (landWidth < 5) {
-                    landWidth = 5;
+                levelRenderer.setLandWidth(levelRenderer.getLandWidth() + diff);
+                if (levelRenderer.getLandWidth() > getLevel().getWidth()) {
+                    levelRenderer.setLandWidth(getLevel().getWidth());
+                } else if (levelRenderer.getLandWidth() < 5) {
+                    levelRenderer.setLandWidth(5);
                 }
 
-                rebuildLandTexture();
+                levelRenderer.rebuildLandTexture();
             }
         }
 
         return true;
-    }
-
-    private void rebuildLandTexture() {
-        // Rebuild land texture
-        if (landTexture != null)
-            landTexture.getTexture().dispose();
-
-        Pixmap p = new Pixmap(Utils.toPowerOfTwo(landWidth),
-                Utils.toPowerOfTwo(LANDING_PLATFORM_HEIGHT),
-                Pixmap.Format.RGBA8888);
-
-        p.setColor(Color.WHITE);
-        p.fillRectangle(
-                0 + LANDING_PLATFORM_BORDER,
-                0,
-                landWidth - 2 * LANDING_PLATFORM_BORDER,
-                LANDING_PLATFORM_HEIGHT
-        );
-
-        Texture landTex = new Texture(p);
-        p.dispose();
-        landTexture = new TextureRegion(landTex, landWidth, LANDING_PLATFORM_HEIGHT);
-    }
-
-    private void rebuildLineTexture(int x, int y) {
-        Level level = getLevel();
-
-        if (lineTexture != null)
-            lineTexture.getTexture().dispose();
-
-        Pixmap p = new Pixmap(Utils.toPowerOfTwo(level.getWidth()),
-                Utils.toPowerOfTwo(level.getHeight()),
-                Pixmap.Format.RGBA8888);
-
-        p.setColor(Color.WHITE);
-        p.drawLine(lastPoint[0],
-                level.getHeight() - lastPoint[1],
-                x,
-                level.getHeight() - y);
-
-        Texture lineTex = new Texture(p);
-        p.dispose();
-        lineTexture = new TextureRegion(lineTex, level.getWidth(), level.getHeight());
     }
 }

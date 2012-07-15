@@ -152,14 +152,7 @@ public class LevelRenderer {
         float y = rocket.getY();
         float directionAngle = rocket.getDirectionAngle();
 
-        g.draw(
-                rocketTexture,
-                x,
-                y,
-                ROCKET_WIDTH,
-                ROCKET_HEIGHT,
-                directionAngle
-        );
+        drawRocket(g, x, y, directionAngle);
 
         if (rocket.isEngineOn()) {
             g.draw(
@@ -173,6 +166,17 @@ public class LevelRenderer {
                     directionAngle
             );
         }
+    }
+
+    protected void drawRocket(Graphics g, float x, float y, float directionAngle) {
+        g.draw(
+            rocketTexture,
+            x,
+            y,
+            ROCKET_WIDTH,
+            ROCKET_HEIGHT,
+            directionAngle
+        );
     }
 
     private void drawLevel(Graphics g) {
@@ -192,10 +196,14 @@ public class LevelRenderer {
     private void drawFlag(Graphics g) {
         if (! level.hasFlag()) return;
 
+        drawFlag(g, level.getFlagX(), level.getFlagY());
+    }
+
+    protected void drawFlag(Graphics g, int x, int y) {
         g.draw(
                 flagTexture,
-                level.getFlagX(),
-                level.getFlagY(),
+                x,
+                y,
                 FLAG_WIDTH,
                 FLAG_HEIGHT
         );
@@ -207,7 +215,7 @@ public class LevelRenderer {
         // TODO Implement background draw
     }
 
-    private void rebuildMapTexture() {
+    protected void rebuildMapTexture() {
         if (mapTexture != null) {
             mapTexture.getTexture().dispose();
         }

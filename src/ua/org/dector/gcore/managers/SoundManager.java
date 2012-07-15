@@ -64,4 +64,10 @@ public class SoundManager extends AudioManager {
         for (String id : sounds.keySet())
             sounds.get(id).dispose();
     }
+
+    public void stopAll() {
+        for (String id : sounds.keySet()) {
+            stop(id);
+        }
+    }
 }

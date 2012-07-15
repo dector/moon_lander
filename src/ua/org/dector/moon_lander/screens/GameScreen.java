@@ -266,20 +266,20 @@ public class GameScreen extends AbstractScreen<LanderGame> {
             } break;
 
             case Keys.P: {
+                game.getSoundManager().stopAll();
                 paused = ! paused;
             } break;
 
             case Keys.E: {
+                game.getSoundManager().stopAll();
+
                 if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT)) {
                     Level newLevel = new Level(screenWidth, screenHeight);
                     newLevel.setRocketParams(screenWidth / 2, screenHeight, 90);
-                    game.openEditor(
-                            newLevel,
-                            new Rocket()
-                    );
+                    game.openEditor(newLevel);
                 } else {
                     reset();
-                    game.openEditor(level, rocket);
+                    game.openEditor(level);
                 }
             } break;
 

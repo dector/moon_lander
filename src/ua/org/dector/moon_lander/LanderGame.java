@@ -104,9 +104,9 @@ public class LanderGame extends AbstractGame {
         Gdx.input.setInputProcessor(screen);
     }
 
-    public void openEditor(Level level, Rocket rocket) {
+    public void openEditor(Level level) {
         if (editorScreen == null)
-            editorScreen = new EditorScreen(level, rocket, this);
+            editorScreen = new EditorScreen(level, this);
 
         if (level != editorScreen.getLevel())
             editorScreen.editLevel(level, null);
