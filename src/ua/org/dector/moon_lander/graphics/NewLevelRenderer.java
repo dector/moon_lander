@@ -130,7 +130,13 @@ public class NewLevelRenderer {
     private void drawFlag(Graphics g) {
         if (! level.hasFlag()) return;
 
-        // TODO Implement flag drawing
+        g.draw(
+                flagTexture,
+                level.getFlagX(),
+                level.getFlagY(),
+                FLAG_WIDTH,
+                FLAG_HEIGHT
+        );
     }
 
     private void drawBackground(Graphics g) {
