@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
 import ua.org.dector.moon_lander.LanderGame;
 
 import static ua.org.dector.moon_lander.AppConfig.*;
@@ -117,6 +118,10 @@ public class Graphics {
 
     public SpriteBatch getSpriteBatch() {
         return sb;
+    }
+
+    public void setProjectionMatrix(Matrix4 matrix) {
+        getSpriteBatch().setProjectionMatrix(matrix);
     }
 
     public static enum FontSize {

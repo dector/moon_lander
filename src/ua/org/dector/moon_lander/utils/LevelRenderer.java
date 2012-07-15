@@ -157,7 +157,7 @@ public class LevelRenderer {
     }
 
     public void drawHUD(boolean musicEnabled) {
-        // Draw sound ico
+        /*// Draw sound ico
         int soundTextureIndex;
         if (musicEnabled) {
             soundTextureIndex = 0;
@@ -171,7 +171,7 @@ public class LevelRenderer {
                 SOUND_ICO_Y,
                 SOUND_ICO_WIDTH,
                 SOUND_ICO_HEIGHT
-        );
+        );*/
 
         // Draw text
 

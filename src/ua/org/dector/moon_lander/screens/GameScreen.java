@@ -9,6 +9,8 @@ import ua.org.dector.gcore.common.Settings;
 import ua.org.dector.gcore.game.AbstractScreen;
 import ua.org.dector.gcore.managers.SoundManager;
 import ua.org.dector.moon_lander.*;
+import ua.org.dector.moon_lander.graphics.HUDRenderer;
+import ua.org.dector.moon_lander.graphics.NewLevelRenderer;
 import ua.org.dector.moon_lander.models.Level;
 import ua.org.dector.moon_lander.models.Rocket;
 import ua.org.dector.moon_lander.utils.LevelRenderer;
@@ -34,18 +36,23 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     private EntityController entityController;
     private LevelRenderer levelRenderer;
 
-    public GameScreen(Rocket rocket,
-                      Level[] levels, LanderGame game) {
+    private NewLevelRenderer newLevelRenderer;
+    private HUDRenderer hudRenderer;
+
+    public GameScreen(LanderGame game, Level[] levels) {
         super(game);
 
-        this.rocket = rocket;
+        newLevelRenderer = new NewLevelRenderer(game);
+        hudRenderer = new HUDRenderer(game);
+
+        rocket = new Rocket();
         setLevelSet(levels);
 
         loadSounds();
         loadMusic();
 
         entityController = new EntityController(game, rocket);
-        levelRenderer = new LevelRenderer(game, rocket);
+//        levelRenderer = new LevelRenderer(game, rocket);    // #render
 
         playLevel(0);
 
@@ -85,7 +92,7 @@ public class GameScreen extends AbstractScreen<LanderGame> {
             this.levelIndex = levelIndex;
             level = levels[levelIndex];
 
-            levelRenderer.setLevel(level);
+//            levelRenderer.setLevel(level);  // #render
             reset();
         }
     }
@@ -93,7 +100,7 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     private void reset() {
         rocket.reset(level.getRocketX(), level.getRocketY(), level.getRocketAngle());
 
-        levelRenderer.reset();
+//        levelRenderer.reset();  // #render
 
         collided = false;
         landed = false;
@@ -107,13 +114,17 @@ public class GameScreen extends AbstractScreen<LanderGame> {
             rocket.updateRocket(delta);
         }
 
-        levelRenderer.render(
-                game.getSoundManager().isEnabled(),
-                paused,
-                collided,
-                landed,
-                levelIndex != levels.length - 1
-        );
+//        levelRenderer.render(   // #render
+//                game.getSoundManager().isEnabled(),
+//                paused,
+//                collided,
+//                landed,
+//                levelIndex != levels.length - 1
+//        );
+
+        game.getGraphics().begin();
+        hudRenderer.render(game.getGraphics());
+        game.getGraphics().end();
     }
 
     private void updateCollisions() {

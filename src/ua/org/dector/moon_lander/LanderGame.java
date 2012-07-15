@@ -62,7 +62,6 @@ public class LanderGame extends AbstractGame {
 
         //////////////////////////////
 
-        rocket = new Rocket();
         levels = LevelLoader.loadLevelSet("levelset.json");
 
         if (isDebug()) {
@@ -75,15 +74,16 @@ public class LanderGame extends AbstractGame {
 
     public void play() {
         if (gameScreen == null)
-            gameScreen = new GameScreen(rocket, levels, this);
+            gameScreen = new GameScreen(this, levels);
+
         switchScreen(gameScreen);
     }
 
     public void play(Level level) {
         if (gameScreen == null)
-            gameScreen = new GameScreen(rocket, new Level[] {level}, this);
+            gameScreen = new GameScreen(this, new Level[] { level });
 
-        gameScreen.setLevelSet(new Level[] {level});
+        gameScreen.setLevelSet(new Level[] { level });
 
         gameScreen.playLevel(0);
         switchScreen(gameScreen);
