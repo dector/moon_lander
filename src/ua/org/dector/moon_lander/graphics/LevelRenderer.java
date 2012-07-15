@@ -232,14 +232,10 @@ public class LevelRenderer {
     }
 
     public void setLevel(Level level) {
-        Level oldLevel = getLevel();
-
         this.level = level;
 
-        if (level != null && oldLevel != level) {
-            // TODO Set clear color as level background color
-            rebuildMapTexture();
-        }
+        // TODO Set clear color as level background color
+        rebuildMapTexture();
     }
 
     public Level getLevel() {

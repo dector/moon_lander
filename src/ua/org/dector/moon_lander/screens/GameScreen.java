@@ -48,13 +48,13 @@ public class GameScreen extends AbstractScreen<LanderGame> {
         hudRenderer.setRocket(rocket);
         levelRenderer.setRocket(rocket);
 
+        entityController = new EntityController(game, rocket);
+
         setLevelSet(levels);
         playLevel(0);
 
         loadSounds();
         loadMusic();
-
-        entityController = new EntityController(game, rocket);
     }
 
     private void reset() {
@@ -230,9 +230,10 @@ public class GameScreen extends AbstractScreen<LanderGame> {
             case Keys.R:        reset();                                    break;
             case Keys.SPACE:
                 if (collided) {
-                    if (landed) {
-                        playLevel(++levelIndex);
-                    }
+                    if (landed && hasMoreLevels())
+                        levelIndex++;
+
+                    playLevel(levelIndex);
 
                     reset();
                 }                                                           break;
