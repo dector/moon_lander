@@ -79,11 +79,73 @@ public class NewLevelRenderer {
 
 
     public void render(Graphics g) {
-        drawLevel(g, getLevel());
-        drawRocket(g, getRocket());
+        drawLevel(g);
+        drawRocket(g);
+        drawPointer(g);
     }
 
-    private void drawRocket(Graphics g, Rocket rocket) {
+    private void drawPointer(Graphics g) {
+        Rocket rocket = getRocket();
+        Level level = getLevel();
+
+        if (level == null) return;
+        if (rocket == null) return;
+
+        if (0 <= rocket.getX() + ROCKET_WIDTH
+                && rocket.getX() <= level.getWidth()
+                && rocket.getY() <= level.getHeight())
+            return;
+
+        // TODO fix it in future :)
+        int screenWidth = level.getWidth();
+        int screenHeight = level.getHeight();
+
+        int pointerX = 0;
+        int pointerY = 0;
+        float pointerAngle = 0;
+
+        if (rocket.getX() < 0) {
+            pointerX = 0;
+
+            if (level.getHeight() < rocket.getY()) {
+                pointerY = screenHeight - POINTER_HEIGHT;
+                pointerAngle = (float)Math.toDegrees(Math.atan(
+                        (rocket.getY() - level.getHeight()) / rocket.getX()
+                )) - 180;
+            } else {
+                pointerY = (int)rocket.getY();
+                pointerAngle = 180;
+            }
+        } else if (level.getWidth() < rocket.getX()) {
+            pointerX = screenWidth - POINTER_WIDTH;
+
+            if (level.getHeight() < rocket.getY()) {
+                pointerY = screenHeight - POINTER_HEIGHT;
+                pointerAngle = (float)Math.toDegrees(Math.atan(
+                        (rocket.getY() - level.getHeight()) / rocket.getX()
+                ));
+            } else {
+                pointerY = (int)rocket.getY();
+                pointerAngle = 0;
+            }
+        } else if (level.getHeight() < rocket.getY()) {
+            pointerX = (int)rocket.getX();
+            pointerY = screenHeight - POINTER_HEIGHT;
+            pointerAngle = 90;
+        }
+
+        g.draw(
+                pointerTexture,
+                pointerX,
+                pointerY,
+                POINTER_WIDTH,
+                POINTER_HEIGHT,
+                pointerAngle
+        );
+    }
+
+    private void drawRocket(Graphics g) {
+        Rocket rocket = getRocket();
         if (rocket == null) return;
 
         float x = rocket.getX();
@@ -113,7 +175,7 @@ public class NewLevelRenderer {
         }
     }
 
-    private void drawLevel(Graphics g, Level level) {
+    private void drawLevel(Graphics g) {
         if (getLevel() == null) return;
 
         drawBackground(g);
