@@ -400,4 +400,9 @@ public class EditorScreen extends AbstractScreen<LanderGame> {
         p.dispose();
         lineTexture = new TextureRegion(lineTex, level.getWidth(), level.getHeight());
     }
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
 }

@@ -9,9 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.*;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import ua.org.dector.gcore.common.Settings;
@@ -63,54 +62,56 @@ public class SplashScreen extends AbstractScreen {
 
         stage = new Stage(screenWidth, screenHeight, false);
 
-        Action gaminatorLogoAct = Sequence.$(
-                MoveTo.$((screenWidth / 2 - GAMINATOR_LOGO_WIDTH) / 2,
-                        (screenHeight - GAMINATOR_LOGO_HEIGHT) / 2,
-                        0),
-                FadeIn.$(.5f),
-                Delay.$(1f)//,
+		final Image dedicationImage = new Image(dedication);
+
+        Action gaminatorLogoAct = sequence(
+				moveTo((screenWidth / 2 - GAMINATOR_LOGO_WIDTH) / 2,
+						(screenHeight - GAMINATOR_LOGO_HEIGHT) / 2,
+						0),
+				fadeIn(.5f),
+				delay(1f),
+				run(new Runnable() {
+					@Override
+					public void run() {
+						stage.addActor(dedicationImage);
+						fadeInSound.play();
+					}
+				})
 //                FadeOut.$(.5f)
-        );
+		);
         final Image gaminatorLogoImage = new Image(gaminatorLogo);
-        gaminatorLogoImage.color.a = 0;
+        gaminatorLogoImage.getColor().a = 0;
 
-        final Image dedicationImage = new Image(dedication);
-        dedicationImage.color.a = 0;
-        Action dedicationAction = Sequence.$(
-                MoveTo.$((3 * screenWidth / 2 - DEDICATION_WIDTH) / 2,
-                        (screenHeight - DEDICATION_HEIGHT) / 2,
-                        0),
-                FadeIn.$(.5f),
-                Delay.$(1f)//,
+        dedicationImage.getColor().a = 0;
+        Action dedicationAction = sequence(
+				moveTo((3 * screenWidth / 2 - DEDICATION_WIDTH) / 2,
+						(screenHeight - DEDICATION_HEIGHT) / 2,
+						0),
+				fadeIn(.5f),
+				delay(1f),
+				run(new Runnable() {
+					@Override
+					public void run() {
+						SplashScreen.this.completed = true;
+					}
+				})
 //                FadeOut.$(.5f)
-        );
-        dedicationAction.setCompletionListener(
-                new OnActionCompleted() {
-                    public void completed(Action action) {
-                        SplashScreen.this.completed = true;
-                    }
-                });
-        dedicationImage.action(dedicationAction);
+		);
+        dedicationImage.addAction(dedicationAction);
 
-        gaminatorLogoAct.setCompletionListener(new OnActionCompleted() {
-            public void completed(Action action) {
-                stage.addActor(dedicationImage);
-                fadeInSound.play();
-            }
-        });
-        gaminatorLogoImage.action(gaminatorLogoAct);
+        gaminatorLogoImage.addAction(gaminatorLogoAct);
 
         // Very dirty hack
 
         Label emptyActor = new Label("", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        Action startedAct = Sequence.$(Delay.$(0.05f), Remove.$());
-        startedAct.setCompletionListener(new OnActionCompleted() {
-            public void completed(Action action) {
-                stage.addActor(gaminatorLogoImage);
-                fadeInSound.play();
-            }
-        });
-        emptyActor.action(startedAct);
+        Action startedAct = sequence(delay(0.05f), run(new Runnable() {
+			@Override
+			public void run() {
+				stage.addActor(gaminatorLogoImage);
+				fadeInSound.play();
+			}
+		}));
+        emptyActor.addAction(startedAct);
         stage.addActor(emptyActor);
     }
 
@@ -146,4 +147,9 @@ public class SplashScreen extends AbstractScreen {
         gaminatorLogo.getTexture().dispose();
         stage.dispose();
     }
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
 }

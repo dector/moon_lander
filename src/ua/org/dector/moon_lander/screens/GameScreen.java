@@ -255,4 +255,9 @@ public class GameScreen extends AbstractScreen<LanderGame> {
     public void setLevelSet(Level[] levels) {
         this.levels = levels;
     }
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		return false;
+	}
 }

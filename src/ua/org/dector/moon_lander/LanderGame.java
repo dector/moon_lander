@@ -32,7 +32,7 @@ public class LanderGame extends AbstractGame {
     private Level[] levels;
 
     // DEBUG MODE
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     public void create() {
         super.create();
